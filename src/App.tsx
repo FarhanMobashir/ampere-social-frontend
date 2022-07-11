@@ -6,7 +6,16 @@ function App() {
   const { toggleTheme } = useThemeContext();
   return (
     <>
-      <Button>Hello World</Button>
+      <Button size="large" variants="primary">
+        Hello World
+      </Button>
+      <Button size="regular" variants="secondary">
+        Hello World
+      </Button>
+      <Button size="small" variants="tertiary">
+        Hello World
+      </Button>
+
       <button
         onClick={() => {
           toggleTheme();
