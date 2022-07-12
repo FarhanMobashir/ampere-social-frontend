@@ -1,9 +1,5 @@
 import styled, { DefaultTheme } from "styled-components";
-
-interface ButtonProps {
-  size?: "small" | "regular" | "large";
-  variants?: "primary" | "secondary" | "tertiary";
-}
+import { ButtonProps } from "../../types/Buttons";
 
 export const Button = styled.button<ButtonProps>`
   background-color: ${(props) => props.theme.primaryColor};
@@ -29,7 +25,9 @@ export const Button = styled.button<ButtonProps>`
     switch (props.variants) {
       case "primary":
         return `
-                background-color: ${props.theme.primaryColor};`;
+                background-color: ${props.theme.primaryColor};
+                color: ${props.theme.lightTextColor};
+                `;
       case "secondary":
         return `
                 background-color: ${props.theme.secondaryColor};
@@ -40,9 +38,65 @@ export const Button = styled.button<ButtonProps>`
                 background-color: ${props.theme.tertiaryColor};
                 color: ${props.theme.secondaryColor};
                 `;
-      default:
+      case "transparent":
         return `
-                background-color: ${props.theme.primaryColor};`;
+                background-color: rgba(0,0,0,0.4);
+                padding: 0px 5px;
+                color: ${props.theme.lightTextColor};
+                `;
+      default:
+        return `background-color: ${props.theme.primaryColor};`;
     }
   }}
 `;
+
+export const ButtonWithIconElement = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1.2rem;
+  gap: 0.5rem;
+`;
+
+interface ButtonWithIconProps extends ButtonProps {
+  children: React.ReactNode;
+}
+
+export const ButtonWithIcon = (props: ButtonWithIconProps) => {
+  return (
+    <ButtonWithIconElement {...props}>{props.children}</ButtonWithIconElement>
+  );
+};
+
+export const IconButton = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  padding: 0.8rem;
+  border-radius: 50%;
+  gap: 0.5rem;
+`;
+
+const Badge = styled.span`
+  background-color: red;
+  color: white;
+  padding: 0.2rem;
+  border-radius: 50%;
+  font-size: 0.6rem;
+  position: absolute;
+  font-weight: bold;
+`;
+
+interface IconButtonWithBadgeProps extends ButtonProps {
+  children: React.ReactNode;
+  badge?: number;
+}
+
+export const IconButtonWithBadge = (props: IconButtonWithBadgeProps) => {
+  return (
+    <IconButton {...props}>
+      <Badge>{props.badge}</Badge>
+      {props.children}
+    </IconButton>
+  );
+};
