@@ -17,7 +17,7 @@ export const Image = styled.img<ImageProps>`
       case "square":
         return `border-radius: 0;`;
       case "rounded":
-        return `border-radius: 5px;`;
+        return `border-radius: 10px;`;
       case "circle":
         return `border-radius: 50%;`;
       default:

@@ -11,6 +11,7 @@ import { useThemeContext } from "./context/ThemeContext";
 import { FaEllipsisH, FaLink } from "react-icons/fa";
 import { Image } from "./components/Image";
 import { PinCard } from "./components/PinCard";
+import { SinglePin } from "./components/SinglePin";
 
 function App() {
   const { toggleTheme } = useThemeContext();
@@ -75,7 +76,10 @@ function App() {
         src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
       />
 
-      <PinCard />
+      <PinCard variant="normal" />
+      <PinCard variant="more-ideas" />
+      <SinglePin />
+      <PinCard variant="organise" />
     </>
   );
 }

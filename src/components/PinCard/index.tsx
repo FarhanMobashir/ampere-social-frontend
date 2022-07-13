@@ -1,15 +1,16 @@
-import { FaArrowAltCircleDown, FaArrowDown, FaEllipsisH } from "react-icons/fa";
+import { useState } from "react";
+import { FaArrowDown, FaGripHorizontal, FaPlus } from "react-icons/fa";
 import styled from "styled-components";
 import { Button, ButtonWithIcon, IconButton } from "../Buttons";
-import { H2, H3, H4, H6 } from "../Headings";
+import { H4, H6 } from "../Headings";
 import { Image } from "../Image";
 
 const PinContainer = styled.div`
-  width: 220px;
+  width: 200px;
   display: flex;
   flex-direction: column;
   @media (max-width: 768px) {
-    width: 100%;
+    width: 50%;
   }
 `;
 
@@ -55,9 +56,17 @@ const CreatorSection = styled.div`
   gap: 0.5rem;
 `;
 
-export const PinCard = () => {
+interface PinCardProps {
+  variant: "normal" | "more-ideas" | "organise";
+}
+
+export const PinCard = (props: PinCardProps) => {
+  const [isHovering, setIsHovering] = useState(false);
   return (
-    <PinContainer>
+    <PinContainer
+      onMouseOver={() => setIsHovering(true)}
+      onMouseOut={() => setIsHovering(false)}
+    >
       <PinImageContainer>
         <ImageContainer>
           <Image
@@ -67,20 +76,34 @@ export const PinCard = () => {
           />
         </ImageContainer>
         <SelectPinContainer>
-          <ButtonWithIcon variants="transparent" size="small">
-            men-out... <FaArrowDown />
-          </ButtonWithIcon>
+          {isHovering && props.variant === "normal" && (
+            <ButtonWithIcon variants="transparent" size="x-small">
+              men-out... <FaArrowDown />
+            </ButtonWithIcon>
+          )}
         </SelectPinContainer>
         <SaveButtonContainer>
-          <Button variants="tertiary" size="small">
-            Save
-          </Button>
+          {isHovering && props.variant === "normal" && (
+            <Button variants="tertiary" size="small">
+              Save
+            </Button>
+          )}
+          {props.variant === "more-ideas" && (
+            <IconButton variants="tertiary">
+              <FaPlus />
+            </IconButton>
+          )}
+          {props.variant === "organise" && (
+            <IconButton variants="tertiary">
+              <FaGripHorizontal />
+            </IconButton>
+          )}
         </SaveButtonContainer>
       </PinImageContainer>
       <BottomContainer>
-        <H3 weight="bold" uppercase={false}>
+        <H4 weight="bold" uppercase={false}>
           Tee Outfit
-        </H3>
+        </H4>
         <CreatorSection>
           <Image
             src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
@@ -88,7 +111,7 @@ export const PinCard = () => {
             width="30px"
             type="circle"
           />
-          <H4>The Indian Gen...</H4>
+          <H6 weight="bold">The Indian Gen...</H6>
         </CreatorSection>
       </BottomContainer>
     </PinContainer>

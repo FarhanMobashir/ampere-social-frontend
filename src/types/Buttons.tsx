@@ -1,4 +1,4 @@
 export interface ButtonProps {
-  size?: "small" | "regular" | "large";
+  size?: "x-small" | "small" | "regular" | "large";
   variants?: "primary" | "secondary" | "tertiary" | "transparent";
 }

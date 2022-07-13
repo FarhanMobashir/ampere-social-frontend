@@ -9,6 +9,8 @@ export const Button = styled.button<ButtonProps>`
   padding: 10px 15px;
   font-size: ${(props) => {
     switch (props.size) {
+      case "x-small":
+        return "10px";
       case "small":
         return "12px";
       case "regular":
@@ -41,7 +43,7 @@ export const Button = styled.button<ButtonProps>`
       case "transparent":
         return `
                 background-color: rgba(0,0,0,0.4);
-                padding: 0px 5px;
+                padding: 5px;
                 color: ${props.theme.lightTextColor};
                 `;
       default:
@@ -54,7 +56,7 @@ export const ButtonWithIconElement = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.8rem 1.2rem;
+  /* padding: 0.8rem 1.2rem; */
   gap: 0.5rem;
 `;
 
