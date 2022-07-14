@@ -1,5 +1,5 @@
 export const handleWeight = (props: any) => {
-  switch (props?.weight) {
+  switch (props) {
     case "light":
       return "400";
     case "regular":
@@ -12,7 +12,7 @@ export const handleWeight = (props: any) => {
 };
 
 export const handleAlign = (props: any) => {
-  switch (props?.align) {
+  switch (props) {
     case "left":
       return "left";
     case "center":
@@ -25,5 +25,5 @@ export const handleAlign = (props: any) => {
 };
 
 export const HandleFontSize = (props: any) => {
-  return `${props?.size}`;
+  return `${props}`;
 };

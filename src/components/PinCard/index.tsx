@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaArrowDown, FaGripHorizontal, FaPlus } from "react-icons/fa";
 import styled from "styled-components";
 import { Button, ButtonWithIcon, IconButton } from "../Buttons";
+import { CreatorCard } from "../Creator";
 import { H4, H6 } from "../Headings";
 import { Image } from "../Image";
 
@@ -48,12 +49,6 @@ const SelectPinContainer = styled.div`
 const BottomContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const CreatorSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 `;
 
 interface PinCardProps {
@@ -104,15 +99,7 @@ export const PinCard = (props: PinCardProps) => {
         <H4 weight="bold" uppercase={false}>
           Tee Outfit
         </H4>
-        <CreatorSection>
-          <Image
-            src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-            height="30px"
-            width="30px"
-            type="circle"
-          />
-          <H6 weight="bold">The Indian Gen...</H6>
-        </CreatorSection>
+        <CreatorCard variant="pin-card" />
       </BottomContainer>
     </PinContainer>
   );

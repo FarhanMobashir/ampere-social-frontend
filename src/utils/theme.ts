@@ -10,6 +10,8 @@ export const defaultTheme = {
   textColor: neutral[900],
   lightBgColor: neutral[300],
   lightTextColor: neutral[200],
+  textColorLight: neutral[600],
+  textColorDark: neutral[800],
 };
 
 export const darkTheme = {
@@ -22,4 +24,6 @@ export const darkTheme = {
   textColor: neutral[100],
   lightBgColor: neutral[400],
   lightTextColor: neutral[100],
+  textColorLight: neutral[400],
+  textColorDark: neutral[200],
 };

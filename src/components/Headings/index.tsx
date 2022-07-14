@@ -12,20 +12,25 @@ export const H1 = styled.h1<HeadingProps>`
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
   letter-spacing: 2px;
   line-height: 1.5;
-  font-size: ${(props) => HandleFontSize(props)};
-  font-weight: ${(props) => handleWeight(props)};
-  text-align: ${(props) => handleAlign(props)};
+  font-size: ${(props) => HandleFontSize(props.size)};
+  font-weight: ${(props) => handleWeight(props.weight)};
+  text-align: ${(props) => handleAlign(props.align)};
   color: ${(props) =>
     props.color === "primary"
       ? props.theme.primaryColor
       : props.theme.textColor};
+
+  @media (max-width: 800px) {
+    font-size: ${(props) => HandleFontSize(props.sizeMobile)};
+    font-weight: ${(props) => handleWeight(props.weightMobile)};
+    text-align: ${(props) => handleAlign(props.alignMobile)};
+  }
 `;
 
 export const H2 = styled.h2<HeadingProps>`
-  font-size: ${(props) => HandleFontSize(props)};
-  font-weight: ${(props) => handleWeight(props)};
-  color: ${(props) => props.theme.primaryColor};
-  text-align: ${(props) => handleAlign(props)};
+  font-size: ${(props) => HandleFontSize(props.size)};
+  font-weight: ${(props) => handleWeight(props.weight)};
+  text-align: ${(props) => handleAlign(props.align)};
 
   margin: 0;
   padding: 0;
@@ -36,13 +41,17 @@ export const H2 = styled.h2<HeadingProps>`
     props.color === "primary"
       ? props.theme.primaryColor
       : props.theme.textColor};
+  @media (max-width: 800px) {
+    font-size: ${(props) => HandleFontSize(props.sizeMobile)};
+    font-weight: ${(props) => handleWeight(props.weightMobile)};
+    text-align: ${(props) => handleAlign(props.alignMobile)};
+  }
 `;
 
 export const H3 = styled.h3<HeadingProps>`
-  font-size: ${(props) => HandleFontSize(props)};
-  font-weight: ${(props) => handleWeight(props)};
-  color: ${(props) => props.theme.primaryColor};
-  text-align: ${(props) => handleAlign(props)};
+  font-size: ${(props) => HandleFontSize(props.size)};
+  font-weight: ${(props) => handleWeight(props.weight)};
+  text-align: ${(props) => handleAlign(props.align)};
   margin: 0;
   padding: 0;
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
@@ -52,13 +61,18 @@ export const H3 = styled.h3<HeadingProps>`
     props.color === "primary"
       ? props.theme.primaryColor
       : props.theme.textColor};
+
+  @media (max-width: 800px) {
+    font-size: ${(props) => HandleFontSize(props.sizeMobile)};
+    font-weight: ${(props) => handleWeight(props.weightMobile)};
+    text-align: ${(props) => handleAlign(props.alignMobile)};
+  }
 `;
 
 export const H4 = styled.h4<HeadingProps>`
-  font-size: ${(props) => HandleFontSize(props)};
-  font-weight: ${(props) => handleWeight(props)};
-  color: ${(props) => props.theme.primaryColor};
-  text-align: ${(props) => handleAlign(props)};
+  font-size: ${(props) => HandleFontSize(props.size)};
+  font-weight: ${(props) => handleWeight(props.weight)};
+  text-align: ${(props) => handleAlign(props.align)};
   margin: 0;
   padding: 0;
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
@@ -68,13 +82,18 @@ export const H4 = styled.h4<HeadingProps>`
     props.color === "primary"
       ? props.theme.primaryColor
       : props.theme.textColor};
+
+  @media (max-width: 800px) {
+    font-size: ${(props) => HandleFontSize(props.sizeMobile)};
+    font-weight: ${(props) => handleWeight(props.weightMobile)};
+    text-align: ${(props) => handleAlign(props.alignMobile)};
+  }
 `;
 
 export const H5 = styled.h5<HeadingProps>`
-  font-size: ${(props) => HandleFontSize(props)};
-  font-weight: ${(props) => handleWeight(props)};
-  color: ${(props) => props.theme.primaryColor};
-  text-align: ${(props) => handleAlign(props)};
+  font-size: ${(props) => HandleFontSize(props.size)};
+  font-weight: ${(props) => handleWeight(props.weight)};
+  text-align: ${(props) => handleAlign(props.align)};
   margin: 0;
   padding: 0;
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
@@ -84,13 +103,19 @@ export const H5 = styled.h5<HeadingProps>`
     props.color === "primary"
       ? props.theme.primaryColor
       : props.theme.textColor};
+
+  @media (max-width: 800px) {
+    font-size: ${(props) => HandleFontSize(props.sizeMobile)};
+    font-weight: ${(props) => handleWeight(props.weightMobile)};
+    text-align: ${(props) => handleAlign(props.alignMobile)};
+  }
 `;
 
 export const H6 = styled.h6<HeadingProps>`
-  font-size: ${(props) => HandleFontSize(props)};
-  font-weight: ${(props) => handleWeight(props)};
+  font-size: ${(props) => HandleFontSize(props.size)};
+  font-weight: ${(props) => handleWeight(props.weight)};
   color: ${(props) => props.theme.primaryColor};
-  text-align: ${(props) => handleAlign(props)};
+  text-align: ${(props) => handleAlign(props.align)};
   margin: 0;
   padding: 0;
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
@@ -100,4 +125,10 @@ export const H6 = styled.h6<HeadingProps>`
     props.color === "primary"
       ? props.theme.primaryColor
       : props.theme.textColor};
+
+  @media (max-width: 800px) {
+    font-size: ${(props) => HandleFontSize(props.sizeMobile)};
+    font-weight: ${(props) => handleWeight(props.weightMobile)};
+    text-align: ${(props) => handleAlign(props.alignMobile)};
+  }
 `;

@@ -10,7 +10,7 @@ html {
   box-sizing: inherit;
 }
 body {
-  margin: 0 25%;
+  margin: 0 4%;
   padding: 0;
   font-family: ${primaryFont};
   -webkit-font-smoothing: antialiased;
