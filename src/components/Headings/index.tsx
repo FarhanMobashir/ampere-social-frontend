@@ -15,11 +15,16 @@ export const H1 = styled.h1<HeadingProps>`
   font-size: ${(props) => HandleFontSize(props.size)};
   font-weight: ${(props) => handleWeight(props.weight)};
   text-align: ${(props) => handleAlign(props.align)};
-  color: ${(props) =>
-    props.color === "primary"
-      ? props.theme.primaryColor
-      : props.theme.textColor};
-
+  color: ${(props) => {
+    switch (props.color) {
+      case "dark":
+        return props.theme.textColor;
+      case "light":
+        return props.theme.textColorLight;
+      default:
+        return props.theme.textColor;
+    }
+  }};
   @media (max-width: 800px) {
     font-size: ${(props) => HandleFontSize(props.sizeMobile)};
     font-weight: ${(props) => handleWeight(props.weightMobile)};
@@ -37,10 +42,16 @@ export const H2 = styled.h2<HeadingProps>`
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
   letter-spacing: 2px;
   line-height: 1.5;
-  color: ${(props) =>
-    props.color === "primary"
-      ? props.theme.primaryColor
-      : props.theme.textColor};
+  color: ${(props) => {
+    switch (props.color) {
+      case "dark":
+        return props.theme.textColor;
+      case "light":
+        return props.theme.textColorLight;
+      default:
+        return props.theme.textColor;
+    }
+  }};
   @media (max-width: 800px) {
     font-size: ${(props) => HandleFontSize(props.sizeMobile)};
     font-weight: ${(props) => handleWeight(props.weightMobile)};
@@ -57,11 +68,16 @@ export const H3 = styled.h3<HeadingProps>`
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
   letter-spacing: 2px;
   line-height: 1.5;
-  color: ${(props) =>
-    props.color === "primary"
-      ? props.theme.primaryColor
-      : props.theme.textColor};
-
+  color: ${(props) => {
+    switch (props.color) {
+      case "dark":
+        return props.theme.textColor;
+      case "light":
+        return props.theme.textColorLight;
+      default:
+        return props.theme.textColor;
+    }
+  }};
   @media (max-width: 800px) {
     font-size: ${(props) => HandleFontSize(props.sizeMobile)};
     font-weight: ${(props) => handleWeight(props.weightMobile)};
@@ -78,11 +94,16 @@ export const H4 = styled.h4<HeadingProps>`
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
   letter-spacing: 2px;
   line-height: 1.5;
-  color: ${(props) =>
-    props.color === "primary"
-      ? props.theme.primaryColor
-      : props.theme.textColor};
-
+  color: ${(props) => {
+    switch (props.color) {
+      case "dark":
+        return props.theme.textColor;
+      case "light":
+        return props.theme.textColorLight;
+      default:
+        return props.theme.textColor;
+    }
+  }};
   @media (max-width: 800px) {
     font-size: ${(props) => HandleFontSize(props.sizeMobile)};
     font-weight: ${(props) => handleWeight(props.weightMobile)};
@@ -99,11 +120,16 @@ export const H5 = styled.h5<HeadingProps>`
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
   letter-spacing: 2px;
   line-height: 1.5;
-  color: ${(props) =>
-    props.color === "primary"
-      ? props.theme.primaryColor
-      : props.theme.textColor};
-
+  color: ${(props) => {
+    switch (props.color) {
+      case "dark":
+        return props.theme.textColor;
+      case "light":
+        return props.theme.textColorLight;
+      default:
+        return props.theme.textColor;
+    }
+  }};
   @media (max-width: 800px) {
     font-size: ${(props) => HandleFontSize(props.sizeMobile)};
     font-weight: ${(props) => handleWeight(props.weightMobile)};
@@ -121,11 +147,16 @@ export const H6 = styled.h6<HeadingProps>`
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
   letter-spacing: 2px;
   line-height: 1.5;
-  color: ${(props) =>
-    props.color === "primary"
-      ? props.theme.primaryColor
-      : props.theme.textColor};
-
+  color: ${(props) => {
+    switch (props.color) {
+      case "dark":
+        return props.theme.textColor;
+      case "light":
+        return props.theme.textColorLight;
+      default:
+        return props.theme.textColor;
+    }
+  }};
   @media (max-width: 800px) {
     font-size: ${(props) => HandleFontSize(props.sizeMobile)};
     font-weight: ${(props) => handleWeight(props.weightMobile)};

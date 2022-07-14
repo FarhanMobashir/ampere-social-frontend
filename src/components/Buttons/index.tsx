@@ -38,7 +38,7 @@ export const Button = styled.button<ButtonProps>`
       case "tertiary":
         return `
                 background-color: ${props.theme.tertiaryColor};
-                color: ${props.theme.secondaryColor};
+                color: ${props.theme.textColorDark};
                 `;
       case "transparent":
         return `

@@ -25,5 +25,5 @@ export const darkTheme = {
   lightBgColor: neutral[400],
   lightTextColor: neutral[100],
   textColorLight: neutral[400],
-  textColorDark: neutral[200],
+  textColorDark: neutral[800],
 };

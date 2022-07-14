@@ -12,6 +12,7 @@ import { FaEllipsisH, FaLink } from "react-icons/fa";
 import { Image } from "./components/Image";
 import { PinCard } from "./components/PinCard";
 import { SinglePin } from "./components/SinglePin";
+import { ProfileCard } from "./components/ProfileCard";
 
 function App() {
   const { toggleTheme } = useThemeContext();
@@ -79,6 +80,7 @@ function App() {
       <PinCard variant="normal" />
       <PinCard variant="more-ideas" />
       <SinglePin />
+      <ProfileCard />
       <PinCard variant="organise" />
     </>
   );

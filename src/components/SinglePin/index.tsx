@@ -1,10 +1,12 @@
 import { FaArrowDown } from "react-icons/fa";
 import styled from "styled-components";
+import { AddCommentCard } from "../AddCommentCard";
 import { Button, ButtonWithIcon } from "../Buttons";
 import { CommentCard } from "../CommentCard";
 import { CreatorCard } from "../Creator";
 import { H1, H3, H4 } from "../Headings";
 import { Image } from "../Image";
+import { TextFiled } from "../Inputs";
 
 const MainContainer = styled.div`
   display: flex;
@@ -93,9 +95,10 @@ export const SinglePin = () => {
               <FaArrowDown />
             </ButtonWithIcon>
           </CommentButtonContainer>
-          {[1, 2].map((comment) => (
+          {[1].map((comment) => (
             <CommentCard key={comment} />
           ))}
+          <AddCommentCard />
           <Button variants="secondary" size="small">
             View All Comments
           </Button>
