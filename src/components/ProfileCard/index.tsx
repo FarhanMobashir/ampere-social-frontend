@@ -9,7 +9,7 @@ const MainContainer = styled.div`
   align-items: center;
   flex-direction: column;
   padding: 1rem;
-  gap: 0.2rem;
+  gap: 0.4rem;
 `;
 
 const MiddleContainer = styled.div`

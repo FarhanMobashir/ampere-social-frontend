@@ -13,6 +13,7 @@ import { Image } from "./components/Image";
 import { PinCard } from "./components/PinCard";
 import { SinglePin } from "./components/SinglePin";
 import { ProfileCard } from "./components/ProfileCard";
+import { BoardCard } from "./components/BoardCard";
 
 function App() {
   const { toggleTheme } = useThemeContext();
@@ -81,6 +82,7 @@ function App() {
       <PinCard variant="more-ideas" />
       <SinglePin />
       <ProfileCard />
+      <BoardCard />
       <PinCard variant="organise" />
     </>
   );
