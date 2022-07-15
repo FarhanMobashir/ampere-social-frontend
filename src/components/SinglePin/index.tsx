@@ -6,7 +6,6 @@ import { CommentCard } from "../CommentCard";
 import { CreatorCard } from "../Creator";
 import { H1, H3, H4 } from "../Headings";
 import { Image } from "../Image";
-import { TextFiled } from "../Inputs";
 
 const MainContainer = styled.div`
   display: flex;

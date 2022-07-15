@@ -14,6 +14,8 @@ import { PinCard } from "./components/PinCard";
 import { SinglePin } from "./components/SinglePin";
 import { ProfileCard } from "./components/ProfileCard";
 import { BoardCard } from "./components/BoardCard";
+import { TextFieldWithLabel } from "./components/Inputs";
+import { AppHeader } from "./components/AppHeader";
 
 function App() {
   const { toggleTheme } = useThemeContext();
@@ -83,6 +85,8 @@ function App() {
       <SinglePin />
       <ProfileCard />
       <BoardCard />
+      <TextFieldWithLabel label="Email" />
+      <AppHeader />
       <PinCard variant="organise" />
     </>
   );

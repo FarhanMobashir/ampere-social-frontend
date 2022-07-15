@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Image } from "../Image";
-import { TextFiled } from "../Inputs";
+import { TextField } from "../Inputs";
 
 const MainContainer = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ export const AddCommentCard = () => {
         width="30px"
         src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
       />
-      <TextFiled placeholder="Add a comment" />
+      <TextField placeholder="Add a comment" />
     </MainContainer>
   );
 };

@@ -24,4 +24,6 @@ export const Image = styled.img<ImageProps>`
         return `border-radius: 5px;`;
     }
   }}
+  width: ${(props) => props.widthMobile || props.width};
+  height: ${(props) => props.heightMobile || props.height};
 `;
