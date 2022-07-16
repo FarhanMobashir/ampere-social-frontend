@@ -6,16 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "styled-components";
 import { defaultTheme, GlobalStyle } from "./utils";
 import { ThemeToggleProvider } from "./context/ThemeContext";
+import { ResponsiveProvider } from "./context/ResposiveContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ThemeToggleProvider>
-      <GlobalStyle />
-      <App />
-    </ThemeToggleProvider>
+    <ResponsiveProvider>
+      <ThemeToggleProvider>
+        <GlobalStyle />
+        <App />
+      </ThemeToggleProvider>
+    </ResponsiveProvider>
   </React.StrictMode>
 );
 
