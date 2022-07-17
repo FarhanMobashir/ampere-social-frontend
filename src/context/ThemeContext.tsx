@@ -8,6 +8,7 @@ type Theme = typeof defaultTheme;
 type ThemeType = {
   toggleTheme: () => void;
   activeTheme: Theme;
+  mode: "light" | "dark";
 };
 
 export const ThemeContext = React.createContext<ThemeType | null>(null);
@@ -22,26 +23,24 @@ export const ThemeToggleProvider = ({
   const [activeTheme, setActiveTheme] = useState(darkTheme);
 
   useEffect(() => {
-    if (mode === "normal") {
+    if (mode === "light") {
       setActiveTheme(darkTheme);
     }
     if (mode === "dark") {
-      console.log("in");
       setActiveTheme(defaultTheme);
     }
   }, [mode]);
 
   const toggleTheme = () => {
-    if (mode === "normal") {
+    if (mode === "light") {
       setMode("dark");
     }
     if (mode === "dark") {
-      console.log("in");
-      setMode("normal");
+      setMode("light");
     }
   };
   return (
-    <ThemeContext.Provider value={{ toggleTheme, activeTheme }}>
+    <ThemeContext.Provider value={{ toggleTheme, activeTheme, mode }}>
       <ThemeProvider theme={activeTheme}>{children}</ThemeProvider>
     </ThemeContext.Provider>
   );

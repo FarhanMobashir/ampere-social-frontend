@@ -7,22 +7,38 @@ import {
   FaBell,
   FaCommentAlt,
   FaHome,
+  FaMoon,
   FaPlus,
   FaSearch,
+  FaSun,
 } from "react-icons/fa";
 import { TextField } from "../Inputs";
 import { useResponsive } from "../../context/ResposiveContext";
+import { useThemeContext } from "../../context/ThemeContext";
 
 const MainContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: ${(props) => props.theme.bgColor};
+  padding: 1rem 0;
 `;
 
 const MobileContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 0.8rem;
+  @media (max-width: 768px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: ${(props) => props.theme.bgColor};
+    padding: 0.8rem 0;
+    gap: 1rem;
+  }
 `;
 
 const LogoContainer = styled.div`
@@ -31,6 +47,7 @@ const LogoContainer = styled.div`
 
 export const AppHeader = () => {
   const { isMobile } = useResponsive();
+  const { toggleTheme, mode } = useThemeContext();
   if (isMobile) {
     return (
       <MobileContainer>
@@ -43,15 +60,21 @@ export const AppHeader = () => {
         <IconButton variants="primary" size="large">
           <FaPlus />
         </IconButton>
-        <IconButton variants="tertiary" size="large">
-          <FaCommentAlt />
-        </IconButton>
         <Image
           type="circle"
           width="40px"
           height="40px"
           src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
         />
+        <IconButton
+          variants="tertiary"
+          onClick={() => {
+            toggleTheme();
+            console.log(mode);
+          }}
+        >
+          {mode === "light" ? <FaSun /> : <FaMoon />}
+        </IconButton>
       </MobileContainer>
     );
   } else {
@@ -69,15 +92,20 @@ export const AppHeader = () => {
         <IconButton variants="tertiary">
           <FaBell />
         </IconButton>
-        <IconButton variants="tertiary">
-          <FaCommentAlt />
-        </IconButton>
         <Image
           type="circle"
           width="60px"
           height="40px"
           src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
         />
+        <IconButton
+          variants="tertiary"
+          onClick={() => {
+            toggleTheme();
+          }}
+        >
+          {mode === "light" ? <FaSun /> : <FaMoon />}
+        </IconButton>
       </MainContainer>
     );
   }

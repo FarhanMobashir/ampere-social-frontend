@@ -19,11 +19,11 @@ export const ResponsiveProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
   const [isDesktop, setIsDesktop] = useState(false);
   useEffect(() => {
     const handleResize = () => {
-      const [width, height] = [window.innerWidth, window.innerHeight]; // get the current window size
+      const width = window.innerWidth; // get the current window size
       if (width < 768) {
         setIsMobile(true);
         setIsDesktop(false);
@@ -33,6 +33,7 @@ export const ResponsiveProvider = ({
       }
     };
     window.addEventListener("resize", handleResize);
+    handleResize();
     return () => {
       window.removeEventListener("resize", handleResize);
     };

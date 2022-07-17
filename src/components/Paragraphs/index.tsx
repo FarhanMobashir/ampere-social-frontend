@@ -24,4 +24,9 @@ export const Paragraph = styled.p<ParagraphProps>`
     }
   }};
   text-align: ${(props) => handleAlign(props.align)};
+  @media (max-width: 800px) {
+    font-size: ${(props) => HandleFontSize(props.sizeMobile)};
+    font-weight: ${(props) => handleWeight(props.weightMobile)};
+    text-align: ${(props) => handleAlign(props.alignMobile)};
+  }
 `;
