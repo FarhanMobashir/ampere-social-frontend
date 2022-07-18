@@ -11,6 +11,7 @@ import { Button } from "../../components/Buttons";
 import { TextFieldWithLabel } from "../../components/Inputs";
 import { neutral } from "../../utils";
 import { CustomLink } from "../../components/CustomLink";
+import { FaEnvelope, FaEye } from "react-icons/fa";
 
 const MainContainer = styled.div``;
 const HeaderContainer = styled.div`
@@ -161,8 +162,16 @@ export const Landingpage = () => {
             </Paragraph>
           </TextContainer>
           <FormContainer>
-            <TextFieldWithLabel label="Email" />
-            <TextFieldWithLabel label="Password" />
+            <TextFieldWithLabel
+              type="email"
+              label="Email"
+              icon={<FaEnvelope />}
+            />
+            <TextFieldWithLabel
+              type="password"
+              label="Password"
+              icon={<FaEye onClick={() => console.log("clicked")} />}
+            />
             <Button size="large" variants="primary">
               Login
             </Button>

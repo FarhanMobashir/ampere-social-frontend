@@ -3,22 +3,28 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ThemeProvider } from "styled-components";
-import { defaultTheme, GlobalStyle } from "./utils";
+import { GlobalStyle } from "./utils";
 import { ThemeToggleProvider } from "./context/ThemeContext";
 import { ResponsiveProvider } from "./context/ResposiveContext";
+import { Provider } from "react-redux";
+import { store, persistor } from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ResponsiveProvider>
-      <ThemeToggleProvider>
-        <GlobalStyle />
-        <App />
-      </ThemeToggleProvider>
-    </ResponsiveProvider>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <ResponsiveProvider>
+          <ThemeToggleProvider>
+            <GlobalStyle />
+            <App />
+          </ThemeToggleProvider>
+        </ResponsiveProvider>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 

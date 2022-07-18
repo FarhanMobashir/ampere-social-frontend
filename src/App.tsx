@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppLayout } from "./components/AppLayout";
+import { PrivateRoute } from "./components/PrivateRoute";
 import { SinglePin } from "./components/SinglePin";
 import { AllBoardsPage } from "./pages/AllBoardsPage";
 import { Homepage } from "./pages/HomePage";
@@ -15,7 +16,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landingpage />} />
-        <Route path="/home" element={<AppLayout />}>
+        <Route path="/home" element={<PrivateRoute element={<AppLayout />} />}>
           <Route path="/home" element={<Homepage />} />
           <Route path="/home/pins/:id" element={<SinglePin />} />
           <Route path="/home/boards" element={<AllBoardsPage />} />
