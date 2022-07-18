@@ -20,9 +20,8 @@ export const TextField = styled.input<TextFieldProps>`
   border-radius: 20px;
   ${({ noBorder }) =>
     noBorder &&
-    `
-    border: none;
-    outline: none;
+    `border: none;
+    outline: none;    
     `}
 `;
 
@@ -34,12 +33,14 @@ const Label = styled.label`
   flex-direction: column;
   gap: 0.5rem;
   margin: 0.5rem 0rem;
+  width: 100%;
 `;
 
 const TextFieldContainer = styled.div`
   border-radius: 20px;
   border: 2px solid ${({ theme }) => theme.textColorLight};
   padding: 0.5rem 1rem;
+  background-color: ${({ theme }) => theme.bgColor};
   display: flex;
   align-items: center;
 `;

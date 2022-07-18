@@ -25,8 +25,8 @@ export const Paragraph = styled.p<ParagraphProps>`
   }};
   text-align: ${(props) => handleAlign(props.align)};
   @media (max-width: 800px) {
-    font-size: ${(props) => HandleFontSize(props.sizeMobile)};
-    font-weight: ${(props) => handleWeight(props.weightMobile)};
-    text-align: ${(props) => handleAlign(props.alignMobile)};
+    font-size: ${(props) => HandleFontSize(props.sizeMobile) || props.size};
+    font-weight: ${(props) => handleWeight(props.weightMobile) || props.weight};
+    text-align: ${(props) => handleAlign(props.alignMobile) || props.align};
   }
 `;

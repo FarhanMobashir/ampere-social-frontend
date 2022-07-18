@@ -1,20 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserType {
-  isAuthenticated: boolean;
+  token: string | null;
   userData: any;
 }
 
 const initialState: UserType = {
-  isAuthenticated: false,
+  token: null,
   userData: null,
 };
 
 const userSlice = createSlice({
   name: "user",
   reducers: {
-    setToken(state, action: PayloadAction<string>) {
-      state.userData = action.payload;
+    setToken(state, action: PayloadAction<string | null>) {
+      state.token = action.payload;
     },
   },
   initialState,
