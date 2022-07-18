@@ -7,11 +7,11 @@ export const Image = styled.img<ImageProps>`
   object-fit: cover;
   object-position: center;
   border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); */
   transition: all 0.3s ease-in-out;
-  &:hover {
+  /* &:hover {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  }
+  } */
   ${(props: ImageProps) => {
     switch (props.type) {
       case "square":
@@ -24,6 +24,10 @@ export const Image = styled.img<ImageProps>`
         return `border-radius: 5px;`;
     }
   }}
-  width: ${(props) => props.widthMobile || props.width};
-  height: ${(props) => props.heightMobile || props.height};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  @media (max-width: 800px) {
+    width: ${(props) => props.widthMobile || props.width};
+    height: ${(props) => props.heightMobile || props.height};
+  }
 `;
