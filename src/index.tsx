@@ -3,22 +3,43 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ThemeProvider } from "styled-components";
-import { defaultTheme, GlobalStyle } from "./utils";
+import { GlobalStyle } from "./utils";
 import { ThemeToggleProvider } from "./context/ThemeContext";
 import { ResponsiveProvider } from "./context/ResposiveContext";
+import { Provider } from "react-redux";
+import { store, persistor } from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ResponsiveProvider>
-      <ThemeToggleProvider>
-        <GlobalStyle />
-        <App />
-      </ThemeToggleProvider>
-    </ResponsiveProvider>
+    <Provider store={store}>
+      <ToastContainer
+        hideProgressBar={true}
+        position="bottom-right"
+        autoClose={800}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        style={{ fontSize: "1rem" }}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      <PersistGate persistor={persistor}>
+        <ResponsiveProvider>
+          <ThemeToggleProvider>
+            <GlobalStyle />
+            <App />
+          </ThemeToggleProvider>
+        </ResponsiveProvider>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 

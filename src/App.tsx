@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppLayout } from "./components/AppLayout";
+import { PrivateRoute } from "./components/PrivateRoute";
 import { SinglePin } from "./components/SinglePin";
 import { AllBoardsPage } from "./pages/AllBoardsPage";
 import { Homepage } from "./pages/HomePage";
@@ -9,13 +10,19 @@ import { OrganiseBoardPage } from "./pages/OrganiseBoardPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { SingleBoardPage } from "./pages/SingleBoardPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
+import { useAppSelector } from "./store/hooks";
+import { Navigate } from "react-router-dom";
 
 function App() {
+  const isAuthenticated = useAppSelector((state) => state.user.token);
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landingpage />} />
-        <Route path="/home" element={<AppLayout />}>
+        <Route
+          path="/"
+          element={isAuthenticated ? <Navigate to="/home" /> : <Landingpage />}
+        />
+        <Route path="/home" element={<PrivateRoute element={<AppLayout />} />}>
           <Route path="/home" element={<Homepage />} />
           <Route path="/home/pins/:id" element={<SinglePin />} />
           <Route path="/home/boards" element={<AllBoardsPage />} />

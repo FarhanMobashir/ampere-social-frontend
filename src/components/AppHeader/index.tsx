@@ -15,6 +15,7 @@ import {
 import { TextField } from "../Inputs";
 import { useResponsive } from "../../context/ResposiveContext";
 import { useThemeContext } from "../../context/ThemeContext";
+import { CustomLink } from "../CustomLink";
 
 const MainContainer = styled.div`
   display: flex;
@@ -60,12 +61,14 @@ export const AppHeader = () => {
         <IconButton variants="primary" size="large">
           <FaPlus />
         </IconButton>
-        <Image
-          type="circle"
-          width="40px"
-          height="40px"
-          src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-        />
+        <CustomLink to="/home/user">
+          <Image
+            type="circle"
+            width="40px"
+            height="40px"
+            src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
+          />
+        </CustomLink>
         <IconButton
           variants="tertiary"
           onClick={() => {
@@ -81,7 +84,7 @@ export const AppHeader = () => {
     return (
       <MainContainer>
         <LogoContainer>
-          <Image width="40px" height="40px" src={logo} />
+          <Image width="40px" height="auto" src={logo} type="circle" />
         </LogoContainer>
         <Button variants="secondary">Home</Button>
         <ButtonWithIcon variants="tertiary">
@@ -92,12 +95,15 @@ export const AppHeader = () => {
         <IconButton variants="tertiary">
           <FaBell />
         </IconButton>
-        <Image
-          type="circle"
-          width="60px"
-          height="40px"
-          src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-        />
+        <CustomLink to="/home/user">
+          <Image
+            type="circle"
+            width="50px"
+            height="50px"
+            src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
+          />
+        </CustomLink>
+
         <IconButton
           variants="tertiary"
           onClick={() => {
