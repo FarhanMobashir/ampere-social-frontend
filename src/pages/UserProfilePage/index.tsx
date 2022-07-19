@@ -8,7 +8,8 @@ import {
   setMode,
   setToken,
 } from "../../store/features/user-slice";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useFetchMeQuery } from "../../store/services/api-slice";
 
 const Container = styled.div`
   display: flex;
@@ -42,9 +43,17 @@ const BoardsListingContainer = styled.div`
 
 export const UserProfilePage = () => {
   const dispatch = useAppDispatch();
+  const { data = {}, isLoading } = useFetchMeQuery();
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <Container>
-      <ProfileCard />
+      <ProfileCard
+        username={data.data.username}
+        followers={data.data.followers.length}
+        following={data.data.following.length}
+      />
       <TabsContainer>
         <Tab isActive>
           <H5 weight="bold">Created</H5>
@@ -55,7 +64,7 @@ export const UserProfilePage = () => {
       </TabsContainer>
       <BoardsListingContainer>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-          <BoardCard />
+          <BoardCard key={item} />
         ))}
       </BoardsListingContainer>
       <Button

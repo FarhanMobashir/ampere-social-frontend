@@ -19,7 +19,15 @@ const MiddleContainer = styled.div`
   gap: 1rem;
 `;
 
-export const ProfileCard = () => {
+interface ProfileCardProps {
+  avatar?: string;
+  username?: string;
+  followers?: number;
+  following?: number;
+  bio?: string;
+}
+
+export const ProfileCard = (props: ProfileCardProps) => {
   return (
     <MainContainer>
       <Image
@@ -35,18 +43,22 @@ export const ProfileCard = () => {
         align="center"
         alignMobile="center"
       >
-        John Doe
+        {props.username}
       </H1>
       <MiddleContainer>
-        <H5 weight="bold" color="light">
-          11 Followers
-        </H5>
-        <H5 weight="bold" color="light">
-          84 Following
-        </H5>
+        <CustomLink to="/home/followers">
+          <H5 weight="bold" color="light">
+            Followers {props.followers}
+          </H5>
+        </CustomLink>
+        <CustomLink to="/home/followings">
+          <H5 weight="bold" color="light">
+            Following {props.following}
+          </H5>
+        </CustomLink>
       </MiddleContainer>
-      <H5 weight="bold" color="dark">
-        http://www.john-doe.com
+      <H5 weight="bold" color="dark" align="center" alignMobile="center">
+        {props.bio}
       </H5>
       <MiddleContainer>
         <CustomLink to="/home/settings">

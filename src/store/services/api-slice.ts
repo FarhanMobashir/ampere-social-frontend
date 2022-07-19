@@ -28,6 +28,7 @@ export const apiSlice = createApi({
         return "/api/user/me";
       },
       providesTags: ["user"],
+      keepUnusedDataFor: 1,
     }),
 
     updateMe: builder.mutation<any, any>({

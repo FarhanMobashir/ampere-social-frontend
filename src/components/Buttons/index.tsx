@@ -69,6 +69,7 @@ export const ButtonWithIconElement = styled(Button)`
 
 interface ButtonWithIconProps extends ButtonProps {
   children: React.ReactNode;
+  onClick?: () => void;
 }
 
 export const ButtonWithIcon = (props: ButtonWithIconProps) => {

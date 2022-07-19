@@ -26,6 +26,7 @@ interface CreatorCardProps {
   avatar?: string;
   username?: string;
   subtitle?: string;
+  buttonText?: string;
 }
 
 export const CreatorCard = (props: CreatorCardProps) => {
@@ -53,7 +54,7 @@ export const CreatorCard = (props: CreatorCardProps) => {
       </CreatorSection>
       {props.variant === "single-pin" && (
         <Button variants="tertiary" size="small">
-          Follow
+          {props.buttonText || "Follow"}
         </Button>
       )}
     </MainContainer>

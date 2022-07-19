@@ -7,11 +7,11 @@ import { H4, H6 } from "../Headings";
 import { Image } from "../Image";
 
 const PinContainer = styled.div`
-  width: 200px;
+  width: 180px;
   display: flex;
   flex-direction: column;
   @media (max-width: 768px) {
-    width: 50%;
+    width: 150px;
   }
 `;
 

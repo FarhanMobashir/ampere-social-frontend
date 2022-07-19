@@ -63,22 +63,24 @@ const EditProfile = () => {
   const { data, isLoading } = useFetchMeQuery();
   const [updateUser, { isError, data: updatedUserData, isSuccess }] =
     useUpdateMeMutation();
-  const [usernameInput, setUsernameInput] = useState(() => {
-    if (!isLoading && data) {
-      return data.data.username;
-    } else {
-      return "";
-    }
-  });
+
+  const [usernameInput, setUsernameInput] = useState("");
 
   useEffect(() => {
-    if (isSuccess) {
-      toast("User updated successfully", { type: "success" });
-    }
     if (isError) {
       toast("Error updating user", { type: "error" });
     }
-  }, [isSuccess, isError]);
+    if (isSuccess) {
+      toast("User updated successfully", { type: "success" });
+    }
+    if (!isLoading) {
+      setUsernameInput(data.data.username);
+    }
+  }, [isSuccess, isError, isLoading]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -128,7 +130,6 @@ const EditProfile = () => {
                 }
                 onClick={() => {
                   if (data.data.interests.includes(interest.name)) {
-                    console.log("remove");
                     updateUser({
                       interests: data.data.interests.filter(
                         (i: string) => i !== interest.name
