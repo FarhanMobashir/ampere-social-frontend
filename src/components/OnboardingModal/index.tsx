@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { useAppSelector } from "../../store/hooks";
+import { useUpdateMeMutation } from "../../store/services/api-slice";
 import { Button } from "../Buttons";
 import { H1, H3 } from "../Headings";
 import { Image } from "../Image";
 import { Modal } from "../Modal";
 import { Paragraph } from "../Paragraphs";
+import lottie from "lottie-web";
+import confetti from "../../assets/confetti.json";
 
 const MainContainer = styled.div`
   display: flex;
@@ -52,8 +56,15 @@ const Avatar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: ${(props) => props.theme.textColorDark};
   font-size: 3rem;
   font-weight: bold;
+`;
+
+const AnimationContainer = styled.div`
+  width: 50%;
+  width: 50%;
+  margin-bottom: -10rem;
 `;
 
 const CategoriesBox = styled.div`
@@ -64,11 +75,26 @@ const CategoriesBox = styled.div`
   overflow-y: scroll;
 `;
 
-const CategoryBox = styled.div`
+interface CategoryBoxProps {
+  isActive: boolean;
+}
+const CategoryBox = styled.div<CategoryBoxProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  ${(props) => {
+    if (props.isActive) {
+      return `
+       border:2px solid ${props.theme.primaryColor};
+       padding: 0.1rem;
+       border-radius: 10px;
+      `;
+    }
+    return `
+      border:none
+    `;
+  }}
 `;
 
 const ImageContainer = styled.div``;
@@ -77,25 +103,53 @@ const CategoryTitleContainer = styled.div`
   background-color: ${(props) => props.theme.bgColor};
 `;
 
-const WelcomeComponent = () => {
+interface ModalProps {
+  onClick?: () => void;
+  setStep?: () => void;
+}
+
+interface WelcomeModalProps extends ModalProps {
+  username: string;
+}
+const WelcomeComponent = (props: WelcomeModalProps) => {
+  const container = useRef<any>(null);
+  useEffect(() => {
+    lottie.loadAnimation({
+      container: container.current,
+      renderer: "svg",
+      loop: true,
+      animationData: confetti,
+    });
+    return () => {
+      lottie.destroy(container.current);
+    };
+  }, []);
+
   return (
     <>
-      <Avatar>F</Avatar>
-      <H1 weight="bold" align="center">
-        Welcome to Pinit Farhan
+      <AnimationContainer ref={container}></AnimationContainer>
+      <Avatar>{props.username[0].toUpperCase()}</Avatar>
+      <H1 weight="bold" align="center" alignMobile="center">
+        Welcome to Pinit {props.username}
       </H1>
-      <Paragraph size="1.2rem" align="center" color="light">
+      <Paragraph
+        size="1.2rem"
+        align="center"
+        color="light"
+        alignMobile="center"
+      >
         Your answer to next few questions will help us to personalize your
         experience.
       </Paragraph>
-      <Button variants="primary" size="large">
+      <Button variants="primary" size="large" onClick={props.setStep}>
         Next
       </Button>
     </>
   );
 };
 
-const GenderComponent = () => {
+const GenderComponent = (props: ModalProps) => {
+  const [updateUser] = useUpdateMeMutation();
   return (
     <>
       <H1 weight="bold" align="center">
@@ -104,66 +158,199 @@ const GenderComponent = () => {
       <Paragraph size="1.2rem" align="center" color="light">
         We will use this information to personalize your experience.
       </Paragraph>
-      <label>
-        Female
-        <input type="radio" name="gender" />
-      </label>
-      <label>
-        Male
-        <input type="radio" name="gender" />
-      </label>
-      <label>
-        Specify Other
-        <input type="radio" name="gender" />
-      </label>
-      <Button variants="primary">Next</Button>
+      <form action="">
+        {["Female", "Male", "Others"].map((item) => (
+          <label>
+            {item}
+            <input
+              type="radio"
+              name="gender"
+              value={item.toLowerCase()}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  updateUser({
+                    gender: e.target.value,
+                  });
+                }
+              }}
+            />
+          </label>
+        ))}
+      </form>
+
+      <Button variants="primary" onClick={props.setStep}>
+        Next
+      </Button>
     </>
   );
 };
 
-const SelectCategory = () => {
+const CategoryData = [
+  {
+    name: "Food",
+    image:
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "Travel",
+    image:
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "Entertainment",
+    image:
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "Sports",
+    image:
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "Music",
+    image:
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "Art",
+    image:
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "Fashion",
+    image:
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "Lifestyle",
+    image:
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "Health",
+    image:
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "Science",
+    image:
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "Technology",
+    image:
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  },
+];
+
+console.log(CategoryData.map((item) => item.name));
+
+interface SelectCategoryProps extends ModalProps {
+  onClose: () => void;
+}
+const SelectCategory = (props: SelectCategoryProps) => {
+  const [selectedCategory, setSelectedCategory] = useState<
+    | {
+        name: string;
+        image: string;
+      }[]
+    | []
+  >([]);
+  const [updateUser, { isError }] = useUpdateMeMutation();
+
   return (
     <>
       <H1 weight="bold" align="center" sizeMobile="1.4rem" alignMobile="center">
         Tell us what you are interested in
       </H1>
       <CategoriesBox>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-          <CategoryBox>
+        {CategoryData.map((item) => (
+          <CategoryBox
+            isActive={
+              selectedCategory.find(
+                (category) => category.name === item.name
+              ) !== undefined
+            }
+            onClick={() => {
+              if (
+                selectedCategory.find((category) => category.name === item.name)
+              ) {
+                setSelectedCategory(
+                  selectedCategory.filter(
+                    (category) => category.name !== item.name
+                  )
+                );
+              } else {
+                setSelectedCategory([...selectedCategory, item]);
+              }
+            }}
+          >
             <ImageContainer>
               <Image
-                src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+                src={item.image}
                 width="100px"
                 height="100px"
                 widthMobile="80px"
                 heightMobile="80px"
-                filter="contrast(0.5)"
+                filter={
+                  selectedCategory.find(
+                    (category) => category.name === item.name
+                  )
+                    ? "grayscale(0)"
+                    : "grayscale(1)"
+                }
               />
             </ImageContainer>
             <CategoryTitleContainer>
-              <H3 weight="bold">Food</H3>
+              <H3 weight="bold" sizeMobile="0.5rem" size="0.6rem">
+                {item.name}
+              </H3>
             </CategoryTitleContainer>
           </CategoryBox>
         ))}
       </CategoriesBox>
-      <Button variants="primary">Pick 5 or more</Button>
+      <Button
+        variants={selectedCategory.length >= 5 ? "primary" : "disabled"}
+        onClick={() => {
+          updateUser({
+            interests: selectedCategory.map((item) => item.name),
+          });
+          if (!isError) {
+            props.onClose();
+          }
+        }}
+      >
+        {selectedCategory.length >= 5
+          ? "Continue"
+          : "Select at least 5 categories"}
+      </Button>
     </>
   );
 };
 
-export const OnboardingModal = () => {
+interface OnBoardingModalProps {
+  onClose: () => void;
+}
+export const OnboardingModal = (props: OnBoardingModalProps) => {
+  const [step, setStep] = useState(0);
+  const username = useAppSelector((state) => state.user.userData.username);
   return (
-    <Modal>
-      <MainContainer>
-        <StepContainer>
-          <Circle active={false}></Circle>
-          <Circle active={true}></Circle>
-          <Circle active={false}></Circle>
-        </StepContainer>
-        {/* <WelcomeComponent /> */}
-        {/* <GenderComponent /> */}
-        <SelectCategory />
-      </MainContainer>
-    </Modal>
+    <MainContainer>
+      <StepContainer>
+        {[0, 1, 2].map((item) => (
+          <Circle active={item === step} />
+        ))}
+      </StepContainer>
+      {step === 0 && (
+        <WelcomeComponent
+          username={username}
+          setStep={() => {
+            setStep(1);
+          }}
+        />
+      )}
+      {step === 1 && <GenderComponent setStep={() => setStep(2)} />}
+      {step === 2 && <SelectCategory onClose={props.onClose} />}
+    </MainContainer>
   );
 };

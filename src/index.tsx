@@ -16,31 +16,31 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ToastContainer
-        hideProgressBar={true}
-        position="bottom-right"
-        autoClose={800}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        style={{ fontSize: "1rem" }}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
-      <PersistGate persistor={persistor}>
-        <ResponsiveProvider>
-          <ThemeToggleProvider>
-            <GlobalStyle />
-            <App />
-          </ThemeToggleProvider>
-        </ResponsiveProvider>
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
+    <ToastContainer
+      hideProgressBar={true}
+      position="bottom-right"
+      autoClose={800}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      style={{ fontSize: "1rem" }}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="dark"
+    />
+    <PersistGate persistor={persistor}>
+      <ResponsiveProvider>
+        <ThemeToggleProvider>
+          <GlobalStyle />
+          <App />
+        </ThemeToggleProvider>
+      </ResponsiveProvider>
+    </PersistGate>
+  </Provider>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

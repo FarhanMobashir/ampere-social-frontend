@@ -7,7 +7,7 @@ import { H1 } from "../Headings";
 import { TextFieldWithLabel } from "../Inputs";
 import { Paragraph } from "../Paragraphs";
 import { useNavigate } from "react-router-dom";
-import { setToken } from "../../store/features/user-slice";
+import { setMode, setToken, setUser } from "../../store/features/user-slice";
 import { toast } from "react-toastify";
 
 const LoginSignupContainer = styled.div`
@@ -89,6 +89,8 @@ export const AuthForm = () => {
       }
       if (data.token) {
         dispatch(setToken(data.token));
+        dispatch(setUser(data.user));
+        dispatch(setMode(data.mode));
         navigate("/home");
       }
       setIsLoading(false);
@@ -113,6 +115,8 @@ export const AuthForm = () => {
       }
       if (data.token) {
         dispatch(setToken(data.token));
+        dispatch(setUser(data.user));
+        dispatch(setMode(data.mode));
         navigate("/home");
       }
       setIsLoading(false);

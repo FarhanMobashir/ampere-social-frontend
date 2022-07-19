@@ -46,6 +46,13 @@ export const Button = styled.button<ButtonProps>`
                 padding: 5px;
                 color: ${props.theme.lightTextColor};
                 `;
+
+      case "disabled":
+        return `
+                background-color: ${props.theme.disabledColor};
+                color: ${props.theme.lightTextColor};
+                cursor: not-allowed;
+                `;
       default:
         return `background-color: ${props.theme.primaryColor};`;
     }
