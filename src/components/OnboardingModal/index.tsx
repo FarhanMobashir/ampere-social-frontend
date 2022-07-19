@@ -185,7 +185,7 @@ const GenderComponent = (props: ModalProps) => {
   );
 };
 
-const CategoryData = [
+export const CategoryData = [
   {
     name: "Food",
     image:

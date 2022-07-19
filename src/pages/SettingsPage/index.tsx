@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Button } from "../../components/Buttons";
@@ -6,9 +6,13 @@ import { CreatorCard } from "../../components/Creator";
 import { H1, H3, H5 } from "../../components/Headings";
 import { Image } from "../../components/Image";
 import { TextFieldWithLabel } from "../../components/Inputs";
+import { CategoryData } from "../../components/OnboardingModal";
 import { Paragraph } from "../../components/Paragraphs";
 import { useAppSelector } from "../../store/hooks";
-import { useUpdateMeMutation } from "../../store/services/api-slice";
+import {
+  useFetchMeQuery,
+  useUpdateMeMutation,
+} from "../../store/services/api-slice";
 
 const Container = styled.div`
   display: flex;
@@ -38,17 +42,44 @@ const UserDataContainer = styled.div`
   }
 `;
 
+const InterestContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+  gap: 0.8rem;
+`;
+
+const InterestBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-direction: column;
+  border: 2px solid ${(props) => props.theme.textColor};
+  padding: 1rem;
+  border-radius: 0.5rem;
+`;
+
 const EditProfile = () => {
-  const user = useAppSelector((state) => state.user.userData);
-  const username = user.username;
-  console.log(username);
+  const { data, isLoading } = useFetchMeQuery();
+  const [updateUser, { isError, data: updatedUserData, isSuccess }] =
+    useUpdateMeMutation();
+  const [usernameInput, setUsernameInput] = useState(() => {
+    if (!isLoading && data) {
+      return data.data.username;
+    } else {
+      return "";
+    }
+  });
 
-  const [usernameInput, setUsernameInput] = useState(username);
+  useEffect(() => {
+    if (isSuccess) {
+      toast("User updated successfully", { type: "success" });
+    }
+    if (isError) {
+      toast("Error updating user", { type: "error" });
+    }
+  }, [isSuccess, isError]);
 
-  const [updateUser, { isError }] = useUpdateMeMutation();
-  if (isError) {
-    toast("Error updating user", { type: "error" });
-  }
   return (
     <>
       <H1 weight="bold" weightMobile="bold">
@@ -65,6 +96,16 @@ const EditProfile = () => {
           type="circle"
         />
         <Button variants="tertiary">Change</Button>
+        <Button
+          variants="primary"
+          onClick={() => {
+            updateUser({
+              username: usernameInput,
+            });
+          }}
+        >
+          Save
+        </Button>
       </UserProfilePhotoContainer>
       <UserDataContainer>
         <TextFieldWithLabel
@@ -73,16 +114,40 @@ const EditProfile = () => {
           onChange={(e) => setUsernameInput(e.target.value)}
         />
       </UserDataContainer>
-      <Button
-        variants="primary"
-        onClick={() => {
-          updateUser({
-            username: usernameInput,
-          });
-        }}
-      >
-        Save
-      </Button>
+      <H3 weight="bold">Interests</H3>
+      <InterestContainer>
+        {!isLoading &&
+          CategoryData.map((interest: any) => (
+            <InterestBox key={interest.name}>
+              <H5>{interest.name}</H5>
+              <Button
+                variants={
+                  data.data.interests.includes(interest.name)
+                    ? "tertiary"
+                    : "secondary"
+                }
+                onClick={() => {
+                  if (data.data.interests.includes(interest.name)) {
+                    console.log("remove");
+                    updateUser({
+                      interests: data.data.interests.filter(
+                        (i: string) => i !== interest.name
+                      ),
+                    });
+                  } else {
+                    updateUser({
+                      interests: [...data.data.interests, interest.name],
+                    });
+                  }
+                }}
+              >
+                {!isLoading && data.data.interests.includes(interest.name)
+                  ? "Remove"
+                  : "Add"}
+              </Button>
+            </InterestBox>
+          ))}
+      </InterestContainer>
     </>
   );
 };

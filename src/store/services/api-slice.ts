@@ -21,19 +21,22 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Boards", "Pins"],
+  tagTypes: ["user"],
   endpoints: (builder) => ({
     fetchMe: builder.query<any, void>({
       query: () => {
         return "/api/user/me";
       },
+      providesTags: ["user"],
     }),
+
     updateMe: builder.mutation<any, any>({
       query: (data) => ({
         url: "/api/user/me",
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: ["user"],
     }),
   }),
 });
