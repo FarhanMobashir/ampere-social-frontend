@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Button } from "../Buttons";
+import { CustomLink } from "../CustomLink";
 import { H1, H5 } from "../Headings";
 import { Image } from "../Image";
 
@@ -47,7 +48,11 @@ export const ProfileCard = () => {
       <H5 weight="bold" color="dark">
         http://www.john-doe.com
       </H5>
-      <Button variants="tertiary">Edit Profile</Button>
+      <MiddleContainer>
+        <CustomLink to="/home/settings">
+          <Button variants="tertiary">Edit Profile</Button>
+        </CustomLink>
+      </MiddleContainer>
     </MainContainer>
   );
 };

@@ -58,9 +58,12 @@ export const AppHeader = () => {
         <IconButton variants="tertiary" size="large">
           <FaSearch />
         </IconButton>
-        <IconButton variants="primary" size="large">
-          <FaPlus />
-        </IconButton>
+        <CustomLink to="/home/create">
+          <IconButton variants="primary" size="large">
+            <FaPlus />
+          </IconButton>
+        </CustomLink>
+
         <CustomLink to="/home/user">
           <Image
             type="circle"
@@ -87,10 +90,13 @@ export const AppHeader = () => {
           <Image width="40px" height="auto" src={logo} type="circle" />
         </LogoContainer>
         <Button variants="secondary">Home</Button>
-        <ButtonWithIcon variants="tertiary">
-          Create
-          <FaArrowDown />
-        </ButtonWithIcon>
+        <CustomLink to="/home/create">
+          <ButtonWithIcon variants="tertiary">
+            Create
+            <FaArrowDown />
+          </ButtonWithIcon>
+        </CustomLink>
+
         <TextField placeholder="Search" />
         <IconButton variants="tertiary">
           <FaBell />

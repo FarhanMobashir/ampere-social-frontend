@@ -30,23 +30,23 @@ export const BoardCard = () => {
           src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
           width="10rem"
           height="8rem"
-          widthMobile="8rem"
-          heightMobile="6rem"
+          widthMobile="6rem"
+          heightMobile="5rem"
         />
         <RightContainer>
           <Image
             src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
             width="5rem"
             height="4rem"
-            widthMobile="4rem"
-            heightMobile="3rem"
+            widthMobile="3rem"
+            heightMobile="2.5rem"
           />
           <Image
             src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
             width="5rem"
             height="4rem"
-            widthMobile="4rem"
-            heightMobile="3rem"
+            widthMobile="3rem"
+            heightMobile="2.5rem"
           />
         </RightContainer>
       </ImageContainer>

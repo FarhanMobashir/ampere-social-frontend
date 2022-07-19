@@ -12,6 +12,7 @@ import { SingleBoardPage } from "./pages/SingleBoardPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
 import { useAppSelector } from "./store/hooks";
 import { Navigate } from "react-router-dom";
+import { Create } from "./pages/Create";
 
 function App() {
   const isAuthenticated = useAppSelector((state) => state.user.token);
@@ -24,6 +25,7 @@ function App() {
         />
         <Route path="/home" element={<PrivateRoute element={<AppLayout />} />}>
           <Route path="/home" element={<Homepage />} />
+          <Route path="/home/create" element={<Create />} />
           <Route path="/home/pins/:id" element={<SinglePin />} />
           <Route path="/home/boards" element={<AllBoardsPage />} />
           <Route path="/home/boards/:id" element={<SingleBoardPage />} />
