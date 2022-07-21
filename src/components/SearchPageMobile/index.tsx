@@ -20,11 +20,11 @@ export const SearchPageMobile = () => {
         placeholder="Enter search term here"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
-        onKeyUp={(e) => {
-          if (e.key === "Enter") {
-            navigate("/home/search");
-          }
-        }}
+        // onKeyUp={(e) => {
+        //   if (e.key === "Enter") {
+        //     navigate("/home/search");
+        //   }
+        // }}
       />
       <Button variants="primary">Search</Button>
     </Container>

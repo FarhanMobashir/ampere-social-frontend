@@ -65,6 +65,7 @@ const EditProfile = () => {
     useUpdateMeMutation();
 
   const [usernameInput, setUsernameInput] = useState("");
+  const [bioInput, setBioInput] = useState("");
 
   useEffect(() => {
     if (isError) {
@@ -75,6 +76,11 @@ const EditProfile = () => {
     }
     if (!isLoading) {
       setUsernameInput(data.data.username);
+      setBioInput(data.data.bio);
+    }
+    if (updatedUserData) {
+      setUsernameInput(updatedUserData.data.username);
+      setBioInput(updatedUserData.data.bio);
     }
   }, [isSuccess, isError, isLoading]);
 
@@ -103,6 +109,7 @@ const EditProfile = () => {
           onClick={() => {
             updateUser({
               username: usernameInput,
+              bio: bioInput,
             });
           }}
         >
@@ -114,6 +121,11 @@ const EditProfile = () => {
           label="Username"
           value={usernameInput}
           onChange={(e) => setUsernameInput(e.target.value)}
+        />
+        <TextFieldWithLabel
+          label="Bio"
+          value={bioInput}
+          onChange={(e) => setBioInput(e.target.value)}
         />
       </UserDataContainer>
       <H3 weight="bold">Interests</H3>

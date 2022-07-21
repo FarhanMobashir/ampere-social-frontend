@@ -99,7 +99,13 @@ export const PinCard = (props: PinCardProps) => {
         <H4 weight="bold" uppercase={false}>
           Tee Outfit
         </H4>
-        <CreatorCard variant="pin-card" />
+        <CreatorCard
+          variant="pin-card"
+          avatar={""}
+          username={""}
+          subtitle={""}
+          buttonText={""}
+        />
       </BottomContainer>
     </PinContainer>
   );

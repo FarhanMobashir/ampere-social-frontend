@@ -4,7 +4,7 @@ import logo from "../../assets/logo.svg";
 import { Button, ButtonWithIcon, IconButton } from "../Buttons";
 import {
   FaArrowDown,
-  FaBell,
+  FaCompass,
   FaHome,
   FaMoon,
   FaPlus,
@@ -58,6 +58,11 @@ export const AppHeader = () => {
         <CustomLink to="/home">
           <IconButton variants="tertiary" size="large">
             <FaHome />
+          </IconButton>
+        </CustomLink>
+        <CustomLink to="/home/discover">
+          <IconButton variants="tertiary" size="large">
+            <FaCompass />
           </IconButton>
         </CustomLink>
         <CustomLink to="/home/mobile">
@@ -118,9 +123,11 @@ export const AppHeader = () => {
           }}
           value={search}
         />
-        <IconButton variants="tertiary">
-          <FaBell />
-        </IconButton>
+        <CustomLink to="/home/discover">
+          <IconButton variants="tertiary">
+            <FaCompass />
+          </IconButton>
+        </CustomLink>
         <CustomLink to="/home/user">
           <Image
             type="circle"

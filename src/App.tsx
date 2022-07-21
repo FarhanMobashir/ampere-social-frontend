@@ -18,6 +18,8 @@ import { FollowingListing } from "./pages/FollowingListing";
 import { SinglePinPage } from "./pages/SinglePinPage";
 import { SearchPage } from "./pages/SearchPage";
 import { SearchPageMobile } from "./components/SearchPageMobile";
+import { DiscoverPeople } from "./pages/DiscoverPage";
+import { SingleUserPage } from "./pages/SingleUserPage";
 
 function App() {
   const isAuthenticated = useAppSelector((state) => state.user.token);
@@ -33,6 +35,7 @@ function App() {
           <Route path="/home/search" element={<SearchPage />} />
           <Route path="/home/mobile" element={<SearchPageMobile />} />
           <Route path="/home/create" element={<Create />} />
+          <Route path="/home/discover" element={<DiscoverPeople />} />
           <Route path="/home/pins/:id" element={<SinglePinPage />} />
           <Route path="/home/boards" element={<AllBoardsPage />} />
           <Route path="/home/boards/:id" element={<SingleBoardPage />} />
@@ -42,6 +45,7 @@ function App() {
           />
           <Route path="/home/boards/:id/more" element={<MoreIdeasPage />} />
           <Route path="/home/user" element={<UserProfilePage />} />
+          <Route path="/home/user/:id" element={<SingleUserPage />} />
           <Route path="/home/settings" element={<SettingsPage />} />
           <Route path="/home/followers" element={<FollowersListing />} />
           <Route path="/home/followings" element={<FollowingListing />} />

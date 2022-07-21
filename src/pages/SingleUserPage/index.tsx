@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { BoardCard } from "../../components/BoardCard";
 import { Button } from "../../components/Buttons";
@@ -9,7 +10,10 @@ import {
   setToken,
 } from "../../store/features/user-slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { useFetchMeQuery } from "../../store/services/api-slice";
+import {
+  useFetchMeQuery,
+  useGetSingleUsersQuery,
+} from "../../store/services/api-slice";
 
 const Container = styled.div`
   display: flex;
@@ -41,20 +45,21 @@ const BoardsListingContainer = styled.div`
   align-items: center;
 `;
 
-export const UserProfilePage = () => {
+export const SingleUserPage = () => {
   const dispatch = useAppDispatch();
-  const { data = {}, isLoading } = useFetchMeQuery();
+  const { id } = useParams();
+  const { data = {}, isLoading } = useGetSingleUsersQuery(id);
   if (isLoading) {
     return <div>Loading...</div>;
   }
   return (
     <Container>
       <ProfileCard
-        username={`@${data.data.username}`}
-        bio={data.data.bio}
+        username={data.data.username}
         followers={data.data.followers.length}
         following={data.data.following.length}
-        type="user"
+        type="creator"
+        bio={data.data.bio}
       />
       <TabsContainer>
         <Tab isActive>

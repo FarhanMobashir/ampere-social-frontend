@@ -86,7 +86,13 @@ export const SinglePin = () => {
         <H4 sizeMobile="0.8rem" alignMobile="center">
           Follow James on Instagram @lifestyle_of_james
         </H4>
-        <CreatorCard variant="single-pin" />
+        <CreatorCard
+          variant="single-pin"
+          avatar={""}
+          username={""}
+          subtitle={""}
+          buttonText={""}
+        />
         <CommentContainer>
           <CommentButtonContainer>
             <ButtonWithIcon variants="tertiary">

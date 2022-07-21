@@ -25,6 +25,7 @@ interface ProfileCardProps {
   followers?: number;
   following?: number;
   bio?: string;
+  type: "user" | "creator";
 }
 
 export const ProfileCard = (props: ProfileCardProps) => {
@@ -46,12 +47,12 @@ export const ProfileCard = (props: ProfileCardProps) => {
         {props.username}
       </H1>
       <MiddleContainer>
-        <CustomLink to="/home/followers">
+        <CustomLink to={props.type === "user" ? "/home/followers" : ""}>
           <H5 weight="bold" color="light">
             Followers {props.followers}
           </H5>
         </CustomLink>
-        <CustomLink to="/home/followings">
+        <CustomLink to={props.type === "user" ? "/home/followings" : ""}>
           <H5 weight="bold" color="light">
             Following {props.following}
           </H5>
@@ -61,9 +62,11 @@ export const ProfileCard = (props: ProfileCardProps) => {
         {props.bio}
       </H5>
       <MiddleContainer>
-        <CustomLink to="/home/settings">
-          <Button variants="tertiary">Edit Profile</Button>
-        </CustomLink>
+        {props.type === "user" && (
+          <CustomLink to="/home/settings">
+            <Button variants="tertiary">Edit Profile</Button>
+          </CustomLink>
+        )}
       </MiddleContainer>
     </MainContainer>
   );

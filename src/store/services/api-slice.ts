@@ -21,14 +21,14 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["user"],
+  tagTypes: ["user", "allUser", "following", "followers"],
   endpoints: (builder) => ({
     fetchMe: builder.query<any, void>({
       query: () => {
         return "/api/user/me";
       },
       providesTags: ["user"],
-      keepUnusedDataFor: 1,
+      keepUnusedDataFor: 0,
     }),
 
     updateMe: builder.mutation<any, any>({
@@ -39,7 +39,57 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["user"],
     }),
+    getAllUsers: builder.query<any, void>({
+      query: () => ({
+        url: "/api/user/all",
+      }),
+      keepUnusedDataFor: 0,
+      providesTags: ["allUser"],
+    }),
+    getSingleUsers: builder.query<any, any>({
+      query: (id) => ({
+        url: `/api/user/${id}`,
+      }),
+      keepUnusedDataFor: 0,
+    }),
+
+    getAllFollowers: builder.query<any, void>({
+      query: () => ({
+        url: "/api/user/followers",
+      }),
+      providesTags: ["followers"],
+    }),
+    getAllFollowings: builder.query<any, void>({
+      query: () => ({
+        url: "/api/user/followings",
+      }),
+      providesTags: ["following"],
+      keepUnusedDataFor: 0,
+    }),
+    followUser: builder.mutation<any, any>({
+      query: ({ id }) => ({
+        url: `/api/user/follow/${id}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["allUser", "user", "following", "followers"],
+    }),
+    unfollowUser: builder.mutation<any, any>({
+      query: ({ id }) => ({
+        url: `/api/user/unfollow/${id}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["allUser", "user", "followers", "following"],
+    }),
   }),
 });
 
-export const { useFetchMeQuery, useUpdateMeMutation } = apiSlice;
+export const {
+  useFetchMeQuery,
+  useUpdateMeMutation,
+  useGetAllUsersQuery,
+  useGetAllFollowersQuery,
+  useGetAllFollowingsQuery,
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+  useGetSingleUsersQuery,
+} = apiSlice;
