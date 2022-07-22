@@ -35,8 +35,8 @@ export const DiscoverPeople = () => {
         <CreatorCard
           variant="single-pin"
           key={i}
-          avatar="https://i.pravatar.cc/300"
-          username={i.username}
+          avatar={i.avatar}
+          username={`@${i.username}`}
           subtitle={i.bio}
           buttonText={isFollowing(i._id) ? "Following" : "Follow"}
           onClick={() => {

@@ -50,6 +50,7 @@ export const FollowingListing = () => {
               unfollow({ id: i._id });
             }
           }}
+          link={`/home/user/${i._id}`}
         />
       ))}
       {data.data.length === 0 && (

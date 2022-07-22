@@ -1,8 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { url } from "inspector";
-// import { local } from "../../apiUrls";
 import { RootState } from "../store";
-import { products } from "./types/product";
 
 const local = "http://192.168.1.21:8080";
 
@@ -21,7 +18,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["user", "allUser", "following", "followers"],
+  tagTypes: ["user", "allUser", "following", "followers", "boards", "pins"],
   endpoints: (builder) => ({
     fetchMe: builder.query<any, void>({
       query: () => {
@@ -30,7 +27,7 @@ export const apiSlice = createApi({
       providesTags: ["user"],
       keepUnusedDataFor: 0,
     }),
-
+    // * user
     updateMe: builder.mutation<any, any>({
       query: (data) => ({
         url: "/api/user/me",
@@ -39,6 +36,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["user"],
     }),
+    // * user and followers/following
     getAllUsers: builder.query<any, void>({
       query: () => ({
         url: "/api/user/all",
@@ -80,6 +78,90 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["allUser", "user", "followers", "following"],
     }),
+    // * boards
+    getAllBoards: builder.query<any, void>({
+      query: () => ({
+        url: "/api/boards",
+      }),
+      providesTags: ["boards"],
+    }),
+    getSingleBoard: builder.query<any, void>({
+      query: (id) => ({
+        url: `api/boards${id}`,
+      }),
+      providesTags: ["boards"],
+    }),
+    deleteSingleBoard: builder.mutation<any, void>({
+      query: (id) => ({
+        url: `api/boards${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["boards"],
+    }),
+    createBoard: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `api/boards`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["boards"],
+    }),
+    updateBoard: builder.mutation<any, void>({
+      query: (data) => ({
+        url: `api/boards`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["boards"],
+    }),
+    getAllBoardsOfUser: builder.query<any, any>({
+      query: (id) => ({
+        url: `/api/boards/user/${id}`,
+      }),
+      providesTags: ["boards"],
+    }),
+    getSingleBoardsOfUser: builder.query<any, any>({
+      query: ({ id, boardId }) => ({
+        url: `/api/boards/user/${id}${boardId}`,
+      }),
+      providesTags: ["boards"],
+    }),
+    // pins
+    getAllPins: builder.query<any, void>({
+      query: () => ({
+        url: "/api/pins",
+      }),
+      providesTags: ["pins"],
+    }),
+    getSinglePin: builder.query<any, void>({
+      query: (id) => ({
+        url: `api/boards${id}`,
+      }),
+      providesTags: ["pins"],
+    }),
+    deleteSinglePin: builder.mutation<any, void>({
+      query: (id) => ({
+        url: `api/pins/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["pins"],
+    }),
+    createPin: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `api/pins`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["pins"],
+    }),
+    updatePin: builder.mutation<any, any>({
+      query: ({ id, data }) => ({
+        url: `api/pins/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["pins"],
+    }),
   }),
 });
 
@@ -92,4 +174,16 @@ export const {
   useFollowUserMutation,
   useUnfollowUserMutation,
   useGetSingleUsersQuery,
+  useGetAllBoardsQuery,
+  useGetSingleBoardQuery,
+  useDeleteSingleBoardMutation,
+  useCreateBoardMutation,
+  useUpdateBoardMutation,
+  useGetAllBoardsOfUserQuery,
+  useGetSingleBoardsOfUserQuery,
+  useGetAllPinsQuery,
+  useGetSinglePinQuery,
+  useCreatePinMutation,
+  useUpdatePinMutation,
+  useDeleteSinglePinMutation,
 } = apiSlice;

@@ -89,9 +89,10 @@ export const SinglePin = () => {
         <CreatorCard
           variant="single-pin"
           avatar={""}
-          username={""}
+          username={"@lifestyle_of_james"}
           subtitle={""}
-          buttonText={""}
+          buttonText={"Follow"}
+          buttonVariant="primary"
         />
         <CommentContainer>
           <CommentButtonContainer>

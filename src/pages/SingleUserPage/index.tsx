@@ -12,6 +12,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   useFetchMeQuery,
+  useGetAllBoardsOfUserQuery,
   useGetSingleUsersQuery,
 } from "../../store/services/api-slice";
 
@@ -49,13 +50,15 @@ export const SingleUserPage = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
   const { data = {}, isLoading } = useGetSingleUsersQuery(id);
+  const { data: allBoards } = useGetAllBoardsOfUserQuery(id);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
   return (
     <Container>
       <ProfileCard
-        username={data.data.username}
+        username={`@${data.data.username}`}
         followers={data.data.followers.length}
         following={data.data.following.length}
         type="creator"
@@ -70,8 +73,8 @@ export const SingleUserPage = () => {
         </Tab>
       </TabsContainer>
       <BoardsListingContainer>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-          <BoardCard key={item} />
+        {allBoards?.data?.map((item: any) => (
+          <BoardCard board={item} key={item} />
         ))}
       </BoardsListingContainer>
       <Button

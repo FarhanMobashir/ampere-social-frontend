@@ -9,7 +9,10 @@ import {
   setToken,
 } from "../../store/features/user-slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { useFetchMeQuery } from "../../store/services/api-slice";
+import {
+  useFetchMeQuery,
+  useGetAllBoardsQuery,
+} from "../../store/services/api-slice";
 
 const Container = styled.div`
   display: flex;
@@ -44,6 +47,7 @@ const BoardsListingContainer = styled.div`
 export const UserProfilePage = () => {
   const dispatch = useAppDispatch();
   const { data = {}, isLoading } = useFetchMeQuery();
+  const { data: allBoards } = useGetAllBoardsQuery();
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -65,8 +69,8 @@ export const UserProfilePage = () => {
         </Tab>
       </TabsContainer>
       <BoardsListingContainer>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-          <BoardCard key={item} />
+        {allBoards?.data?.map((item: any) => (
+          <BoardCard board={item} key={item} />
         ))}
       </BoardsListingContainer>
       <Button

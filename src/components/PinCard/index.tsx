@@ -102,7 +102,7 @@ export const PinCard = (props: PinCardProps) => {
         <CreatorCard
           variant="pin-card"
           avatar={""}
-          username={""}
+          username={"username"}
           subtitle={""}
           buttonText={""}
         />

@@ -22,6 +22,22 @@ const ContentContainer = styled.div`
   gap: 0.1rem;
 `;
 
+interface AvatarProps {
+  size?: "small" | "regular";
+}
+const Avatar = styled.div<AvatarProps>`
+  width: ${(props) => (props.size === "small" ? "30px" : "40px")};
+  height: ${(props) => (props.size === "small" ? "30px" : "40px")};
+  border-radius: 50%;
+  background-color: #fcd5db;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => props.theme.textColorDark};
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
 interface CreatorCardProps {
   variant: "pin-card" | "single-pin" | "comment-card";
   avatar: string;
@@ -38,12 +54,21 @@ export const CreatorCard = (props: CreatorCardProps) => {
     <MainContainer>
       <CreatorSection>
         <CustomLink to={props.link || ""}>
-          <Image
-            src={props.avatar}
-            height={props.variant === "single-pin" ? "50px" : "35px"}
-            width={props.variant === "single-pin" ? "50px" : "35px"}
-            type="circle"
-          />
+          {props.avatar && (
+            <Image
+              src={props.avatar}
+              height={props.variant === "single-pin" ? "50px" : "35px"}
+              width={props.variant === "single-pin" ? "50px" : "35px"}
+              type="circle"
+            />
+          )}
+          {!props.avatar && (
+            <Avatar
+              size={props.variant === "single-pin" ? "regular" : "regular"}
+            >
+              {props.username[1].toUpperCase()}
+            </Avatar>
+          )}
         </CustomLink>
         <ContentContainer>
           {props.variant === "single-pin" ? (

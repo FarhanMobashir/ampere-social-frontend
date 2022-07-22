@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { FaArrowDown, FaPlus, FaTrash, FaUpload } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaChevronUp,
+  FaPlus,
+  FaTrash,
+  FaUpload,
+} from "react-icons/fa";
 import styled from "styled-components";
 import { Button, ButtonWithIcon } from "../../components/Buttons";
 import { CreatorCard } from "../../components/Creator";
@@ -7,6 +13,11 @@ import { H1, H3 } from "../../components/Headings";
 import { Image } from "../../components/Image";
 import { TextField } from "../../components/Inputs";
 import { Paragraph } from "../../components/Paragraphs";
+import {
+  useCreateBoardMutation,
+  useCreatePinMutation,
+  useGetAllBoardsQuery,
+} from "../../store/services/api-slice";
 
 const Container = styled.div`
   display: flex;
@@ -140,8 +151,14 @@ const BoardBox = styled.div`
 const TextFieldContainer = styled.div``;
 
 export const Create = () => {
+  const { data, isLoading: isLoadingBoards } = useGetAllBoardsQuery();
+  const [createBoard] = useCreateBoardMutation();
+  const [createPin] = useCreatePinMutation();
   const [image, setImage] = useState<any>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [showSelectBoard, setShowSelectBoard] = useState(true);
+  const [boardName, setBoardName] = useState<any>(null);
+  const [selectedBoard, setSelectedBoard] = useState<any>(null);
 
   const fileSelectHandler = (e: any) => {
     const file = e.target.files;
@@ -154,8 +171,6 @@ export const Create = () => {
     setImageUrl(previewImage[0]);
     console.log(previewImage);
   };
-
-  const [showSelectBoard, setShowSelectBoard] = useState(false);
 
   return (
     <Container>
@@ -213,50 +228,55 @@ export const Create = () => {
               variants="tertiary"
               onClick={() => setShowSelectBoard(!showSelectBoard)}
             >
-              cars ideas
-              <FaArrowDown size={20} />
+              {selectedBoard &&
+                selectedBoard?.name.length >= 12 &&
+                `${selectedBoard.name.substring(0, 12)}...`}
+              {selectedBoard &&
+                selectedBoard?.name.length < 12 &&
+                selectedBoard.name}
+              {showSelectBoard ? (
+                <FaChevronUp size={20} />
+              ) : (
+                <FaChevronDown size={20} />
+              )}
             </ButtonWithIcon>
           </SelectBoardContainer>
           {showSelectBoard && (
             <BoardsListingCotainer>
               <BoardsContainer>
-                <BoardBox>
-                  <Image
-                    width="40px"
-                    height="40px"
-                    src="https://picsum.photos/200"
-                  />
-                  <Paragraph weight="bold">Cars Ideas</Paragraph>
-                </BoardBox>
-                <BoardBox>
-                  <Image
-                    width="40px"
-                    height="40px"
-                    src="https://picsum.photos/200"
-                  />
-                  <Paragraph weight="bold">Cars Ideas</Paragraph>
-                </BoardBox>
-                <BoardBox>
-                  <Image
-                    width="40px"
-                    height="40px"
-                    src="https://picsum.photos/200"
-                  />
-                  <Paragraph weight="bold">Cars Ideas</Paragraph>
-                </BoardBox>
-                <BoardBox>
-                  <Image
-                    width="40px"
-                    height="40px"
-                    src="https://picsum.photos/200"
-                  />
-                  <Paragraph weight="bold">Cars Ideas</Paragraph>
-                </BoardBox>
+                {data?.data?.map((board: any) => (
+                  <BoardBox onClick={() => setSelectedBoard(board)}>
+                    <Image
+                      width="40px"
+                      height="40px"
+                      src="https://picsum.photos/200"
+                    />
+                    <Paragraph weight="bold">
+                      {board.name.length > 15
+                        ? `${board.name.substring(0, 15)}...`
+                        : board.name}
+                    </Paragraph>
+                  </BoardBox>
+                ))}
+                {data?.data?.length === 0 && (
+                  <Paragraph>You don't have any boards yet.</Paragraph>
+                )}
               </BoardsContainer>
               <TextFieldContainer>
-                <TextField placeholder="Enter board name" />
+                <TextField
+                  placeholder="Enter board name"
+                  value={boardName}
+                  onChange={(e) => setBoardName(e.target.value)}
+                />
               </TextFieldContainer>
-              <ButtonWithIcon variants="secondary">
+              <ButtonWithIcon
+                variants="secondary"
+                onClick={() => {
+                  if (boardName) {
+                    createBoard({ name: boardName });
+                  }
+                }}
+              >
                 Create a new board
                 <FaPlus size={20} />
               </ButtonWithIcon>
@@ -269,6 +289,12 @@ export const Create = () => {
               margin: "0 auto",
             }}
             variants="primary"
+            onClick={() => {
+              createPin({
+                name: "from frontend",
+                boardId: selectedBoard?._id,
+              });
+            }}
           >
             Create Pin
           </Button>

@@ -5,6 +5,7 @@ import { Image } from "../Image";
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 10rem;
 `;
 
 const ImageContainer = styled.div`
@@ -22,7 +23,11 @@ const BottomContainer = styled.div`
   align-items: center;
 `;
 
-export const BoardCard = () => {
+interface BoardCardProps {
+  board?: any;
+}
+
+export const BoardCard = (props: BoardCardProps) => {
   return (
     <MainContainer>
       <ImageContainer>
@@ -51,11 +56,13 @@ export const BoardCard = () => {
         </RightContainer>
       </ImageContainer>
       <H4 weight="bold" weightMobile="bold">
-        All Pins
+        {props.board.name.length > 15
+          ? props.board.name.substring(0, 15) + "..."
+          : props.board.name}
       </H4>
       <BottomContainer>
         <H6 weight="bold" weightMobile="bold" color="light">
-          234 Pins
+          {props.board.pins.length} Pins
         </H6>
         <H6 weight="bold" weightMobile="bold" color="light">
           2W
