@@ -1,9 +1,20 @@
 import { useState } from "react";
+import styled from "styled-components";
 import { Modal } from "../../components/Modal";
 import { OnboardingModal } from "../../components/OnboardingModal";
 import { PinCard } from "../../components/PinCard";
 import { setHasOnboarded } from "../../store/features/user-slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useGetAllPinsQuery } from "../../store/services/api-slice";
+
+const MainContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  @media (max-width: 800px) {
+    padding: 1rem 0;
+  }
+`;
 
 export const Homepage = () => {
   const mode = useAppSelector((state) => state.user.mode);
@@ -11,11 +22,17 @@ export const Homepage = () => {
   const [showOnboardingModal, setShowOnboardingModal] = useState(true);
   const dispatch = useAppDispatch();
 
+  const { data } = useGetAllPinsQuery();
+
   return (
-    <div>
-      <h1>Homepage</h1>
-      {Array.from(Array(10).keys()).map((i) => (
-        <PinCard variant="normal" key={i} />
+    <MainContainer>
+      {data?.data.map((i: any) => (
+        <PinCard
+          name={i.name}
+          creatorName={`@${i.createdBy.username}`}
+          variant="normal"
+          key={i._id}
+        />
       ))}
       {mode === "signup" && showOnboardingModal && !onBoardingState && (
         <Modal>
@@ -26,6 +43,6 @@ export const Homepage = () => {
           />
         </Modal>
       )}
-    </div>
+    </MainContainer>
   );
 };

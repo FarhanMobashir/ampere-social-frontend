@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { FaArrowDown, FaGripHorizontal, FaPlus } from "react-icons/fa";
+import {
+  FaArrowDown,
+  FaChevronDown,
+  FaGripHorizontal,
+  FaPlus,
+  FaTrashAlt,
+} from "react-icons/fa";
 import styled from "styled-components";
 import { Button, ButtonWithIcon, IconButton } from "../Buttons";
 import { CreatorCard } from "../Creator";
@@ -52,7 +58,9 @@ const BottomContainer = styled.div`
 `;
 
 interface PinCardProps {
-  variant: "normal" | "more-ideas" | "organise";
+  variant: "normal" | "more-ideas" | "organise" | "boardVariant";
+  name?: string;
+  creatorName?: string | null;
 }
 
 export const PinCard = (props: PinCardProps) => {
@@ -73,7 +81,7 @@ export const PinCard = (props: PinCardProps) => {
         <SelectPinContainer>
           {isHovering && props.variant === "normal" && (
             <ButtonWithIcon variants="transparent" size="x-small">
-              men-out... <FaArrowDown />
+              men-out... <FaChevronDown />
             </ButtonWithIcon>
           )}
         </SelectPinContainer>
@@ -93,19 +101,26 @@ export const PinCard = (props: PinCardProps) => {
               <FaGripHorizontal />
             </IconButton>
           )}
+          {props.variant === "boardVariant" && (
+            <IconButton variants="tertiary">
+              <FaTrashAlt />
+            </IconButton>
+          )}
         </SaveButtonContainer>
       </PinImageContainer>
       <BottomContainer>
         <H4 weight="bold" uppercase={false}>
-          Tee Outfit
+          {props.name}
         </H4>
-        <CreatorCard
-          variant="pin-card"
-          avatar={""}
-          username={"username"}
-          subtitle={""}
-          buttonText={""}
-        />
+        {props.variant === "normal" || props.variant === "more-ideas" ? (
+          <CreatorCard
+            variant="pin-card"
+            avatar={""}
+            username={props.creatorName || ""}
+            subtitle={""}
+            buttonText={""}
+          />
+        ) : null}
       </BottomContainer>
     </PinContainer>
   );

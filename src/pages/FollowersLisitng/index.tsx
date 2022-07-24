@@ -27,7 +27,7 @@ export const FollowersListing = () => {
   }
 
   const isFollowing = (userId: any) => {
-    const found = userData.data.following.includes(userId);
+    const found = userData?.data?.following.includes(userId);
     console.log(found);
     return found;
   };

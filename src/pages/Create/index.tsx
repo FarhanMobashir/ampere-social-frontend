@@ -156,9 +156,11 @@ export const Create = () => {
   const [createPin] = useCreatePinMutation();
   const [image, setImage] = useState<any>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [showSelectBoard, setShowSelectBoard] = useState(true);
+  const [showSelectBoard, setShowSelectBoard] = useState(false);
   const [boardName, setBoardName] = useState<any>(null);
   const [selectedBoard, setSelectedBoard] = useState<any>(null);
+  // * pin
+  const [pinName, setPinName] = useState<string>("");
 
   const fileSelectHandler = (e: any) => {
     const file = e.target.files;
@@ -169,7 +171,17 @@ export const Create = () => {
     );
     setImage(file[0]);
     setImageUrl(previewImage[0]);
-    console.log(previewImage);
+  };
+
+  const createPinHandler = () => {
+    const data = new FormData();
+    data.append("image", image);
+    data.append("name", pinName);
+    data.append("boardId", selectedBoard.id);
+    console.log(data);
+    createPin({
+      data,
+    });
   };
 
   return (
@@ -245,7 +257,12 @@ export const Create = () => {
             <BoardsListingCotainer>
               <BoardsContainer>
                 {data?.data?.map((board: any) => (
-                  <BoardBox onClick={() => setSelectedBoard(board)}>
+                  <BoardBox
+                    onClick={() => {
+                      setSelectedBoard(board);
+                      setShowSelectBoard(false);
+                    }}
+                  >
                     <Image
                       width="40px"
                       height="40px"
@@ -282,19 +299,18 @@ export const Create = () => {
               </ButtonWithIcon>
             </BoardsListingCotainer>
           )}
-          <TitleInput placeholder="Add your title" />
+          <TitleInput
+            placeholder="Add your title"
+            value={pinName}
+            onChange={(e) => setPinName(e.target.value)}
+          />
           <DescriptionInput placeholder="Add your description" />
           <Button
             style={{
               margin: "0 auto",
             }}
             variants="primary"
-            onClick={() => {
-              createPin({
-                name: "from frontend",
-                boardId: selectedBoard?._id,
-              });
-            }}
+            onClick={createPinHandler}
           >
             Create Pin
           </Button>

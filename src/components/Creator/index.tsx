@@ -41,7 +41,7 @@ const Avatar = styled.div<AvatarProps>`
 interface CreatorCardProps {
   variant: "pin-card" | "single-pin" | "comment-card";
   avatar: string;
-  username: string;
+  username: string | null;
   subtitle: string;
   buttonText: string;
   onClick?: () => void;
@@ -66,7 +66,7 @@ export const CreatorCard = (props: CreatorCardProps) => {
             <Avatar
               size={props.variant === "single-pin" ? "regular" : "regular"}
             >
-              {props.username[1].toUpperCase()}
+              {props.username && props.username[1].toUpperCase()}
             </Avatar>
           )}
         </CustomLink>

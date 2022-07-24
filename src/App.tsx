@@ -44,6 +44,11 @@ function App() {
             element={<OrganiseBoardPage />}
           />
           <Route path="/home/boards/:id/more" element={<MoreIdeasPage />} />
+          <Route
+            path="/home/boards/:id/organise"
+            element={<OrganiseBoardPage />}
+          />
+
           <Route path="/home/user" element={<UserProfilePage />} />
           <Route path="/home/user/:id" element={<SingleUserPage />} />
           <Route path="/home/settings" element={<SettingsPage />} />

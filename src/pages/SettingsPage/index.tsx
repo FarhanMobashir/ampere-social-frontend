@@ -97,12 +97,15 @@ const EditProfile = () => {
         People visiting your profile will see the following information:
       </Paragraph>
       <UserProfilePhotoContainer>
-        <Image
-          src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
-          width="70px"
-          height="70px"
-          type="circle"
-        />
+        {data.data.avatar && (
+          <Image
+            src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+            width="70px"
+            height="70px"
+            type="circle"
+          />
+        )}
+
         <Button variants="tertiary">Change</Button>
         <Button
           variants="primary"

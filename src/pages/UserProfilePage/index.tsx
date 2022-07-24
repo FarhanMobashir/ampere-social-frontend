@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { BoardCard } from "../../components/BoardCard";
 import { Button } from "../../components/Buttons";
@@ -48,6 +49,8 @@ export const UserProfilePage = () => {
   const dispatch = useAppDispatch();
   const { data = {}, isLoading } = useFetchMeQuery();
   const { data: allBoards } = useGetAllBoardsQuery();
+  const navigate = useNavigate();
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -70,7 +73,13 @@ export const UserProfilePage = () => {
       </TabsContainer>
       <BoardsListingContainer>
         {allBoards?.data?.map((item: any) => (
-          <BoardCard board={item} key={item} />
+          <BoardCard
+            board={item}
+            key={item}
+            onClick={() => {
+              navigate(`/home/boards/${item._id}`);
+            }}
+          />
         ))}
       </BoardsListingContainer>
       <Button

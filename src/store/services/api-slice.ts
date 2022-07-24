@@ -85,9 +85,9 @@ export const apiSlice = createApi({
       }),
       providesTags: ["boards"],
     }),
-    getSingleBoard: builder.query<any, void>({
+    getSingleBoard: builder.query<any, any>({
       query: (id) => ({
-        url: `api/boards${id}`,
+        url: `api/boards/${id}`,
       }),
       providesTags: ["boards"],
     }),
@@ -151,6 +151,9 @@ export const apiSlice = createApi({
         url: `api/pins`,
         method: "POST",
         body: data,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       }),
       invalidatesTags: ["pins"],
     }),

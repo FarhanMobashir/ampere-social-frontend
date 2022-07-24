@@ -19,7 +19,10 @@ const ModalDiv = styled.div`
   bottom: 0;
 `;
 
-export const Modal = ({ children }: { children: React.ReactNode }) => {
+interface ModalProps {
+  children: React.ReactNode;
+}
+export const Modal = (props: ModalProps) => {
   const elementRef: any = React.useRef(null);
   if (!elementRef.current) {
     elementRef.current = document.createElement("div");
@@ -29,5 +32,8 @@ export const Modal = ({ children }: { children: React.ReactNode }) => {
     return () => modalRoot.removeChild(elementRef.current);
   }, []);
   // top level element needs to be single element
-  return createPortal(<ModalDiv>{children}</ModalDiv>, elementRef.current);
+  return createPortal(
+    <ModalDiv>{props.children}</ModalDiv>,
+    elementRef.current
+  );
 };

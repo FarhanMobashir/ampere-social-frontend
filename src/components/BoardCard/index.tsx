@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { CustomLink } from "../CustomLink";
 import { H4, H6 } from "../Headings";
 import { Image } from "../Image";
 
@@ -6,6 +7,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 10rem;
+  cursor: pointer;
 `;
 
 const ImageContainer = styled.div`
@@ -25,11 +27,12 @@ const BottomContainer = styled.div`
 
 interface BoardCardProps {
   board?: any;
+  onClick?: () => void;
 }
 
 export const BoardCard = (props: BoardCardProps) => {
   return (
-    <MainContainer>
+    <MainContainer onClick={props.onClick}>
       <ImageContainer>
         <Image
           src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
