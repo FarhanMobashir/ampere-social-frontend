@@ -9,6 +9,7 @@ import {
 import styled from "styled-components";
 import { Button, ButtonWithIcon, IconButton } from "../Buttons";
 import { CreatorCard } from "../Creator";
+import { CustomLink } from "../CustomLink";
 import { H4, H6 } from "../Headings";
 import { Image } from "../Image";
 
@@ -32,6 +33,7 @@ const ImageContainer = styled.div`
   grid-column-end: 5;
   grid-row-start: 1;
   grid-row-end: 5;
+  cursor: zoom-in;
 `;
 
 const SaveButtonContainer = styled.div`
@@ -61,6 +63,8 @@ interface PinCardProps {
   variant: "normal" | "more-ideas" | "organise" | "boardVariant";
   name?: string;
   creatorName?: string | null;
+  image?: string;
+  onClick?: () => void;
 }
 
 export const PinCard = (props: PinCardProps) => {
@@ -71,12 +75,8 @@ export const PinCard = (props: PinCardProps) => {
       onMouseOut={() => setIsHovering(false)}
     >
       <PinImageContainer>
-        <ImageContainer>
-          <Image
-            src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-            width="100%"
-            height="auto"
-          />
+        <ImageContainer onClick={props.onClick}>
+          <Image src={props.image} width="100%" height="200px" />
         </ImageContainer>
         <SelectPinContainer>
           {isHovering && props.variant === "normal" && (
@@ -87,7 +87,7 @@ export const PinCard = (props: PinCardProps) => {
         </SelectPinContainer>
         <SaveButtonContainer>
           {isHovering && props.variant === "normal" && (
-            <Button variants="tertiary" size="small">
+            <Button variants="primary" size="small">
               Save
             </Button>
           )}

@@ -177,11 +177,8 @@ export const Create = () => {
     const data = new FormData();
     data.append("image", image);
     data.append("name", pinName);
-    data.append("boardId", selectedBoard.id);
-    console.log(data);
-    createPin({
-      data,
-    });
+    data.append("boardId", selectedBoard._id);
+    createPin(data);
   };
 
   return (

@@ -132,10 +132,11 @@ export const apiSlice = createApi({
         url: "/api/pins",
       }),
       providesTags: ["pins"],
+      keepUnusedDataFor: 0,
     }),
-    getSinglePin: builder.query<any, void>({
+    getSinglePin: builder.query<any, any>({
       query: (id) => ({
-        url: `api/boards${id}`,
+        url: `api/pins/${id}`,
       }),
       providesTags: ["pins"],
     }),
@@ -151,15 +152,20 @@ export const apiSlice = createApi({
         url: `api/pins`,
         method: "POST",
         body: data,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
       }),
       invalidatesTags: ["pins"],
     }),
     updatePin: builder.mutation<any, any>({
       query: ({ id, data }) => ({
         url: `api/pins/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["pins"],
+    }),
+    savePin: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `api/pins/save`,
         method: "PUT",
         body: data,
       }),
@@ -189,4 +195,5 @@ export const {
   useCreatePinMutation,
   useUpdatePinMutation,
   useDeleteSinglePinMutation,
+  useSavePinMutation,
 } = apiSlice;

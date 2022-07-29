@@ -1,7 +1,9 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { H3 } from "../../components/Headings";
 import { PinCard } from "../../components/PinCard";
 import { SinglePin } from "../../components/SinglePin";
+import { useGetSinglePinQuery } from "../../store/services/api-slice";
 
 const MainContainer = styled.div`
   display: flex;
@@ -23,9 +25,12 @@ const PinListingContainer = styled.div`
 `;
 
 export const SinglePinPage = () => {
+  const { id } = useParams();
+  const { isLoading, data } = useGetSinglePinQuery(id);
+
   return (
     <MainContainer>
-      <SinglePin />
+      {!isLoading && data && <SinglePin pin={data?.data} />}
       <H3>Similar Ideas</H3>
       <PinListingContainer>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
