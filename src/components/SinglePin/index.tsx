@@ -1,11 +1,19 @@
-import { FaArrowDown } from "react-icons/fa";
+import { useState } from "react";
+import { FaArrowDown, FaChevronDown } from "react-icons/fa";
 import styled from "styled-components";
+import {
+  useCreateBoardMutation,
+  useGetAllBoardsQuery,
+  useSavePinMutation,
+} from "../../store/services/api-slice";
 import { AddCommentCard } from "../AddCommentCard";
 import { Button, ButtonWithIcon } from "../Buttons";
 import { CommentCard } from "../CommentCard";
 import { CreatorCard } from "../Creator";
 import { H1, H3, H4 } from "../Headings";
 import { Image } from "../Image";
+import { Modal } from "../Modal";
+import { SelectBoard } from "../SelectBoard";
 
 const MainContainer = styled.div`
   display: flex;
@@ -60,33 +68,72 @@ const CommentButtonContainer = styled.div`
     justify-content: center;
   }
 `;
-export const SinglePin = () => {
+
+interface SinglePinProps {
+  pin?: any;
+}
+export const SinglePin = (props: SinglePinProps) => {
+  const [showSelectBoard, setShowSelectBoard] = useState(true);
+  const [selectedBoard, setSelectedBoard] = useState<any | null>(null);
+  const { data, isLoading: isLoadingBoards } = useGetAllBoardsQuery();
+  const [savePin] = useSavePinMutation();
+
+  if (isLoadingBoards) return <div>Loading...</div>;
   return (
     <MainContainer>
+      {showSelectBoard && (
+        <Modal>
+          <SelectBoard
+            boards={data?.data}
+            onSelect={() => {
+              setSelectedBoard(data?.data._id);
+              setShowSelectBoard(false);
+            }}
+            onClose={() => {
+              setShowSelectBoard(false);
+            }}
+            onSave={() => {
+              savePin({
+                boardId: selectedBoard?._id,
+              });
+            }}
+          />
+        </Modal>
+      )}
       <ImageContainer>
-        <Image
-          src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-          width="300px"
-          height="auto"
-        />
+        <Image src={props.pin.image.url} width="300px" height="auto" />
       </ImageContainer>
 
       <LeftContainer>
         <TopButtonContainer>
-          <ButtonWithIcon variants="transparent" size="regular">
-            men-out... <FaArrowDown />
+          <ButtonWithIcon
+            variants="transparent"
+            size="regular"
+            onClick={() => {
+              setShowSelectBoard(true);
+            }}
+          >
+            {selectedBoard || "Select Board"}
+            <FaChevronDown />
           </ButtonWithIcon>
           <Button variants="primary" size="regular">
             Save
           </Button>
         </TopButtonContainer>
         <H1 sizeMobile="1.2rem" alignMobile="center">
-          Basic White T-shirt - Men Casual Outfit
+          {props.pin.name}
         </H1>
         <H4 sizeMobile="0.8rem" alignMobile="center">
-          Follow James on Instagram @lifestyle_of_james
+          {props.pin.description}
         </H4>
-        <CreatorCard variant="single-pin" />
+        <CreatorCard
+          variant="single-pin"
+          avatar={""}
+          username={`@${props.pin.createdBy.username}`}
+          subtitle={""}
+          buttonText={"Follow"}
+          buttonVariant="primary"
+        />
         <CommentContainer>
           <CommentButtonContainer>
             <ButtonWithIcon variants="tertiary">

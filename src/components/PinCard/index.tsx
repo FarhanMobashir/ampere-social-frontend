@@ -1,17 +1,24 @@
 import { useState } from "react";
-import { FaArrowDown, FaGripHorizontal, FaPlus } from "react-icons/fa";
+import {
+  FaArrowDown,
+  FaChevronDown,
+  FaGripHorizontal,
+  FaPlus,
+  FaTrashAlt,
+} from "react-icons/fa";
 import styled from "styled-components";
 import { Button, ButtonWithIcon, IconButton } from "../Buttons";
 import { CreatorCard } from "../Creator";
+import { CustomLink } from "../CustomLink";
 import { H4, H6 } from "../Headings";
 import { Image } from "../Image";
 
 const PinContainer = styled.div`
-  width: 200px;
+  width: 180px;
   display: flex;
   flex-direction: column;
   @media (max-width: 768px) {
-    width: 50%;
+    width: 150px;
   }
 `;
 
@@ -26,6 +33,7 @@ const ImageContainer = styled.div`
   grid-column-end: 5;
   grid-row-start: 1;
   grid-row-end: 5;
+  cursor: zoom-in;
 `;
 
 const SaveButtonContainer = styled.div`
@@ -52,7 +60,11 @@ const BottomContainer = styled.div`
 `;
 
 interface PinCardProps {
-  variant: "normal" | "more-ideas" | "organise";
+  variant: "normal" | "more-ideas" | "organise" | "boardVariant";
+  name?: string;
+  creatorName?: string | null;
+  image?: string;
+  onClick?: () => void;
 }
 
 export const PinCard = (props: PinCardProps) => {
@@ -63,23 +75,19 @@ export const PinCard = (props: PinCardProps) => {
       onMouseOut={() => setIsHovering(false)}
     >
       <PinImageContainer>
-        <ImageContainer>
-          <Image
-            src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-            width="100%"
-            height="auto"
-          />
+        <ImageContainer onClick={props.onClick}>
+          <Image src={props.image} width="100%" height="200px" />
         </ImageContainer>
         <SelectPinContainer>
           {isHovering && props.variant === "normal" && (
             <ButtonWithIcon variants="transparent" size="x-small">
-              men-out... <FaArrowDown />
+              men-out... <FaChevronDown />
             </ButtonWithIcon>
           )}
         </SelectPinContainer>
         <SaveButtonContainer>
           {isHovering && props.variant === "normal" && (
-            <Button variants="tertiary" size="small">
+            <Button variants="primary" size="small">
               Save
             </Button>
           )}
@@ -93,13 +101,26 @@ export const PinCard = (props: PinCardProps) => {
               <FaGripHorizontal />
             </IconButton>
           )}
+          {props.variant === "boardVariant" && (
+            <IconButton variants="tertiary">
+              <FaTrashAlt />
+            </IconButton>
+          )}
         </SaveButtonContainer>
       </PinImageContainer>
       <BottomContainer>
         <H4 weight="bold" uppercase={false}>
-          Tee Outfit
+          {props.name}
         </H4>
-        <CreatorCard variant="pin-card" />
+        {props.variant === "normal" || props.variant === "more-ideas" ? (
+          <CreatorCard
+            variant="pin-card"
+            avatar={""}
+            username={props.creatorName || ""}
+            subtitle={""}
+            buttonText={""}
+          />
+        ) : null}
       </BottomContainer>
     </PinContainer>
   );

@@ -26,6 +26,7 @@ export const Image = styled.img<ImageProps>`
   }}
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  filter: ${(props) => props.filter};
   @media (max-width: 800px) {
     width: ${(props) => props.widthMobile || props.width};
     height: ${(props) => props.heightMobile || props.height};

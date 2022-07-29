@@ -12,6 +12,7 @@ export const defaultTheme = {
   lightTextColor: neutral[200],
   textColorLight: neutral[600],
   textColorDark: neutral[800],
+  disabledColor: neutral[500],
 };
 
 export const darkTheme = {
@@ -26,4 +27,5 @@ export const darkTheme = {
   lightTextColor: neutral[100],
   textColorLight: neutral[400],
   textColorDark: neutral[800],
+  disabledColor: neutral[600],
 };

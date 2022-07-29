@@ -4,4 +4,5 @@ export interface ImageProps {
   height: string;
   widthMobile?: string;
   heightMobile?: string;
+  filter?: string;
 }

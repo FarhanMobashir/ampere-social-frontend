@@ -1,10 +1,13 @@
 import styled from "styled-components";
+import { CustomLink } from "../CustomLink";
 import { H4, H6 } from "../Headings";
 import { Image } from "../Image";
 
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 10rem;
+  cursor: pointer;
 `;
 
 const ImageContainer = styled.div`
@@ -22,40 +25,47 @@ const BottomContainer = styled.div`
   align-items: center;
 `;
 
-export const BoardCard = () => {
+interface BoardCardProps {
+  board?: any;
+  onClick?: () => void;
+}
+
+export const BoardCard = (props: BoardCardProps) => {
   return (
-    <MainContainer>
+    <MainContainer onClick={props.onClick}>
       <ImageContainer>
         <Image
           src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
           width="10rem"
           height="8rem"
-          widthMobile="8rem"
-          heightMobile="6rem"
+          widthMobile="6rem"
+          heightMobile="5rem"
         />
         <RightContainer>
           <Image
             src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
             width="5rem"
             height="4rem"
-            widthMobile="4rem"
-            heightMobile="3rem"
+            widthMobile="3rem"
+            heightMobile="2.5rem"
           />
           <Image
             src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
             width="5rem"
             height="4rem"
-            widthMobile="4rem"
-            heightMobile="3rem"
+            widthMobile="3rem"
+            heightMobile="2.5rem"
           />
         </RightContainer>
       </ImageContainer>
       <H4 weight="bold" weightMobile="bold">
-        All Pins
+        {props.board.name.length > 15
+          ? props.board.name.substring(0, 15) + "..."
+          : props.board.name}
       </H4>
       <BottomContainer>
         <H6 weight="bold" weightMobile="bold" color="light">
-          234 Pins
+          {props.board.pins.length} Pins
         </H6>
         <H6 weight="bold" weightMobile="bold" color="light">
           2W

@@ -18,9 +18,11 @@ export const CommentCard = (props: any) => {
   return (
     <MainContainer>
       <CreatorCard
-        username="johndoe"
+        username="@johndoe"
         variant="comment-card"
         subtitle="Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit."
+        avatar={""}
+        buttonText={""}
       />
       <BottomContainer>
         <H6>2W</H6>
