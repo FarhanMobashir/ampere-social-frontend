@@ -1,9 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import { local } from "../../apiUrls";
 import { RootState } from "../store";
-import { products } from "./types/product";
 
-const local = "http://localhost:8000";
+const local = "http://192.168.1.21:8080";
 
 export const apiSlice = createApi({
   reducerPath: "userApi",
@@ -11,7 +9,7 @@ export const apiSlice = createApi({
     baseUrl: local,
     prepareHeaders: (headers, { getState }) => {
       // fetch header form redux--- if not found fetch it from local storage
-      const token = (getState() as RootState).user.userData?.token;
+      const token = (getState() as RootState).user.token;
 
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
@@ -20,79 +18,182 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Product", "Shop"],
+  tagTypes: ["user", "allUser", "following", "followers", "boards", "pins"],
   endpoints: (builder) => ({
     fetchMe: builder.query<any, void>({
       query: () => {
-        return "/vendor/me";
+        return "/api/user/me";
       },
+      providesTags: ["user"],
+      keepUnusedDataFor: 0,
     }),
-    getCategory: builder.query<any, void>({
-      query: () => {
-        return "/category";
-      },
-    }),
-    // ? product endpoint
-    createProduct: builder.mutation<any, any>({
-      query: ({ formData, shopId }) => ({
-        url: `/product/vendor/${shopId}`,
-        method: "POST",
-        body: formData,
+    // * user
+    updateMe: builder.mutation<any, any>({
+      query: (data) => ({
+        url: "/api/user/me",
+        method: "PUT",
+        body: data,
       }),
-      invalidatesTags: ["Product"],
+      invalidatesTags: ["user"],
     }),
-    getAllProduct: builder.query<typeof products, void>({
-      query: (shopId) => {
-        return `/product/vendor/${shopId}`;
-      },
-      providesTags: ["Product"],
+    // * user and followers/following
+    getAllUsers: builder.query<any, void>({
+      query: () => ({
+        url: "/api/user/all",
+      }),
+      keepUnusedDataFor: 0,
+      providesTags: ["allUser"],
     }),
-    deleteSingleProduct: builder.mutation({
-      query: ({ shopId, productId }: any) => ({
-        url: `/product/vendor/${shopId}/${productId}`,
+    getSingleUsers: builder.query<any, any>({
+      query: (id) => ({
+        url: `/api/user/${id}`,
+      }),
+      keepUnusedDataFor: 0,
+    }),
+
+    getAllFollowers: builder.query<any, void>({
+      query: () => ({
+        url: "/api/user/followers",
+      }),
+      providesTags: ["followers"],
+    }),
+    getAllFollowings: builder.query<any, void>({
+      query: () => ({
+        url: "/api/user/followings",
+      }),
+      providesTags: ["following"],
+      keepUnusedDataFor: 0,
+    }),
+    followUser: builder.mutation<any, any>({
+      query: ({ id }) => ({
+        url: `/api/user/follow/${id}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["allUser", "user", "following", "followers"],
+    }),
+    unfollowUser: builder.mutation<any, any>({
+      query: ({ id }) => ({
+        url: `/api/user/unfollow/${id}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["allUser", "user", "followers", "following"],
+    }),
+    // * boards
+    getAllBoards: builder.query<any, void>({
+      query: () => ({
+        url: "/api/boards",
+      }),
+      providesTags: ["boards"],
+    }),
+    getSingleBoard: builder.query<any, any>({
+      query: (id) => ({
+        url: `api/boards/${id}`,
+      }),
+      providesTags: ["boards"],
+    }),
+    deleteSingleBoard: builder.mutation<any, void>({
+      query: (id) => ({
+        url: `api/boards${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Product"],
+      invalidatesTags: ["boards"],
     }),
-    updateSingleProduct: builder.mutation({
-      query: ({ shopId, productId, body }: any) => ({
-        url: `/product/vendor/${shopId}/${productId}`,
-        method: "PATCH",
-        body: body,
+    createBoard: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `api/boards`,
+        method: "POST",
+        body: data,
       }),
-      invalidatesTags: ["Product"],
+      invalidatesTags: ["boards"],
     }),
-    // s
-    getShops: builder.query<any, void>({
-      query: () => {
-        return "/shop/shops";
-      },
-      providesTags: ["Shop"],
-    }),
-    updateSingleShop: builder.mutation({
-      query: ({ shopId, body }: any) => ({
-        url: `/shop/${shopId}`,
-        method: "PATCH",
-        body: body,
+    updateBoard: builder.mutation<any, void>({
+      query: (data) => ({
+        url: `api/boards`,
+        method: "PUT",
+        body: data,
       }),
-      invalidatesTags: ["Product", "Shop"],
+      invalidatesTags: ["boards"],
     }),
-    getAllProductS: builder.query<typeof products, void>({
-      query: () => {
-        return `/product/superadmin/p/all`;
-      },
+    getAllBoardsOfUser: builder.query<any, any>({
+      query: (id) => ({
+        url: `/api/boards/user/${id}`,
+      }),
+      providesTags: ["boards"],
+    }),
+    getSingleBoardsOfUser: builder.query<any, any>({
+      query: ({ id, boardId }) => ({
+        url: `/api/boards/user/${id}${boardId}`,
+      }),
+      providesTags: ["boards"],
+    }),
+    // pins
+    getAllPins: builder.query<any, void>({
+      query: () => ({
+        url: "/api/pins",
+      }),
+      providesTags: ["pins"],
+      keepUnusedDataFor: 0,
+    }),
+    getSinglePin: builder.query<any, any>({
+      query: (id) => ({
+        url: `api/pins/${id}`,
+      }),
+      providesTags: ["pins"],
+    }),
+    deleteSinglePin: builder.mutation<any, void>({
+      query: (id) => ({
+        url: `api/pins/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["pins"],
+    }),
+    createPin: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `api/pins`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["pins"],
+    }),
+    updatePin: builder.mutation<any, any>({
+      query: ({ id, data }) => ({
+        url: `api/pins/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["pins"],
+    }),
+    savePin: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `api/pins/save`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["pins"],
     }),
   }),
 });
 
 export const {
   useFetchMeQuery,
-  useGetCategoryQuery,
-  useCreateProductMutation,
-  useGetAllProductQuery,
-  useDeleteSingleProductMutation,
-  useUpdateSingleProductMutation,
-  useGetShopsQuery,
-  useGetAllProductSQuery,
-  useUpdateSingleShopMutation,
+  useUpdateMeMutation,
+  useGetAllUsersQuery,
+  useGetAllFollowersQuery,
+  useGetAllFollowingsQuery,
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+  useGetSingleUsersQuery,
+  useGetAllBoardsQuery,
+  useGetSingleBoardQuery,
+  useDeleteSingleBoardMutation,
+  useCreateBoardMutation,
+  useUpdateBoardMutation,
+  useGetAllBoardsOfUserQuery,
+  useGetSingleBoardsOfUserQuery,
+  useGetAllPinsQuery,
+  useGetSinglePinQuery,
+  useCreatePinMutation,
+  useUpdatePinMutation,
+  useDeleteSinglePinMutation,
+  useSavePinMutation,
 } = apiSlice;

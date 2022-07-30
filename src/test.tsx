@@ -83,7 +83,7 @@ export const Text = () => {
       <PinCard variant="normal" />
       <PinCard variant="more-ideas" />
       <SinglePin />
-      <ProfileCard />
+      <ProfileCard type={"user"} />
       <BoardCard />
       <TextFieldWithLabel label="Email" />
       <AppHeader />

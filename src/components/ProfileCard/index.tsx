@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Button } from "../Buttons";
+import { CustomLink } from "../CustomLink";
 import { H1, H5 } from "../Headings";
 import { Image } from "../Image";
 
@@ -18,15 +19,37 @@ const MiddleContainer = styled.div`
   gap: 1rem;
 `;
 
-export const ProfileCard = () => {
+const Avatar = styled.div`
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #fcd5db;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => props.theme.textColorDark};
+  font-size: 3rem;
+  font-weight: bold;
+`;
+
+interface ProfileCardProps {
+  avatar?: string;
+  username?: string | undefined;
+  followers?: number;
+  following?: number;
+  bio?: string;
+  type: "user" | "creator";
+}
+
+export const ProfileCard = (props: ProfileCardProps) => {
   return (
     <MainContainer>
-      <Image
-        type="circle"
-        width="150px"
-        height="150px"
-        src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-      />
+      {props.avatar && (
+        <Image type="circle" width="150px" height="150px" src={props.avatar} />
+      )}
+      {!props.avatar && (
+        <Avatar>{props.username ? props.username[1].toUpperCase() : ""}</Avatar>
+      )}
       <H1
         size="30px"
         sizeMobile="24px"
@@ -34,20 +57,30 @@ export const ProfileCard = () => {
         align="center"
         alignMobile="center"
       >
-        John Doe
+        {props.username}
       </H1>
       <MiddleContainer>
-        <H5 weight="bold" color="light">
-          11 Followers
-        </H5>
-        <H5 weight="bold" color="light">
-          84 Following
-        </H5>
+        <CustomLink to={props.type === "user" ? "/home/followers" : ""}>
+          <H5 weight="bold" color="light">
+            Followers {props.followers}
+          </H5>
+        </CustomLink>
+        <CustomLink to={props.type === "user" ? "/home/followings" : ""}>
+          <H5 weight="bold" color="light">
+            Following {props.following}
+          </H5>
+        </CustomLink>
       </MiddleContainer>
-      <H5 weight="bold" color="dark">
-        http://www.john-doe.com
+      <H5 weight="bold" color="dark" align="center" alignMobile="center">
+        {props.bio}
       </H5>
-      <Button variants="tertiary">Edit Profile</Button>
+      <MiddleContainer>
+        {props.type === "user" && (
+          <CustomLink to="/home/settings">
+            <Button variants="tertiary">Edit Profile</Button>
+          </CustomLink>
+        )}
+      </MiddleContainer>
     </MainContainer>
   );
 };

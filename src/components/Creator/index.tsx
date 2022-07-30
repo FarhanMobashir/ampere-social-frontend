@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Button } from "../Buttons";
+import { CustomLink } from "../CustomLink";
 import { H5, H6 } from "../Headings";
 import { Image } from "../Image";
 import { Paragraph } from "../Paragraphs";
@@ -21,39 +22,74 @@ const ContentContainer = styled.div`
   gap: 0.1rem;
 `;
 
+interface AvatarProps {
+  size?: "small" | "regular";
+}
+const Avatar = styled.div<AvatarProps>`
+  width: ${(props) => (props.size === "small" ? "30px" : "40px")};
+  height: ${(props) => (props.size === "small" ? "30px" : "40px")};
+  border-radius: 50%;
+  background-color: #fcd5db;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => props.theme.textColorDark};
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
 interface CreatorCardProps {
   variant: "pin-card" | "single-pin" | "comment-card";
-  avatar?: string;
-  username?: string;
-  subtitle?: string;
+  avatar: string;
+  username: string | null;
+  subtitle: string;
+  buttonText: string;
+  onClick?: () => void;
+  buttonVariant?: "primary" | "secondary" | "tertiary";
+  link?: string | undefined;
 }
 
 export const CreatorCard = (props: CreatorCardProps) => {
   return (
     <MainContainer>
       <CreatorSection>
-        <Image
-          src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-          height={props.variant === "single-pin" ? "50px" : "35px"}
-          width={props.variant === "single-pin" ? "50px" : "35px"}
-          type="circle"
-        />
+        <CustomLink to={props.link || ""}>
+          {props.avatar && (
+            <Image
+              src={props.avatar}
+              height={props.variant === "single-pin" ? "50px" : "35px"}
+              width={props.variant === "single-pin" ? "50px" : "35px"}
+              type="circle"
+            />
+          )}
+          {!props.avatar && (
+            <Avatar
+              size={props.variant === "single-pin" ? "regular" : "regular"}
+            >
+              {props.username && props.username[1].toUpperCase()}
+            </Avatar>
+          )}
+        </CustomLink>
         <ContentContainer>
           {props.variant === "single-pin" ? (
-            <H5 weight="bold">{props.username || "The Indian Gen..."}</H5>
+            <H5 weight="bold">{props.username}</H5>
           ) : (
-            <H6 weight="bold">{props.username || "The Indian Gen..."}</H6>
+            <H6 weight="bold">{props.username}</H6>
           )}
           {props.variant !== "pin-card" && (
             <Paragraph weight="bold" color="light">
-              {props.subtitle || "10 Followers"}
+              {props.subtitle}
             </Paragraph>
           )}
         </ContentContainer>
       </CreatorSection>
       {props.variant === "single-pin" && (
-        <Button variants="tertiary" size="small">
-          Follow
+        <Button
+          variants={props.buttonVariant}
+          size="small"
+          onClick={props.onClick}
+        >
+          {props.buttonText}
         </Button>
       )}
     </MainContainer>

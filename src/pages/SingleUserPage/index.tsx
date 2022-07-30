@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { BoardCard } from "../../components/BoardCard";
 import { Button } from "../../components/Buttons";
@@ -12,7 +12,8 @@ import {
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   useFetchMeQuery,
-  useGetAllBoardsQuery,
+  useGetAllBoardsOfUserQuery,
+  useGetSingleUsersQuery,
 } from "../../store/services/api-slice";
 
 const Container = styled.div`
@@ -45,11 +46,11 @@ const BoardsListingContainer = styled.div`
   align-items: center;
 `;
 
-export const UserProfilePage = () => {
+export const SingleUserPage = () => {
   const dispatch = useAppDispatch();
-  const { data = {}, isLoading } = useFetchMeQuery();
-  const { data: allBoards } = useGetAllBoardsQuery();
-  const navigate = useNavigate();
+  const { id } = useParams();
+  const { data = {}, isLoading } = useGetSingleUsersQuery(id);
+  const { data: allBoards } = useGetAllBoardsOfUserQuery(id);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -58,10 +59,10 @@ export const UserProfilePage = () => {
     <Container>
       <ProfileCard
         username={`@${data.data.username}`}
-        bio={data.data.bio}
         followers={data.data.followers.length}
         following={data.data.following.length}
-        type="user"
+        type="creator"
+        bio={data.data.bio}
       />
       <TabsContainer>
         <Tab isActive>
@@ -73,13 +74,7 @@ export const UserProfilePage = () => {
       </TabsContainer>
       <BoardsListingContainer>
         {allBoards?.data?.map((item: any) => (
-          <BoardCard
-            board={item}
-            key={item}
-            onClick={() => {
-              navigate(`/home/boards/${item._id}`);
-            }}
-          />
+          <BoardCard board={item} key={item} />
         ))}
       </BoardsListingContainer>
       <Button

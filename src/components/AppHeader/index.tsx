@@ -4,8 +4,7 @@ import logo from "../../assets/logo.svg";
 import { Button, ButtonWithIcon, IconButton } from "../Buttons";
 import {
   FaArrowDown,
-  FaBell,
-  FaCommentAlt,
+  FaCompass,
   FaHome,
   FaMoon,
   FaPlus,
@@ -16,6 +15,8 @@ import { TextField } from "../Inputs";
 import { useResponsive } from "../../context/ResposiveContext";
 import { useThemeContext } from "../../context/ThemeContext";
 import { CustomLink } from "../CustomLink";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MainContainer = styled.div`
   display: flex;
@@ -49,18 +50,32 @@ const LogoContainer = styled.div`
 export const AppHeader = () => {
   const { isMobile } = useResponsive();
   const { toggleTheme, mode } = useThemeContext();
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   if (isMobile) {
     return (
       <MobileContainer>
-        <IconButton variants="tertiary" size="large">
-          <FaHome />
-        </IconButton>
-        <IconButton variants="tertiary" size="large">
-          <FaSearch />
-        </IconButton>
-        <IconButton variants="primary" size="large">
-          <FaPlus />
-        </IconButton>
+        <CustomLink to="/home">
+          <IconButton variants="tertiary" size="large">
+            <FaHome />
+          </IconButton>
+        </CustomLink>
+        <CustomLink to="/home/discover">
+          <IconButton variants="tertiary" size="large">
+            <FaCompass />
+          </IconButton>
+        </CustomLink>
+        <CustomLink to="/home/mobile">
+          <IconButton variants="tertiary" size="large">
+            <FaSearch />
+          </IconButton>
+        </CustomLink>
+        <CustomLink to="/home/create">
+          <IconButton variants="primary" size="large">
+            <FaPlus />
+          </IconButton>
+        </CustomLink>
+
         <CustomLink to="/home/user">
           <Image
             type="circle"
@@ -83,18 +98,36 @@ export const AppHeader = () => {
   } else {
     return (
       <MainContainer>
-        <LogoContainer>
-          <Image width="40px" height="auto" src={logo} type="circle" />
-        </LogoContainer>
+        <CustomLink to="/home">
+          <LogoContainer>
+            <Image width="40px" height="auto" src={logo} type="circle" />
+          </LogoContainer>
+        </CustomLink>
         <Button variants="secondary">Home</Button>
-        <ButtonWithIcon variants="tertiary">
-          Create
-          <FaArrowDown />
-        </ButtonWithIcon>
-        <TextField placeholder="Search" />
-        <IconButton variants="tertiary">
-          <FaBell />
-        </IconButton>
+        <CustomLink to="/home/create">
+          <ButtonWithIcon variants="tertiary">
+            Create
+            <FaArrowDown />
+          </ButtonWithIcon>
+        </CustomLink>
+
+        <TextField
+          placeholder="Search"
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              navigate("/home/search");
+            }
+          }}
+          value={search}
+        />
+        <CustomLink to="/home/discover">
+          <IconButton variants="tertiary">
+            <FaCompass />
+          </IconButton>
+        </CustomLink>
         <CustomLink to="/home/user">
           <Image
             type="circle"
