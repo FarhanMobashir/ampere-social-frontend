@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { FaPlus, FaPlusCircle } from "react-icons/fa";
 import styled from "styled-components";
+
 import {
   useCreateBoardMutation,
   useSavePinMutation,
 } from "../../store/services/api-slice";
+
 import { Button, ButtonWithIcon } from "../Buttons";
 import { H1, H5 } from "../Headings";
 import { Image } from "../Image";
 import { TextField } from "../Inputs";
 
 const MainContainer = styled.div`
+
   background-color: ${({ theme }) => theme.bgColor};
+
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -51,13 +55,16 @@ const BoardBox = styled.div`
 `;
 
 interface SelectBoardProps {
+
   boards: any[];
   onClose: () => void;
   pin: any;
+
 }
 
 export const SelectBoard = (props: SelectBoardProps) => {
   const [boardName, setBoardName] = useState("");
+
   const [selectedBoard, setSelectedBoard] = useState<any>(null);
   const [createBoard] = useCreateBoardMutation();
   const [savePin] = useSavePinMutation();
@@ -67,7 +74,9 @@ export const SelectBoard = (props: SelectBoardProps) => {
       <H1 align="center">Select Board</H1>
       <BoardListingContainer>
         {props.boards.map((board: any, idx) => (
+
           <BoardBox onClick={() => setSelectedBoard(board)}>
+
             <Image
               src="https://picsum.photos/id/1/200/200"
               height="60"
@@ -95,6 +104,7 @@ export const SelectBoard = (props: SelectBoardProps) => {
         />
       </CreateBoardContainer>
       <BottomContainer>
+
         <Button
           variants="primary"
           onClick={() => {
@@ -106,6 +116,7 @@ export const SelectBoard = (props: SelectBoardProps) => {
             }
           }}
         >
+
           Save
         </Button>
         <Button variants="tertiary" onClick={props.onClose}>

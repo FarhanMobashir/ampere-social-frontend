@@ -154,6 +154,7 @@ export const Create = () => {
   const { data, isLoading: isLoadingBoards } = useGetAllBoardsQuery();
   const [createBoard] = useCreateBoardMutation();
   const [createPin, { isLoading: isLoadingCreatePin }] = useCreatePinMutation();
+
   const [image, setImage] = useState<any>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [showSelectBoard, setShowSelectBoard] = useState(false);

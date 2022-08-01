@@ -1,10 +1,12 @@
 import { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { BoardCard } from "../../components/BoardCard";
 import { Button } from "../../components/Buttons";
 import { H5 } from "../../components/Headings";
 import { PinCard } from "../../components/PinCard";
+
 import { ProfileCard } from "../../components/ProfileCard";
 import {
   setHasOnboarded,
@@ -16,6 +18,7 @@ import {
   useFetchMeQuery,
   useGetAllBoardsQuery,
   useGetAllPinsOfUserQuery,
+
 } from "../../store/services/api-slice";
 
 const Container = styled.div`
@@ -54,6 +57,7 @@ export const UserProfilePage = () => {
   const { data: allBoards } = useGetAllBoardsQuery();
   const { data: allPinsCreatedByUser } = useGetAllPinsOfUserQuery();
   const [activeTab, setActiveTab] = useState<"created" | "saved">("saved");
+
   const navigate = useNavigate();
 
   if (isLoading) {
@@ -83,6 +87,7 @@ export const UserProfilePage = () => {
             setActiveTab("saved");
           }}
         >
+
           <H5 weight="bold">Saved</H5>
         </Tab>
       </TabsContainer>
@@ -109,6 +114,7 @@ export const UserProfilePage = () => {
               }}
             />
           ))}
+
       </BoardsListingContainer>
       <Button
         variants="primary"

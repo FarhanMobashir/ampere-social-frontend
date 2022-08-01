@@ -102,6 +102,7 @@ export const apiSlice = createApi({
       query: (data) => ({
         url: `api/boards`,
         method: "POST",
+
         body: data,
       }),
       invalidatesTags: ["boards"],
@@ -139,6 +140,7 @@ export const apiSlice = createApi({
         url: "/api/pins",
       }),
       // providesTags: ["pins"],
+
       keepUnusedDataFor: 0,
     }),
     getSinglePin: builder.query<any, any>({

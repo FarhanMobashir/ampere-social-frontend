@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaUpload } from "react-icons/fa";
+
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Button } from "../../components/Buttons";
@@ -160,6 +161,7 @@ const EditProfile = () => {
           </ButtonContainer>
           <UploadImageInput type="file" />
         </UploadImageContainer>
+
         <Button
           variants="primary"
           onClick={() => {

@@ -74,6 +74,7 @@ interface SinglePinProps {
 }
 export const SinglePin = (props: SinglePinProps) => {
   const [showSelectBoard, setShowSelectBoard] = useState(false);
+
   const { data, isLoading: isLoadingBoards } = useGetAllBoardsQuery();
   const [savePin] = useSavePinMutation();
 
@@ -88,6 +89,7 @@ export const SinglePin = (props: SinglePinProps) => {
               setShowSelectBoard(false);
             }}
             pin={props.pin}
+
           />
         </Modal>
       )}
