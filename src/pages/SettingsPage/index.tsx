@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FaUpload } from "react-icons/fa";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Button } from "../../components/Buttons";
@@ -59,6 +60,47 @@ const InterestBox = styled.div`
   border-radius: 0.5rem;
 `;
 
+const ProfileImageContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+`;
+
+const Avatar = styled.div`
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #fcd5db;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => props.theme.textColorDark};
+  font-size: 3rem;
+  font-weight: bold;
+  grid-column: 1 /3;
+  grid-row: 1 /3;
+`;
+
+const UploadImageContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 82px;
+  height: 36px;
+`;
+const UploadImageInput = styled.input`
+  opacity: 0;
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  height: 36px;
+  cursor: pointer;
+`;
+
+const ButtonContainer = styled.div`
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  height: 36px;
+`;
+
 const EditProfile = () => {
   const { data, isLoading } = useFetchMeQuery();
   const [updateUser, { isError, data: updatedUserData, isSuccess }] =
@@ -97,16 +139,27 @@ const EditProfile = () => {
         People visiting your profile will see the following information:
       </Paragraph>
       <UserProfilePhotoContainer>
-        {data.data.avatar && (
-          <Image
-            src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
-            width="70px"
-            height="70px"
-            type="circle"
-          />
-        )}
-
-        <Button variants="tertiary">Change</Button>
+        <ProfileImageContainer>
+          {data.data.avatar && (
+            <Image
+              src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+              width="70px"
+              height="70px"
+              type="circle"
+            />
+          )}
+          {!data?.data.avatar && (
+            <>
+              <Avatar>{data?.data.username[0].toUpperCase()}</Avatar>
+            </>
+          )}
+        </ProfileImageContainer>
+        <UploadImageContainer>
+          <ButtonContainer>
+            <Button variants="tertiary">Change</Button>
+          </ButtonContainer>
+          <UploadImageInput type="file" />
+        </UploadImageContainer>
         <Button
           variants="primary"
           onClick={() => {

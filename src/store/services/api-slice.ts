@@ -129,9 +129,16 @@ export const apiSlice = createApi({
     // pins
     getAllPins: builder.query<any, void>({
       query: () => ({
-        url: "/api/pins",
+        url: "/api/pins/all",
       }),
       providesTags: ["pins"],
+      keepUnusedDataFor: 0,
+    }),
+    getAllPinsOfUser: builder.query<any, void>({
+      query: () => ({
+        url: "/api/pins",
+      }),
+      // providesTags: ["pins"],
       keepUnusedDataFor: 0,
     }),
     getSinglePin: builder.query<any, any>({
@@ -191,6 +198,7 @@ export const {
   useGetAllBoardsOfUserQuery,
   useGetSingleBoardsOfUserQuery,
   useGetAllPinsQuery,
+  useGetAllPinsOfUserQuery,
   useGetSinglePinQuery,
   useCreatePinMutation,
   useUpdatePinMutation,
