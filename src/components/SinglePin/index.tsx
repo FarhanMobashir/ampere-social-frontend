@@ -73,8 +73,8 @@ interface SinglePinProps {
   pin?: any;
 }
 export const SinglePin = (props: SinglePinProps) => {
-  const [showSelectBoard, setShowSelectBoard] = useState(true);
-  const [selectedBoard, setSelectedBoard] = useState<any | null>(null);
+  const [showSelectBoard, setShowSelectBoard] = useState(false);
+
   const { data, isLoading: isLoadingBoards } = useGetAllBoardsQuery();
   const [savePin] = useSavePinMutation();
 
@@ -85,18 +85,11 @@ export const SinglePin = (props: SinglePinProps) => {
         <Modal>
           <SelectBoard
             boards={data?.data}
-            onSelect={() => {
-              setSelectedBoard(data?.data._id);
-              setShowSelectBoard(false);
-            }}
             onClose={() => {
               setShowSelectBoard(false);
             }}
-            onSave={() => {
-              savePin({
-                boardId: selectedBoard?._id,
-              });
-            }}
+            pin={props.pin}
+
           />
         </Modal>
       )}
@@ -113,10 +106,16 @@ export const SinglePin = (props: SinglePinProps) => {
               setShowSelectBoard(true);
             }}
           >
-            {selectedBoard || "Select Board"}
+            Select Board
             <FaChevronDown />
           </ButtonWithIcon>
-          <Button variants="primary" size="regular">
+          <Button
+            variants="primary"
+            size="regular"
+            onClick={() => {
+              setShowSelectBoard(true);
+            }}
+          >
             Save
           </Button>
         </TopButtonContainer>

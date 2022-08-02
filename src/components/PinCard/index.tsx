@@ -60,7 +60,9 @@ const BottomContainer = styled.div`
 `;
 
 interface PinCardProps {
-  variant: "normal" | "more-ideas" | "organise" | "boardVariant";
+
+  variant: "normal" | "more-ideas" | "organise" | "boardVariant" | "created";
+
   name?: string;
   creatorName?: string | null;
   image?: string;
@@ -106,6 +108,12 @@ export const PinCard = (props: PinCardProps) => {
               <FaTrashAlt />
             </IconButton>
           )}
+          {props.variant === "created" && (
+            <IconButton variants="tertiary">
+              <FaEdit />
+            </IconButton>
+          )}
+
         </SaveButtonContainer>
       </PinImageContainer>
       <BottomContainer>

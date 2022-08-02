@@ -153,7 +153,8 @@ const TextFieldContainer = styled.div``;
 export const Create = () => {
   const { data, isLoading: isLoadingBoards } = useGetAllBoardsQuery();
   const [createBoard] = useCreateBoardMutation();
-  const [createPin] = useCreatePinMutation();
+  const [createPin, { isLoading: isLoadingCreatePin }] = useCreatePinMutation();
+
   const [image, setImage] = useState<any>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [showSelectBoard, setShowSelectBoard] = useState(false);
@@ -306,10 +307,10 @@ export const Create = () => {
             style={{
               margin: "0 auto",
             }}
-            variants="primary"
+            variants={isLoadingCreatePin ? "disabled" : "primary"}
             onClick={createPinHandler}
           >
-            Create Pin
+            {isLoadingCreatePin ? "Creating Pin..." : "Create Pin"}
           </Button>
         </RightContainer>
       </AddPinContainer>

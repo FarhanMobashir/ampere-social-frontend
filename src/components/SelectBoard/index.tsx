@@ -1,14 +1,21 @@
 import { useState } from "react";
 import { FaPlus, FaPlusCircle } from "react-icons/fa";
 import styled from "styled-components";
-import { useCreateBoardMutation } from "../../store/services/api-slice";
+
+import {
+  useCreateBoardMutation,
+  useSavePinMutation,
+} from "../../store/services/api-slice";
+
 import { Button, ButtonWithIcon } from "../Buttons";
 import { H1, H5 } from "../Headings";
 import { Image } from "../Image";
 import { TextField } from "../Inputs";
 
 const MainContainer = styled.div`
-  background-color: ${({ theme }) => theme.lightBgColor};
+
+  background-color: ${({ theme }) => theme.bgColor};
+
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -48,22 +55,28 @@ const BoardBox = styled.div`
 `;
 
 interface SelectBoardProps {
-  onSelect: (board: any) => any;
+
   boards: any[];
   onClose: () => void;
-  onSave: () => void;
+  pin: any;
+
 }
 
 export const SelectBoard = (props: SelectBoardProps) => {
   const [boardName, setBoardName] = useState("");
+
+  const [selectedBoard, setSelectedBoard] = useState<any>(null);
   const [createBoard] = useCreateBoardMutation();
+  const [savePin] = useSavePinMutation();
 
   return (
     <MainContainer>
       <H1 align="center">Select Board</H1>
       <BoardListingContainer>
         {props.boards.map((board: any, idx) => (
-          <BoardBox onClick={() => props.onSelect(props.boards[idx])}>
+
+          <BoardBox onClick={() => setSelectedBoard(board)}>
+
             <Image
               src="https://picsum.photos/id/1/200/200"
               height="60"
@@ -91,7 +104,19 @@ export const SelectBoard = (props: SelectBoardProps) => {
         />
       </CreateBoardContainer>
       <BottomContainer>
-        <Button variants="primary" onClick={props.onSave}>
+
+        <Button
+          variants="primary"
+          onClick={() => {
+            if (selectedBoard) {
+              savePin({
+                boardId: selectedBoard._id,
+                pinId: props.pin._id,
+              });
+            }
+          }}
+        >
+
           Save
         </Button>
         <Button variants="tertiary" onClick={props.onClose}>
