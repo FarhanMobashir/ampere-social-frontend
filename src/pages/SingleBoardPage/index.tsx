@@ -8,15 +8,22 @@ import {
   FaParachuteBox,
   FaSmileBeam,
   FaStarAndCrescent,
+  FaTrash,
 } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Button } from "../../components/Buttons";
+import { EmptyState } from "../../components/EmptyState";
 import { H1, H2, H3, H6 } from "../../components/Headings";
 import { TextFieldWithLabel } from "../../components/Inputs";
 import { Modal } from "../../components/Modal";
 import { PinCard } from "../../components/PinCard";
-import { useGetSingleBoardQuery } from "../../store/services/api-slice";
+import {
+  useDeleteSingleBoardMutation,
+  useGetSingleBoardQuery,
+  useRemovePinMutation,
+  useUpdateBoardMutation,
+} from "../../store/services/api-slice";
 
 const MainContainer = styled.div`
   display: flex;
@@ -69,35 +76,86 @@ const ModalButtonContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin: 1rem 0rem;
+`;
+
+const EmptyStateContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const SingleBoardPage = () => {
   const { id } = useParams();
   const { data } = useGetSingleBoardQuery(id);
   const [showEditBoard, setShowEditBoard] = useState(false);
+  const [showDeleteBoard, setShowDeleteBoard] = useState(false);
   const [editBoardName, setEditBoardName] = useState("");
+  const [updateBoard] = useUpdateBoardMutation();
+  const [deleteBoard] = useDeleteSingleBoardMutation();
+  const [removePin] = useRemovePinMutation();
+
   const navigate = useNavigate();
   return (
     <MainContainer>
-      {showEditBoard && (
+      {(showEditBoard || showDeleteBoard) && (
         <Modal>
           <EditBoardModalContainer>
-            <H2>Edit Board</H2>
-            <TextFieldWithLabel
-              placeholder="Edit board name"
-              label="Edit name"
-              value={editBoardName}
-              onChange={(e) => setEditBoardName(e.target.value)}
-            />
-            <ModalButtonContainer>
-              <Button variants="primary">Save</Button>
-              <Button
-                variants="secondary"
-                onClick={() => setShowEditBoard(false)}
-              >
-                Close
-              </Button>
-            </ModalButtonContainer>
+            {showEditBoard && (
+              <>
+                <H2>Edit Board</H2>
+                <TextFieldWithLabel
+                  placeholder="Edit board name"
+                  label="Edit name"
+                  value={editBoardName}
+                  onChange={(e) => setEditBoardName(e.target.value)}
+                />
+                <ModalButtonContainer>
+                  <Button
+                    variants="primary"
+                    onClick={() => {
+                      updateBoard({
+                        id,
+                        data: {
+                          name: editBoardName,
+                        },
+                      });
+                      setShowEditBoard(false);
+                    }}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    variants="secondary"
+                    onClick={() => setShowEditBoard(false)}
+                  >
+                    Close
+                  </Button>
+                </ModalButtonContainer>
+              </>
+            )}
+            {showDeleteBoard && (
+              <>
+                <H2>Are you sure ?</H2>
+                <ModalButtonContainer>
+                  <Button
+                    variants="primary"
+                    onClick={() => {
+                      deleteBoard(id);
+                      navigate("/home/user");
+                    }}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variants="secondary"
+                    onClick={() => setShowDeleteBoard(false)}
+                  >
+                    Close
+                  </Button>
+                </ModalButtonContainer>
+              </>
+            )}
           </EditBoardModalContainer>
         </Modal>
       )}
@@ -131,13 +189,13 @@ export const SingleBoardPage = () => {
         <IconBox>
           <IconButtonContainer
             onClick={() => {
-              navigate(`/home/boards/${data?.data?._id}/organise`);
+              setShowDeleteBoard(true);
             }}
           >
-            <FaParachuteBox />
+            <FaTrash />
           </IconButtonContainer>
           <H6 weight="bold" weightMobile="bold">
-            Organise
+            Delete
           </H6>
         </IconBox>
       </ButtonContainer>
@@ -148,9 +206,21 @@ export const SingleBoardPage = () => {
             creatorName={`@${i.createdBy.username}`}
             variant="boardVariant"
             key={i._id}
+            image={i.image.url}
+            onRemove={() => {
+              removePin({
+                boardId: id,
+                pinId: i._id,
+              });
+            }}
           />
         ))}
       </PinListingContainer>
+      {data?.data?.pins.length === 0 && (
+        <EmptyStateContainer>
+          <EmptyState title="No pins yet" subtitle="Add a pin to get started" />
+        </EmptyStateContainer>
+      )}
     </MainContainer>
   );
 };

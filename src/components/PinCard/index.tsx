@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   FaArrowDown,
   FaChevronDown,
+  FaEdit,
   FaGripHorizontal,
   FaPlus,
   FaTrashAlt,
@@ -60,13 +61,13 @@ const BottomContainer = styled.div`
 `;
 
 interface PinCardProps {
-
   variant: "normal" | "more-ideas" | "organise" | "boardVariant" | "created";
 
   name?: string;
   creatorName?: string | null;
   image?: string;
   onClick?: () => void;
+  onRemove?: () => void;
 }
 
 export const PinCard = (props: PinCardProps) => {
@@ -104,7 +105,7 @@ export const PinCard = (props: PinCardProps) => {
             </IconButton>
           )}
           {props.variant === "boardVariant" && (
-            <IconButton variants="tertiary">
+            <IconButton variants="tertiary" onClick={props.onRemove}>
               <FaTrashAlt />
             </IconButton>
           )}
@@ -113,7 +114,6 @@ export const PinCard = (props: PinCardProps) => {
               <FaEdit />
             </IconButton>
           )}
-
         </SaveButtonContainer>
       </PinImageContainer>
       <BottomContainer>

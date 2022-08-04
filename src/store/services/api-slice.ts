@@ -91,9 +91,9 @@ export const apiSlice = createApi({
       }),
       providesTags: ["boards"],
     }),
-    deleteSingleBoard: builder.mutation<any, void>({
+    deleteSingleBoard: builder.mutation<any, any>({
       query: (id) => ({
-        url: `api/boards${id}`,
+        url: `api/boards/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["boards"],
@@ -102,14 +102,13 @@ export const apiSlice = createApi({
       query: (data) => ({
         url: `api/boards`,
         method: "POST",
-
         body: data,
       }),
       invalidatesTags: ["boards"],
     }),
-    updateBoard: builder.mutation<any, void>({
-      query: (data) => ({
-        url: `api/boards`,
+    updateBoard: builder.mutation<any, any>({
+      query: ({ id, data }) => ({
+        url: `api/boards/${id}`,
         method: "PUT",
         body: data,
       }),
@@ -180,6 +179,17 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["pins"],
     }),
+    removePin: builder.mutation<any, any>({
+      query: ({ boardId, pinId }) => ({
+        url: `api/pins/remove`,
+        method: "POST",
+        body: {
+          boardId,
+          pinId,
+        },
+      }),
+      invalidatesTags: ["pins", "boards"],
+    }),
   }),
 });
 
@@ -206,4 +216,5 @@ export const {
   useUpdatePinMutation,
   useDeleteSinglePinMutation,
   useSavePinMutation,
+  useRemovePinMutation,
 } = apiSlice;
