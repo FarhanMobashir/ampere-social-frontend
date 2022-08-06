@@ -218,7 +218,11 @@ export const SingleBoardPage = () => {
       </PinListingContainer>
       {data?.data?.pins.length === 0 && (
         <EmptyStateContainer>
-          <EmptyState title="No pins yet" subtitle="Add a pin to get started" />
+          <EmptyState
+            title="No pins yet"
+            subtitle="Add a pin to get started"
+            btnText="Create Pin"
+          />
         </EmptyStateContainer>
       )}
     </MainContainer>

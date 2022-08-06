@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { BoardCard } from "../../components/BoardCard";
 import { Button } from "../../components/Buttons";
+import { EmptyState } from "../../components/EmptyState";
 import { H5 } from "../../components/Headings";
+import { Modal } from "../../components/Modal";
 import { PinCard } from "../../components/PinCard";
 
 import { ProfileCard } from "../../components/ProfileCard";
@@ -18,7 +20,6 @@ import {
   useFetchMeQuery,
   useGetAllBoardsQuery,
   useGetAllPinsOfUserQuery,
-
 } from "../../store/services/api-slice";
 
 const Container = styled.div`
@@ -51,12 +52,17 @@ const BoardsListingContainer = styled.div`
   align-items: center;
 `;
 
+const EditPinModalContainer = styled.div`
+  background-color: ${(props) => props.theme.lightBgColor};
+`;
+
 export const UserProfilePage = () => {
   const dispatch = useAppDispatch();
   const { data = {}, isLoading } = useFetchMeQuery();
   const { data: allBoards } = useGetAllBoardsQuery();
   const { data: allPinsCreatedByUser } = useGetAllPinsOfUserQuery();
   const [activeTab, setActiveTab] = useState<"created" | "saved">("saved");
+  const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -65,6 +71,16 @@ export const UserProfilePage = () => {
   }
   return (
     <Container>
+      {showModal && (
+        <Modal>
+          <EditPinModalContainer>
+            <H5>Edit Pin</H5>
+            <Button variants="primary" onClick={() => setShowModal(false)}>
+              Close
+            </Button>
+          </EditPinModalContainer>
+        </Modal>
+      )}
       <ProfileCard
         username={`@${data.data.username}`}
         bio={data.data.bio}
@@ -87,7 +103,6 @@ export const UserProfilePage = () => {
             setActiveTab("saved");
           }}
         >
-
           <H5 weight="bold">Saved</H5>
         </Tab>
       </TabsContainer>
@@ -102,6 +117,22 @@ export const UserProfilePage = () => {
               }}
             />
           ))}
+        {activeTab === "saved" && allBoards?.data?.length === 0 && (
+          <EmptyState
+            title="No Boards Yet"
+            subtitle="
+          You can create a board by clicking the button below"
+            btnText="Create Board"
+          />
+        )}
+        {activeTab === "created" && allPinsCreatedByUser?.data.length === 0 && (
+          <EmptyState
+            title="No Pins created"
+            subtitle="
+          You can create a pin by clicking the button below"
+            btnText="Create Pin"
+          />
+        )}
         {activeTab === "created" &&
           allPinsCreatedByUser?.data?.map((i: any) => (
             <PinCard
@@ -112,9 +143,11 @@ export const UserProfilePage = () => {
               onClick={() => {
                 navigate(`/home/pins/${i._id}`);
               }}
+              onEdit={() => {
+                setShowModal(true);
+              }}
             />
           ))}
-
       </BoardsListingContainer>
       <Button
         variants="primary"

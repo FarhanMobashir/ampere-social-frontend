@@ -9,6 +9,7 @@ import {
   useGetAllFollowingsQuery,
   useUnfollowUserMutation,
 } from "../../store/services/api-slice";
+import { isFollowing } from "../../utils/utilFunctions";
 
 const Container = styled.div`
   display: flex;
@@ -22,12 +23,7 @@ export const FollowingListing = () => {
   const { data: userData, isLoading: loadingUser } = useFetchMeQuery();
   const [follow, { isLoading: isLoadingFollowing }] = useFollowUserMutation();
   const [unfollow] = useUnfollowUserMutation();
-
-  const isFollowing = (userId: any) => {
-    const found = userData.data.following.includes(userId);
-    console.log(found);
-    return found;
-  };
+  const followingArray = userData?.data?.following;
 
   if (isLoading || loadingUser) return <div>Loading...</div>;
 
@@ -41,10 +37,14 @@ export const FollowingListing = () => {
           avatar="https://i.pravatar.cc/300"
           username={`@${i.username}`}
           subtitle={i.bio}
-          buttonText={isFollowing(i._id) ? "Following" : "Follow"}
-          buttonVariant={isFollowing(i._id) ? "primary" : "secondary"}
+          buttonText={
+            isFollowing(i._id, followingArray) ? "Following" : "Follow"
+          }
+          buttonVariant={
+            isFollowing(i._id, followingArray) ? "primary" : "secondary"
+          }
           onClick={() => {
-            if (!isFollowing(i._id)) {
+            if (!isFollowing(i._id, followingArray)) {
               follow({ id: i._id });
             } else {
               unfollow({ id: i._id });
@@ -57,6 +57,7 @@ export const FollowingListing = () => {
         <EmptyState
           title="You are not following anyone yet"
           subtitle="Follow people to see their posts here"
+          btnText="Follow people"
         />
       )}
     </Container>

@@ -103,7 +103,9 @@ export const AppHeader = () => {
             <Image width="40px" height="auto" src={logo} type="circle" />
           </LogoContainer>
         </CustomLink>
-        <Button variants="secondary">Home</Button>
+        <CustomLink to="/home">
+          <Button variants="tertiary">Home</Button>
+        </CustomLink>
         <CustomLink to="/home/create">
           <ButtonWithIcon variants="tertiary">
             Create

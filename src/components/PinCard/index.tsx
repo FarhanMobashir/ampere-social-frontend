@@ -3,11 +3,13 @@ import {
   FaArrowDown,
   FaChevronDown,
   FaEdit,
+  FaEllipsisH,
   FaGripHorizontal,
   FaPlus,
   FaTrashAlt,
 } from "react-icons/fa";
 import styled from "styled-components";
+import { useResponsive } from "../../context/ResposiveContext";
 import { Button, ButtonWithIcon, IconButton } from "../Buttons";
 import { CreatorCard } from "../Creator";
 import { CustomLink } from "../CustomLink";
@@ -60,6 +62,13 @@ const BottomContainer = styled.div`
   flex-direction: column;
 `;
 
+const BottomFlexContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 interface PinCardProps {
   variant: "normal" | "more-ideas" | "organise" | "boardVariant" | "created";
 
@@ -68,14 +77,28 @@ interface PinCardProps {
   image?: string;
   onClick?: () => void;
   onRemove?: () => void;
+  onEdit?: () => void;
+  onSave?: () => void;
+  onSelectBoard?: () => void;
+  selectedBoard?: any;
+  btnText?: string;
 }
 
 export const PinCard = (props: PinCardProps) => {
   const [isHovering, setIsHovering] = useState(false);
+  const { isMobile } = useResponsive();
   return (
     <PinContainer
-      onMouseOver={() => setIsHovering(true)}
-      onMouseOut={() => setIsHovering(false)}
+      onMouseOver={() => {
+        if (!isMobile) {
+          setIsHovering(true);
+        }
+      }}
+      onMouseOut={() => {
+        if (!isMobile) {
+          setIsHovering(false);
+        }
+      }}
     >
       <PinImageContainer>
         <ImageContainer onClick={props.onClick}>
@@ -83,15 +106,19 @@ export const PinCard = (props: PinCardProps) => {
         </ImageContainer>
         <SelectPinContainer>
           {isHovering && props.variant === "normal" && (
-            <ButtonWithIcon variants="transparent" size="x-small">
-              men-out... <FaChevronDown />
+            <ButtonWithIcon
+              variants="transparent"
+              size="x-small"
+              onClick={props.onSelectBoard}
+            >
+              {props.selectedBoard} <FaChevronDown />
             </ButtonWithIcon>
           )}
         </SelectPinContainer>
         <SaveButtonContainer>
           {isHovering && props.variant === "normal" && (
-            <Button variants="primary" size="small">
-              Save
+            <Button variants="primary" size="small" onClick={props.onSave}>
+              {props.btnText ? props.btnText : "Save"}
             </Button>
           )}
           {props.variant === "more-ideas" && (
@@ -110,16 +137,22 @@ export const PinCard = (props: PinCardProps) => {
             </IconButton>
           )}
           {props.variant === "created" && (
-            <IconButton variants="tertiary">
+            <IconButton variants="tertiary" onClick={props.onEdit}>
               <FaEdit />
             </IconButton>
           )}
         </SaveButtonContainer>
       </PinImageContainer>
       <BottomContainer>
-        <H4 weight="bold" uppercase={false}>
-          {props.name}
-        </H4>
+        <BottomFlexContainer>
+          <H4 weight="bold" uppercase={false}>
+            {props.name}
+          </H4>
+          {isMobile && props.variant === "normal" && (
+            <FaEllipsisH onClick={() => setIsHovering(!isHovering)} />
+          )}
+        </BottomFlexContainer>
+
         {props.variant === "normal" || props.variant === "more-ideas" ? (
           <CreatorCard
             variant="pin-card"
