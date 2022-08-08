@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -6,6 +7,7 @@ import { BoardCard } from "../../components/BoardCard";
 import { Button } from "../../components/Buttons";
 import { EmptyState } from "../../components/EmptyState";
 import { H5 } from "../../components/Headings";
+import { TextFieldWithLabel } from "../../components/Inputs";
 import { Modal } from "../../components/Modal";
 import { PinCard } from "../../components/PinCard";
 
@@ -17,9 +19,11 @@ import {
 } from "../../store/features/user-slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
+  useDeleteSinglePinMutation,
   useFetchMeQuery,
   useGetAllBoardsQuery,
   useGetAllPinsOfUserQuery,
+  useUpdatePinMutation,
 } from "../../store/services/api-slice";
 
 const Container = styled.div`
@@ -54,17 +58,31 @@ const BoardsListingContainer = styled.div`
 
 const EditPinModalContainer = styled.div`
   background-color: ${(props) => props.theme.lightBgColor};
+  padding: 2rem;
+  border-radius: 10px;
+`;
+
+const EditModalBottomContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const UserProfilePage = () => {
   const dispatch = useAppDispatch();
+  const { userData } = useAppSelector((state) => state.user);
   const { data = {}, isLoading } = useFetchMeQuery();
   const { data: allBoards } = useGetAllBoardsQuery();
-  const { data: allPinsCreatedByUser } = useGetAllPinsOfUserQuery();
+  const { data: allPinsCreatedByUser } = useGetAllPinsOfUserQuery(userData._id);
+  const [updatePin] = useUpdatePinMutation();
+  const [deletePin] = useDeleteSinglePinMutation();
   const [activeTab, setActiveTab] = useState<"created" | "saved">("saved");
   const [showModal, setShowModal] = useState(false);
+  const [selectedPin, setSelectedPin] = useState<any>();
+  const [pinName, setPinName] = useState("");
+  const [pinDescription, setPinDescription] = useState("");
 
   const navigate = useNavigate();
+  console.log(selectedPin);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -74,10 +92,47 @@ export const UserProfilePage = () => {
       {showModal && (
         <Modal>
           <EditPinModalContainer>
-            <H5>Edit Pin</H5>
-            <Button variants="primary" onClick={() => setShowModal(false)}>
-              Close
-            </Button>
+            <TextFieldWithLabel
+              value={pinName}
+              onChange={(e) => setPinName(e.target.value)}
+              placeholder="Edit pin name"
+              label="Edit Pin"
+            />
+            <TextFieldWithLabel
+              value={pinDescription}
+              placeholder="Edit pin description"
+              onChange={(e) => setPinDescription(e.target.value)}
+              label="Edit Description"
+            />
+            <EditModalBottomContainer>
+              <Button variants="tertiary" onClick={() => setShowModal(false)}>
+                Close
+              </Button>
+              <Button
+                variants="primary"
+                onClick={() => {
+                  updatePin({
+                    id: selectedPin._id,
+                    data: {
+                      name: pinName,
+                      description: pinDescription,
+                    },
+                  });
+                  setShowModal(false);
+                }}
+              >
+                Save
+              </Button>
+              <Button
+                variants="primary"
+                onClick={() => {
+                  deletePin(selectedPin._id);
+                  setShowModal(false);
+                }}
+              >
+                Delete
+              </Button>
+            </EditModalBottomContainer>
           </EditPinModalContainer>
         </Modal>
       )}
@@ -145,6 +200,9 @@ export const UserProfilePage = () => {
               }}
               onEdit={() => {
                 setShowModal(true);
+                setSelectedPin(i);
+                setPinName(i.name);
+                setPinDescription(i.description);
               }}
             />
           ))}

@@ -92,7 +92,6 @@ export const Homepage = () => {
 
   const [savePin, { isSuccess: pinSaved }] = useSavePinMutation();
   const [removePin, { isSuccess: pinRemoved }] = useRemovePinMutation();
-  const { data: userData } = useFetchMeQuery();
   const { data: allBoards, isLoading: isLoadingBoards } =
     useGetAllBoardsQuery();
   const [createBoard] = useCreateBoardMutation();
@@ -135,25 +134,28 @@ export const Homepage = () => {
         <Modal>
           <BoardsListingCotainer>
             <BoardsContainer>
-              {allBoards?.data?.map((board: any) => (
-                <BoardBox
-                  onClick={() => {
-                    setSelectedBoard(board);
-                    setShowSelectBoard(false);
-                  }}
-                >
-                  <Image
-                    width="40px"
-                    height="40px"
-                    src="https://picsum.photos/200"
-                  />
-                  <Paragraph weight="bold">
-                    {board.name.length > 15
-                      ? `${board.name.substring(0, 15)}...`
-                      : board.name}
-                  </Paragraph>
-                </BoardBox>
-              ))}
+              {allBoards?.data
+                ?.slice()
+                .reverse()
+                .map((board: any) => (
+                  <BoardBox
+                    onClick={() => {
+                      setSelectedBoard(board);
+                      setShowSelectBoard(false);
+                    }}
+                  >
+                    <Image
+                      width="40px"
+                      height="40px"
+                      src="https://picsum.photos/200"
+                    />
+                    <Paragraph weight="bold">
+                      {board.name.length > 15
+                        ? `${board.name.substring(0, 15)}...`
+                        : board.name}
+                    </Paragraph>
+                  </BoardBox>
+                ))}
               {data?.data?.length === 0 && (
                 <Paragraph>You don't have any boards yet.</Paragraph>
               )}

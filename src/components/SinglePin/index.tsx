@@ -4,9 +4,12 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 import {
   useCreateBoardMutation,
+  useCreateCommentMutation,
+  useDeleteCommentMutation,
   useFetchMeQuery,
   useFollowUserMutation,
   useGetAllBoardsQuery,
+  useGetAllCommentsOfPinQuery,
   useRemovePinMutation,
   useSavePinMutation,
   useUnfollowUserMutation,
@@ -127,6 +130,13 @@ export const SinglePin = (props: SinglePinProps) => {
   const { data: userData, isLoading: loadingUser } = useFetchMeQuery();
   const [follow, { isLoading: isLoadingFollowing }] = useFollowUserMutation();
   const [unfollow] = useUnfollowUserMutation();
+
+  const { data: AllComments } = useGetAllCommentsOfPinQuery(props.pin._id);
+
+  const [createComment] = useCreateCommentMutation();
+  const [deleteComment] = useDeleteCommentMutation();
+
+  console.log(AllComments);
 
   const followingArray = userData?.data?.following;
 
@@ -272,14 +282,32 @@ export const SinglePin = (props: SinglePinProps) => {
         <CommentContainer>
           <CommentButtonContainer>
             <ButtonWithIcon variants="tertiary">
-              8 Comments
+              {AllComments?.data?.length} Comments
               <FaArrowDown />
             </ButtonWithIcon>
           </CommentButtonContainer>
-          {[1].map((comment) => (
-            <CommentCard key={comment} />
+          {AllComments?.data?.map((comment: any) => (
+            <CommentCard
+              comment={comment}
+              onDelete={() => {
+                deleteComment(comment._id);
+              }}
+              key={comment}
+            />
           ))}
-          <AddCommentCard />
+          <AddCommentCard
+            commentText="hello"
+            onChange={(e) => {
+              console.log(e.target.value);
+            }}
+            onSubmit={() => {
+              createComment({
+                text: "hello",
+                pinId: props.pin._id,
+                createdBy: userData?.data?._id,
+              });
+            }}
+          />
           <Button variants="secondary" size="small">
             View All Comments
           </Button>

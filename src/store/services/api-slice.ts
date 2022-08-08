@@ -18,7 +18,15 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["user", "allUser", "following", "followers", "boards", "pins"],
+  tagTypes: [
+    "user",
+    "allUser",
+    "following",
+    "followers",
+    "boards",
+    "pins",
+    "comments",
+  ],
   endpoints: (builder) => ({
     fetchMe: builder.query<any, void>({
       query: () => {
@@ -131,16 +139,16 @@ export const apiSlice = createApi({
     // pins
     getAllPins: builder.query<any, void>({
       query: () => ({
-        url: "/api/pins/all",
+        url: "/api/pins",
       }),
       providesTags: ["pins"],
       keepUnusedDataFor: 0,
     }),
-    getAllPinsOfUser: builder.query<any, void>({
-      query: () => ({
-        url: "/api/pins",
+    getAllPinsOfUser: builder.query<any, any>({
+      query: (id) => ({
+        url: `/api/pins/${id}`,
       }),
-      // providesTags: ["pins"],
+      providesTags: ["pins"],
 
       keepUnusedDataFor: 0,
     }),
@@ -192,6 +200,29 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["pins", "boards"],
     }),
+    // comments
+    getAllCommentsOfPin: builder.query<any, void>({
+      query: (id) => ({
+        url: `/api/comments/${id}`,
+      }),
+      providesTags: ["comments"],
+      keepUnusedDataFor: 0,
+    }),
+    createComment: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `api/comments`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["comments"],
+    }),
+    deleteComment: builder.mutation<any, any>({
+      query: (id) => ({
+        url: `api/comments/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["comments"],
+    }),
   }),
 });
 
@@ -219,4 +250,7 @@ export const {
   useDeleteSinglePinMutation,
   useSavePinMutation,
   useRemovePinMutation,
+  useGetAllCommentsOfPinQuery,
+  useCreateCommentMutation,
+  useDeleteCommentMutation,
 } = apiSlice;

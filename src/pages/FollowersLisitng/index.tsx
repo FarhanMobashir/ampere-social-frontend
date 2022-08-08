@@ -19,12 +19,12 @@ const Container = styled.div`
 
 export const FollowersListing = () => {
   const { isLoading, data } = useGetAllFollowersQuery();
-  const { data: userData } = useFetchMeQuery();
+  const { data: userData, isLoading: isLoadingUser } = useFetchMeQuery();
   const [follow, { isLoading: isLoadingFollowing }] = useFollowUserMutation();
   const [unfollow] = useUnfollowUserMutation();
   const followersArray = userData?.data?.followers;
 
-  if (isLoading) {
+  if (isLoading || isLoadingFollowing || isLoadingUser) {
     return <div>Loading...</div>;
   }
 
@@ -35,11 +35,11 @@ export const FollowersListing = () => {
         <CreatorCard
           variant="single-pin"
           key={i}
-          avatar="https://i.pravatar.cc/300"
+          avatar={i.avatar}
           username={`@${i.username}`}
           subtitle={i.bio}
           buttonText={
-            isFollowing(i._id, followersArray) ? "Following" : "Follow"
+            isFollowing(i._id, followersArray) ? "Unfollow" : "Follow"
           }
           buttonVariant={
             isFollowing(i._id, followersArray) ? "primary" : "secondary"

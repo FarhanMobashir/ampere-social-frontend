@@ -34,11 +34,11 @@ export const FollowingListing = () => {
         <CreatorCard
           variant="single-pin"
           key={i}
-          avatar="https://i.pravatar.cc/300"
+          avatar={i.avatar}
           username={`@${i.username}`}
           subtitle={i.bio}
           buttonText={
-            isFollowing(i._id, followingArray) ? "Following" : "Follow"
+            isFollowing(i._id, followingArray) ? "Unfollow" : "Follow"
           }
           buttonVariant={
             isFollowing(i._id, followingArray) ? "primary" : "secondary"

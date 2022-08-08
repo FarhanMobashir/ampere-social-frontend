@@ -1,5 +1,6 @@
-import { FaEllipsisH, FaHeart } from "react-icons/fa";
+import { FaEllipsisH, FaHeart, FaTrashAlt } from "react-icons/fa";
 import styled from "styled-components";
+import { useAppSelector } from "../../store/hooks";
 import { CreatorCard } from "../Creator";
 import { H6 } from "../Headings";
 
@@ -14,21 +15,30 @@ const BottomContainer = styled.div`
   margin-left: auto;
 `;
 
-export const CommentCard = (props: any) => {
+interface CommentCardProps {
+  comment: any;
+  onDelete?: () => void;
+}
+export const CommentCard = (props: CommentCardProps) => {
+  const { userData } = useAppSelector((state) => state.user);
+  const isCurrentUser = userData._id === props.comment.createdBy._id;
+
+  const commentCreationDate = new Date(props.comment.createdAt)
+    .toLocaleString()
+    .slice(0, -3);
+
   return (
     <MainContainer>
       <CreatorCard
-        username="@johndoe"
+        username={`@${props.comment.createdBy.username}`}
         variant="comment-card"
-        subtitle="Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit."
-        avatar={""}
+        subtitle={props.comment.text}
+        avatar={props.comment.createdBy.avatar}
         buttonText={""}
       />
       <BottomContainer>
-        <H6>2W</H6>
-        <H6 weight="bold" weightMobile="bold">
-          Reply
-        </H6>
+        <H6>{commentCreationDate}</H6>
+        {isCurrentUser && <FaTrashAlt onClick={props.onDelete} />}
       </BottomContainer>
     </MainContainer>
   );
