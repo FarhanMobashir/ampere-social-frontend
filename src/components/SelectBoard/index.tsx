@@ -8,12 +8,11 @@ import {
 } from "../../store/services/api-slice";
 
 import { Button, ButtonWithIcon } from "../Buttons";
-import { H1, H5 } from "../Headings";
+import { H1, H4, H5 } from "../Headings";
 import { Image } from "../Image";
 import { TextField } from "../Inputs";
 
 const MainContainer = styled.div`
-
   background-color: ${({ theme }) => theme.bgColor};
 
   display: flex;
@@ -44,45 +43,32 @@ const BottomContainer = styled.div`
 
 const BoardBox = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   border-radius: 10px;
-  padding: 0.5rem;
+  padding: 1rem;
+  cursor: pointer;
   &:hover {
-    border: 1px solid ${({ theme }) => theme.primaryColor};
-    cursor: pointer;
+    background-color: ${(props) => props.theme.lightBgColor};
+    transition: cubic-bezier(1, 0, 0, 1) 0.3s;
   }
 `;
 
 interface SelectBoardProps {
-
   boards: any[];
   onClose: () => void;
-  pin: any;
-
 }
 
 export const SelectBoard = (props: SelectBoardProps) => {
   const [boardName, setBoardName] = useState("");
-
-  const [selectedBoard, setSelectedBoard] = useState<any>(null);
   const [createBoard] = useCreateBoardMutation();
-  const [savePin] = useSavePinMutation();
 
   return (
     <MainContainer>
       <H1 align="center">Select Board</H1>
       <BoardListingContainer>
         {props.boards.map((board: any, idx) => (
-
-          <BoardBox onClick={() => setSelectedBoard(board)}>
-
-            <Image
-              src="https://picsum.photos/id/1/200/200"
-              height="60"
-              width="60"
-            />
-            <H5>{board.name}</H5>
+          <BoardBox onClick={() => console.log("select board")}>
+            <H4>{board.name}</H4>
           </BoardBox>
         ))}
       </BoardListingContainer>
@@ -104,21 +90,6 @@ export const SelectBoard = (props: SelectBoardProps) => {
         />
       </CreateBoardContainer>
       <BottomContainer>
-
-        <Button
-          variants="primary"
-          onClick={() => {
-            if (selectedBoard) {
-              savePin({
-                boardId: selectedBoard._id,
-                pinId: props.pin._id,
-              });
-            }
-          }}
-        >
-
-          Save
-        </Button>
         <Button variants="tertiary" onClick={props.onClose}>
           Close
         </Button>

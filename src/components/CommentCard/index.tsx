@@ -29,8 +29,6 @@ export const CommentCard = (props: any) => {
         <H6 weight="bold" weightMobile="bold">
           Reply
         </H6>
-        <FaHeart />
-        <FaEllipsisH />
       </BottomContainer>
     </MainContainer>
   );

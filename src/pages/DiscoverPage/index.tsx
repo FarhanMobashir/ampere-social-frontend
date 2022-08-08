@@ -7,6 +7,7 @@ import {
   useGetAllUsersQuery,
   useUnfollowUserMutation,
 } from "../../store/services/api-slice";
+import { isFollowing } from "../../utils/utilFunctions";
 
 const Container = styled.div`
   display: flex;
@@ -21,11 +22,7 @@ export const DiscoverPeople = () => {
   const [follow, { isLoading: isLoadingFollowing }] = useFollowUserMutation();
   const [unfollow] = useUnfollowUserMutation();
 
-  const isFollowing = (userId: any) => {
-    const found = userData.data.following.includes(userId);
-    console.log(found);
-    return found;
-  };
+  const followingArray = userData?.data?.following;
 
   if (isLoading || loadingUser) return <div>Loading...</div>;
   return (
@@ -38,15 +35,19 @@ export const DiscoverPeople = () => {
           avatar={i.avatar}
           username={`@${i.username}`}
           subtitle={i.bio}
-          buttonText={isFollowing(i._id) ? "Following" : "Follow"}
+          buttonText={
+            isFollowing(i._id, followingArray) ? "Following" : "Follow"
+          }
           onClick={() => {
-            if (!isFollowing(i._id)) {
+            if (!isFollowing(i._id, followingArray)) {
               follow({ id: i._id });
             } else {
               unfollow({ id: i._id });
             }
           }}
-          buttonVariant={isFollowing(i._id) ? "primary" : "secondary"}
+          buttonVariant={
+            isFollowing(i._id, followingArray) ? "primary" : "secondary"
+          }
           link={`/home/user/${i._id}`}
         />
       ))}
