@@ -35,7 +35,11 @@ export const CommentCard = (props: CommentCardProps) => {
         username={`@${props.comment.createdBy.username}`}
         variant="comment-card"
         subtitle={props.comment.text}
-        avatar={props.comment.createdBy.avatar}
+        avatar={
+          props.comment.createdBy.avatar
+            ? props.comment.createdBy.avatar.url
+            : null
+        }
         buttonText={""}
       />
       <BottomContainer>

@@ -38,18 +38,12 @@ export const AddCommentCard = (props: AddCommentProps) => {
   const { userData } = useAppSelector((state) => state.user);
   return (
     <MainContainer>
-      {userData.avatar && (
-        <Image type="circle" height="30px" width="30px" src={userData.avatar} />
-      )}
-      {!userData.avatar && (
-        <Avatar size="regular">{userData.username[0].toUpperCase()}</Avatar>
-      )}
       <TextField
         placeholder="Add a comment"
         value={props.commentText}
         onChange={props.onChange}
       />
-      <ButtonWithIcon variants="primary" onClick={props.onSubmit}>
+      <ButtonWithIcon variants="primary" size="small" onClick={props.onSubmit}>
         Comment
       </ButtonWithIcon>
     </MainContainer>

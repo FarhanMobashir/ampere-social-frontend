@@ -17,6 +17,7 @@ import { useThemeContext } from "../../context/ThemeContext";
 import { CustomLink } from "../CustomLink";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useFetchMeQuery } from "../../store/services/api-slice";
 
 const MainContainer = styled.div`
   display: flex;
@@ -43,6 +44,21 @@ const MobileContainer = styled.div`
   }
 `;
 
+const Avatar = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #fcd5db;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => props.theme.textColorDark};
+  font-size: 1rem;
+  font-weight: bold;
+  grid-column: 1 /3;
+  grid-row: 1 /3;
+`;
+
 const LogoContainer = styled.div`
   background: none;
 `;
@@ -52,6 +68,7 @@ export const AppHeader = () => {
   const { toggleTheme, mode } = useThemeContext();
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const { data } = useFetchMeQuery();
   if (isMobile) {
     return (
       <MobileContainer>
@@ -77,12 +94,16 @@ export const AppHeader = () => {
         </CustomLink>
 
         <CustomLink to="/home/user">
-          <Image
-            type="circle"
-            width="40px"
-            height="40px"
-            src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-          />
+          {data && data.data.avatar ? (
+            <Image
+              src={data.data.avatar.url}
+              width="40px"
+              height="40px"
+              type="circle"
+            />
+          ) : (
+            <Avatar>{data?.data?.username[0]}</Avatar>
+          )}
         </CustomLink>
         <IconButton
           variants="tertiary"
@@ -131,12 +152,16 @@ export const AppHeader = () => {
           </IconButton>
         </CustomLink>
         <CustomLink to="/home/user">
-          <Image
-            type="circle"
-            width="50px"
-            height="50px"
-            src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-          />
+          {data && data.data.avatar ? (
+            <Image
+              src={data.data.avatar.url}
+              width="70px"
+              height="70px"
+              type="circle"
+            />
+          ) : (
+            <Avatar>{data?.data?.username[0]}</Avatar>
+          )}
         </CustomLink>
 
         <IconButton

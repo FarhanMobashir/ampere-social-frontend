@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Button } from "../Buttons";
 import { H1 } from "../Headings";
 import { TextField } from "../Inputs";
+import { Paragraph } from "../Paragraphs";
 
 export const SearchPageMobile = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ export const SearchPageMobile = () => {
         // }}
       />
       <Button variants="primary">Search</Button>
+      <Paragraph>Searching page is coming soon.</Paragraph>
     </Container>
   );
 };

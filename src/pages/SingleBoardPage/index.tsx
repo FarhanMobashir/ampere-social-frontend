@@ -315,6 +315,14 @@ export const SingleBoardPage = () => {
                 Create a new board
                 <FaPlus size={20} />
               </ButtonWithIcon>
+              <Button
+                variants="tertiary"
+                onClick={() => {
+                  setShowSelectBoard(false);
+                }}
+              >
+                Cancel
+              </Button>
             </BoardsListingCotainer>
           </Modal>
         )}
@@ -345,6 +353,7 @@ export const SingleBoardPage = () => {
             onRemove={() => {
               removePin({ pinId: i._id, boardId: id });
             }}
+            avatar={i.createdBy.avatar.url}
           />
         ))}
       </PinListingContainer>

@@ -16,6 +16,7 @@ export const MoreIdeasPage = () => {
       {[1, 2, 3, 4, 5, 6, 7, 8, 10].map((item) => {
         return (
           <PinCard
+            avatar="hello"
             name="Hello"
             creatorName={"@qwerty"}
             variant={"more-ideas"}

@@ -54,7 +54,7 @@ export const apiSlice = createApi({
     }),
     getSingleUsers: builder.query<any, any>({
       query: (id) => ({
-        url: `/api/user/${id}`,
+        url: `/api/user/single/${id}`,
       }),
       keepUnusedDataFor: 0,
     }),

@@ -32,7 +32,7 @@ export const DiscoverPeople = () => {
         <CreatorCard
           variant="single-pin"
           key={i}
-          avatar={i.avatar}
+          avatar={i.avatar ? i.avatar.url : null}
           username={`@${i.username}`}
           subtitle={i.bio}
           buttonText={

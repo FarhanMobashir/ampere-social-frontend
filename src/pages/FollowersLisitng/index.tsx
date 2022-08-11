@@ -35,7 +35,6 @@ export const FollowersListing = () => {
         <CreatorCard
           variant="single-pin"
           key={i}
-          avatar={i.avatar}
           username={`@${i.username}`}
           subtitle={i.bio}
           buttonText={
@@ -52,6 +51,7 @@ export const FollowersListing = () => {
             }
           }}
           link={`/home/user/${i._id}`}
+          avatar={i.avatar ? i.avatar.url : null}
         />
       ))}
       {data.data.length === 0 && (

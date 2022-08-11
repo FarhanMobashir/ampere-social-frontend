@@ -9,6 +9,17 @@ import { Modal } from "../Modal";
 import { Paragraph } from "../Paragraphs";
 import lottie from "lottie-web";
 import confetti from "../../assets/confetti.json";
+import food from "../../assets/food.jpg";
+import travel from "../../assets/travel.jpg";
+import entertainment from "../../assets/entertainment.jpg";
+import sports from "../../assets/sports.jpg";
+import music from "../../assets/music.jpg";
+import art from "../../assets/art.jpg";
+import fashion from "../../assets/fashion.jpg";
+import lifestyle from "../../assets/lifestyle.jpg";
+import technology from "../../assets/technology.jpg";
+import science from "../../assets/science.jpg";
+import health from "../../assets/health.jpg";
 
 const MainContainer = styled.div`
   display: flex;
@@ -20,7 +31,7 @@ const MainContainer = styled.div`
   width: 600px;
   border-radius: 10px;
   padding: 1.6rem;
-  width: 40vw;
+  width: 42vw;
   @media (max-width: 800px) {
     width: 90%;
   }
@@ -188,62 +199,49 @@ const GenderComponent = (props: ModalProps) => {
 export const CategoryData = [
   {
     name: "Food",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    image: food,
   },
   {
     name: "Travel",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    image: travel,
   },
   {
     name: "Entertainment",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    image: entertainment,
   },
   {
     name: "Sports",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    image: sports,
   },
   {
     name: "Music",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    image: music,
   },
   {
     name: "Art",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    image: art,
   },
   {
     name: "Fashion",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    image: fashion,
   },
   {
     name: "Lifestyle",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    image: lifestyle,
   },
   {
     name: "Health",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    image: health,
   },
   {
     name: "Science",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    image: science,
   },
   {
     name: "Technology",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    image: technology,
   },
 ];
-
-console.log(CategoryData.map((item) => item.name));
 
 interface SelectCategoryProps extends ModalProps {
   onClose: () => void;
@@ -296,7 +294,7 @@ const SelectCategory = (props: SelectCategoryProps) => {
                   selectedCategory.find(
                     (category) => category.name === item.name
                   )
-                    ? "grayscale(0)"
+                    ? "grayscale(0.5)"
                     : "grayscale(1)"
                 }
               />

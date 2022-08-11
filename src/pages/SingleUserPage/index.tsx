@@ -187,6 +187,14 @@ export const SingleUserPage = () => {
               Create a new board
               <FaPlus size={20} />
             </ButtonWithIcon>
+            <Button
+              variants="tertiary"
+              onClick={() => {
+                setShowSelectBoard(false);
+              }}
+            >
+              Cancel
+            </Button>
           </BoardsListingCotainer>
         </Modal>
       )}
@@ -196,6 +204,7 @@ export const SingleUserPage = () => {
         followers={singleUser?.data.followers.length}
         following={singleUser?.data.following.length}
         type="creator"
+        avatar={singleUser?.data.avatar ? singleUser?.data.avatar.url : null}
       />
       <TabsContainer>
         <Tab
@@ -253,6 +262,7 @@ export const SingleUserPage = () => {
                 setShowSelectBoard(true);
               }}
               btnText={selectedBoard?.pins.includes(i._id) ? "Remove" : "Save"}
+              avatar={i.createdBy.avatar.url || null}
             />
           ))}
         {activeTab === "created" && allPinsCreatedByUser?.data?.length === 0 && (

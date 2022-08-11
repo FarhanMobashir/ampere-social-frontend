@@ -180,6 +180,7 @@ export const Create = () => {
   const createPinHandler = () => {
     if (!image || !pinName || !selectedBoard) {
       toast("Please fill all fields", { type: "error" });
+      return;
     }
     const data = new FormData();
     data.append("image", image);
@@ -307,6 +308,14 @@ export const Create = () => {
                 Create a new board
                 <FaPlus size={20} />
               </ButtonWithIcon>
+              <Button
+                variants="tertiary"
+                onClick={() => {
+                  setShowSelectBoard(false);
+                }}
+              >
+                Cancel
+              </Button>
             </BoardsListingCotainer>
           )}
           <TitleInput

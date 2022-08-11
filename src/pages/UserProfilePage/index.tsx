@@ -75,6 +75,7 @@ export const UserProfilePage = () => {
   const { data: allPinsCreatedByUser } = useGetAllPinsOfUserQuery(userData._id);
   const [updatePin] = useUpdatePinMutation();
   const [deletePin] = useDeleteSinglePinMutation();
+
   const [activeTab, setActiveTab] = useState<"created" | "saved">("saved");
   const [showModal, setShowModal] = useState(false);
   const [selectedPin, setSelectedPin] = useState<any>();
@@ -141,6 +142,7 @@ export const UserProfilePage = () => {
         followers={data.data.followers.length}
         following={data.data.following.length}
         type="user"
+        avatar={data.data.avatar ? data.data.avatar.url : null}
       />
       <TabsContainer>
         <Tab
@@ -201,6 +203,7 @@ export const UserProfilePage = () => {
                 setPinName(i.name);
                 setPinDescription(i.description);
               }}
+              avatar={i.createdBy.avatar.url}
             />
           ))}
       </BoardsListingContainer>

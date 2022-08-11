@@ -32,11 +32,11 @@ const PinListingContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-`;
-
-const PinCardContainer = styled.div`
-  break-inside: avoid-column;
-  margin-bottom: 0.5rem;
+  @media (min-width: 360px) {
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
 `;
 
 const BoardsListingCotainer = styled.div`
@@ -166,6 +166,14 @@ export const Homepage = () => {
               Create a new board
               <FaPlus size={20} />
             </ButtonWithIcon>
+            <Button
+              variants="tertiary"
+              onClick={() => {
+                setShowSelectBoard(false);
+              }}
+            >
+              Cancel
+            </Button>
           </BoardsListingCotainer>
         </Modal>
       )}
@@ -173,36 +181,34 @@ export const Homepage = () => {
       <PinListingContainer>
         {data?.data.map((i: any) => {
           return (
-            <PinCardContainer key={i._id}>
-              <PinCard
-                name={i.name}
-                creatorName={`@${i.createdBy.username}`}
-                variant="normal"
-                image={i.image.url}
-                onClick={() => {
-                  navigate(`/home/pins/${i._id}`);
-                }}
-                onSave={() => {
-                  if (selectedBoard.pins.includes(i._id)) {
-                    removePin({ pinId: i._id, boardId: selectedBoard._id });
-                  } else {
-                    savePin({
-                      pinId: i._id,
-                      boardId: selectedBoard?._id,
-                    });
-                  }
-                }}
-                selectedBoard={
-                  selectedBoard ? selectedBoard.name : "Select board"
+            <PinCard
+              key={i._id}
+              name={i.name}
+              creatorName={`@${i.createdBy.username}`}
+              variant="normal"
+              image={i.image.url}
+              onClick={() => {
+                navigate(`/home/pins/${i._id}`);
+              }}
+              onSave={() => {
+                if (selectedBoard.pins.includes(i._id)) {
+                  removePin({ pinId: i._id, boardId: selectedBoard._id });
+                } else {
+                  savePin({
+                    pinId: i._id,
+                    boardId: selectedBoard?._id,
+                  });
                 }
-                onSelectBoard={() => {
-                  setShowSelectBoard(true);
-                }}
-                btnText={
-                  selectedBoard?.pins.includes(i._id) ? "Remove" : "Save"
-                }
-              />
-            </PinCardContainer>
+              }}
+              selectedBoard={
+                selectedBoard ? selectedBoard.name : "Select board"
+              }
+              onSelectBoard={() => {
+                setShowSelectBoard(true);
+              }}
+              btnText={selectedBoard?.pins.includes(i._id) ? "Remove" : "Save"}
+              avatar={i.createdBy.avatar ? i.createdBy.avatar.url : null}
+            />
           );
         })}
       </PinListingContainer>

@@ -29,7 +29,7 @@ const MainContainer = styled.div`
   display: flex;
   justify-content: space-around;
   gap: 2rem;
-  width: 80%;
+  width: 90%;
   box-shadow: 0px 0px 5px ${({ theme }) => theme.tertiaryColor};
   /* padding: 1rem; */
   border-radius: 10px;
@@ -44,9 +44,10 @@ const MainContainer = styled.div`
 
 const ImageContainer = styled.div``;
 
-const LeftContainer = styled.div`
+const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   padding: 1.5rem;
   gap: 0.5rem;
 `;
@@ -217,6 +218,14 @@ export const SinglePin = (props: SinglePinProps) => {
               Create a new board
               <FaPlus size={20} />
             </ButtonWithIcon>
+            <Button
+              variants="tertiary"
+              onClick={() => {
+                setShowSelectBoard(false);
+              }}
+            >
+              Cancel
+            </Button>
           </BoardsListingCotainer>
         </Modal>
       )}
@@ -224,7 +233,7 @@ export const SinglePin = (props: SinglePinProps) => {
         <Image src={props.pin.image.url} width="300px" height="auto" />
       </ImageContainer>
 
-      <LeftContainer>
+      <RightContainer>
         <TopButtonContainer>
           <ButtonWithIcon
             variants="transparent"
@@ -263,7 +272,9 @@ export const SinglePin = (props: SinglePinProps) => {
         </H4>
         <CreatorCard
           variant="single-pin"
-          avatar={""}
+          avatar={
+            props.pin.createdBy.avatar ? props.pin.createdBy.avatar.url : null
+          }
           username={`@${props.pin.createdBy.username}`}
           subtitle={""}
           buttonText={
@@ -275,15 +286,17 @@ export const SinglePin = (props: SinglePinProps) => {
           }
           buttonVariant="primary"
           onClick={() => {
-            if (!isFollowing(props.pin._id, followingArray)) {
-              follow({ id: props.pin._id });
+            if (!isFollowing(props.pin.createdBy._id, followingArray)) {
+              follow({ id: props.pin.createdBy._id });
             }
             if (userData?.data?._id === props.pin.createdBy._id) {
               return;
-            } else {
-              unfollow({ id: props.pin._id });
+            }
+            if (isFollowing(props.pin.createdBy._id, followingArray)) {
+              unfollow({ id: props.pin.createdBy._id });
             }
           }}
+          link={`/home/user/${props.pin.createdBy._id}`}
         />
         <CommentContainer>
           <CommentButtonContainer>
@@ -316,7 +329,7 @@ export const SinglePin = (props: SinglePinProps) => {
             }}
           />
         </CommentContainer>
-      </LeftContainer>
+      </RightContainer>
     </MainContainer>
   );
 };
