@@ -286,11 +286,6 @@ export const SingleBoardPage = () => {
                       setShowSelectBoard(false);
                     }}
                   >
-                    <Image
-                      width="40px"
-                      height="40px"
-                      src="https://picsum.photos/200"
-                    />
                     <Paragraph weight="bold">
                       {board.name.length > 15
                         ? `${board.name.substring(0, 15)}...`
@@ -357,8 +352,9 @@ export const SingleBoardPage = () => {
         <EmptyStateContainer>
           <EmptyState
             title="No pins yet"
-            subtitle="Add a pin to get started"
-            btnText="Create Pin"
+            subtitle={
+              isCurrentUser ? "Add a pin to get started" : "This board is empty"
+            }
           />
         </EmptyStateContainer>
       )}

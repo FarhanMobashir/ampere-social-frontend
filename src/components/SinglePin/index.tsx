@@ -27,7 +27,7 @@ import { Paragraph } from "../Paragraphs";
 
 const MainContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 2rem;
   width: 80%;
   box-shadow: 0px 0px 5px ${({ theme }) => theme.tertiaryColor};
@@ -66,7 +66,6 @@ const CommentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  width: 60%;
   @media (max-width: 800px) {
     width: 100%;
   }
@@ -133,10 +132,11 @@ export const SinglePin = (props: SinglePinProps) => {
 
   const { data: AllComments } = useGetAllCommentsOfPinQuery(props.pin._id);
 
-  const [createComment] = useCreateCommentMutation();
+  const [createComment, { isLoading: isAddingComment }] =
+    useCreateCommentMutation();
   const [deleteComment] = useDeleteCommentMutation();
 
-  console.log(AllComments);
+  const [comment, setComment] = useState<any>(null);
 
   const followingArray = userData?.data?.following;
 
@@ -168,6 +168,12 @@ export const SinglePin = (props: SinglePinProps) => {
     }
   }, [pinRemoved]);
 
+  useEffect(() => {
+    if (!isAddingComment) {
+      setComment("");
+    }
+  }, [isAddingComment]);
+
   if (isLoadingBoards) return <div>Loading...</div>;
   return (
     <MainContainer>
@@ -182,11 +188,6 @@ export const SinglePin = (props: SinglePinProps) => {
                     setShowSelectBoard(false);
                   }}
                 >
-                  <Image
-                    width="40px"
-                    height="40px"
-                    src="https://picsum.photos/200"
-                  />
                   <Paragraph weight="bold">
                     {board.name.length > 15
                       ? `${board.name.substring(0, 15)}...`
@@ -268,12 +269,17 @@ export const SinglePin = (props: SinglePinProps) => {
           buttonText={
             userData?.data?._id === props.pin.createdBy._id
               ? "It is you"
+              : userData?.data?.following.includes(props.pin.createdBy._id)
+              ? "Unfollow"
               : "Follow"
           }
           buttonVariant="primary"
           onClick={() => {
             if (!isFollowing(props.pin._id, followingArray)) {
               follow({ id: props.pin._id });
+            }
+            if (userData?.data?._id === props.pin.createdBy._id) {
+              return;
             } else {
               unfollow({ id: props.pin._id });
             }
@@ -292,25 +298,23 @@ export const SinglePin = (props: SinglePinProps) => {
               onDelete={() => {
                 deleteComment(comment._id);
               }}
-              key={comment}
+              key={comment._id}
+              pin={props.pin}
             />
           ))}
           <AddCommentCard
-            commentText="hello"
+            commentText={comment}
             onChange={(e) => {
-              console.log(e.target.value);
+              setComment(e.target.value);
             }}
             onSubmit={() => {
               createComment({
-                text: "hello",
+                text: comment,
                 pinId: props.pin._id,
                 createdBy: userData?.data?._id,
               });
             }}
           />
-          <Button variants="secondary" size="small">
-            View All Comments
-          </Button>
         </CommentContainer>
       </LeftContainer>
     </MainContainer>

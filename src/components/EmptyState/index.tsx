@@ -18,7 +18,7 @@ const MainContainer = styled.div`
 interface EmptyStateProps {
   title: string;
   subtitle: string;
-  btnText: string;
+  // btnText: string;
 }
 
 export const EmptyState = (props: EmptyStateProps) => {
@@ -36,7 +36,7 @@ export const EmptyState = (props: EmptyStateProps) => {
       >
         {props.subtitle}
       </Paragraph>
-      <Button variants="secondary">{props.btnText}</Button>
+      {/* <Button variants="secondary">{props.btnText}</Button> */}
     </MainContainer>
   );
 };

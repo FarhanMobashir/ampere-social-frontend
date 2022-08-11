@@ -82,7 +82,6 @@ export const UserProfilePage = () => {
   const [pinDescription, setPinDescription] = useState("");
 
   const navigate = useNavigate();
-  console.log(selectedPin);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -177,7 +176,6 @@ export const UserProfilePage = () => {
             title="No Boards Yet"
             subtitle="
           You can create a board by clicking the button below"
-            btnText="Create Board"
           />
         )}
         {activeTab === "created" && allPinsCreatedByUser?.data.length === 0 && (
@@ -185,7 +183,6 @@ export const UserProfilePage = () => {
             title="No Pins created"
             subtitle="
           You can create a pin by clicking the button below"
-            btnText="Create Pin"
           />
         )}
         {activeTab === "created" &&

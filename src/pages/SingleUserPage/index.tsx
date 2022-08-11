@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 import { BoardCard } from "../../components/BoardCard";
 import { Button, ButtonWithIcon } from "../../components/Buttons";
+import { EmptyState } from "../../components/EmptyState";
 import { H5 } from "../../components/Headings";
 import { Image } from "../../components/Image";
 import { TextField } from "../../components/Inputs";
@@ -157,11 +158,6 @@ export const SingleUserPage = () => {
                     setShowSelectBoard(false);
                   }}
                 >
-                  <Image
-                    width="40px"
-                    height="40px"
-                    src="https://picsum.photos/200"
-                  />
                   <Paragraph weight="bold">
                     {board.name.length > 15
                       ? `${board.name.substring(0, 15)}...`
@@ -259,6 +255,19 @@ export const SingleUserPage = () => {
               btnText={selectedBoard?.pins.includes(i._id) ? "Remove" : "Save"}
             />
           ))}
+        {activeTab === "created" && allPinsCreatedByUser?.data?.length === 0 && (
+          <EmptyState
+            title="This user hasn't created any pins yet"
+            subtitle="
+            Pins created by this user will be shown here"
+          />
+        )}
+        {activeTab === "saved" && allBoardsOfUser?.data?.length === 0 && (
+          <EmptyState
+            title="This user hasn't saved any pins yet"
+            subtitle="Boards created by this user will be shown here"
+          />
+        )}
       </BoardsListingContainer>
     </Container>
   );

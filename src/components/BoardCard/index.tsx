@@ -8,15 +8,9 @@ const MainContainer = styled.div`
   flex-direction: column;
   width: 10rem;
   cursor: pointer;
-`;
-
-const ImageContainer = styled.div`
-  display: flex;
-`;
-
-const RightContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  padding: 2rem;
+  border: 4px solid ${({ theme }) => theme.tertiaryColor};
+  border-radius: 1rem;
 `;
 
 const BottomContainer = styled.div`
@@ -33,31 +27,6 @@ interface BoardCardProps {
 export const BoardCard = (props: BoardCardProps) => {
   return (
     <MainContainer onClick={props.onClick}>
-      <ImageContainer>
-        <Image
-          src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-          width="10rem"
-          height="8rem"
-          widthMobile="6rem"
-          heightMobile="5rem"
-        />
-        <RightContainer>
-          <Image
-            src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-            width="5rem"
-            height="4rem"
-            widthMobile="3rem"
-            heightMobile="2.5rem"
-          />
-          <Image
-            src="https://i.ibb.co/ftMCWW2/portrait-1.jpg"
-            width="5rem"
-            height="4rem"
-            widthMobile="3rem"
-            heightMobile="2.5rem"
-          />
-        </RightContainer>
-      </ImageContainer>
       <H4 weight="bold" weightMobile="bold">
         {props.board.name.length > 15
           ? props.board.name.substring(0, 15) + "..."
@@ -67,9 +36,9 @@ export const BoardCard = (props: BoardCardProps) => {
         <H6 weight="bold" weightMobile="bold" color="light">
           {props.board.pins.length} Pins
         </H6>
-        <H6 weight="bold" weightMobile="bold" color="light">
+        {/* <H6 weight="bold" weightMobile="bold" color="light">
           2W
-        </H6>
+        </H6> */}
       </BottomContainer>
     </MainContainer>
   );

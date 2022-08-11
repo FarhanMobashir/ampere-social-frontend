@@ -42,7 +42,7 @@ export const AddCommentCard = (props: AddCommentProps) => {
         <Image type="circle" height="30px" width="30px" src={userData.avatar} />
       )}
       {!userData.avatar && (
-        <Avatar size="small">{userData.username[0].toUpperCase()}</Avatar>
+        <Avatar size="regular">{userData.username[0].toUpperCase()}</Avatar>
       )}
       <TextField
         placeholder="Add a comment"
@@ -50,7 +50,7 @@ export const AddCommentCard = (props: AddCommentProps) => {
         onChange={props.onChange}
       />
       <ButtonWithIcon variants="primary" onClick={props.onSubmit}>
-        Add <FaPlus />
+        Comment
       </ButtonWithIcon>
     </MainContainer>
   );

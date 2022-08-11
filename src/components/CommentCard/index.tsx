@@ -17,11 +17,13 @@ const BottomContainer = styled.div`
 
 interface CommentCardProps {
   comment: any;
+  pin?: any;
   onDelete?: () => void;
 }
 export const CommentCard = (props: CommentCardProps) => {
   const { userData } = useAppSelector((state) => state.user);
   const isCurrentUser = userData._id === props.comment.createdBy._id;
+  const isCreator = userData._id === props.pin.createdBy._id;
 
   const commentCreationDate = new Date(props.comment.createdAt)
     .toLocaleString()
@@ -38,7 +40,9 @@ export const CommentCard = (props: CommentCardProps) => {
       />
       <BottomContainer>
         <H6>{commentCreationDate}</H6>
-        {isCurrentUser && <FaTrashAlt onClick={props.onDelete} />}
+        {(isCurrentUser || isCreator) && (
+          <FaTrashAlt onClick={props.onDelete} />
+        )}
       </BottomContainer>
     </MainContainer>
   );

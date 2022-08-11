@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaChevronDown,
   FaChevronUp,
@@ -6,6 +6,7 @@ import {
   FaTrash,
   FaUpload,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Button, ButtonWithIcon } from "../../components/Buttons";
 import { CreatorCard } from "../../components/Creator";
@@ -153,7 +154,8 @@ const TextFieldContainer = styled.div``;
 export const Create = () => {
   const { data, isLoading: isLoadingBoards } = useGetAllBoardsQuery();
   const [createBoard] = useCreateBoardMutation();
-  const [createPin, { isLoading: isLoadingCreatePin }] = useCreatePinMutation();
+  const [createPin, { isLoading: isLoadingCreatePin, isSuccess: pinCreated }] =
+    useCreatePinMutation();
 
   const [image, setImage] = useState<any>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -162,6 +164,7 @@ export const Create = () => {
   const [selectedBoard, setSelectedBoard] = useState<any>(null);
   // * pin
   const [pinName, setPinName] = useState<string>("");
+  const [pinDescription, setPinDescription] = useState<string>("");
 
   const fileSelectHandler = (e: any) => {
     const file = e.target.files;
@@ -175,12 +178,26 @@ export const Create = () => {
   };
 
   const createPinHandler = () => {
+    if (!image || !pinName || !selectedBoard) {
+      toast("Please fill all fields", { type: "error" });
+    }
     const data = new FormData();
     data.append("image", image);
     data.append("name", pinName);
+    data.append("description", pinDescription);
     data.append("boardId", selectedBoard._id);
     createPin(data);
   };
+
+  useEffect(() => {
+    if (pinCreated) {
+      setImage(null);
+      setImageUrl(null);
+      setPinName("");
+      setPinDescription("");
+      toast("Pin created successfully", { type: "success" });
+    }
+  }, [pinCreated]);
 
   return (
     <Container>
@@ -261,11 +278,6 @@ export const Create = () => {
                       setShowSelectBoard(false);
                     }}
                   >
-                    <Image
-                      width="40px"
-                      height="40px"
-                      src="https://picsum.photos/200"
-                    />
                     <Paragraph weight="bold">
                       {board.name.length > 15
                         ? `${board.name.substring(0, 15)}...`
@@ -302,7 +314,11 @@ export const Create = () => {
             value={pinName}
             onChange={(e) => setPinName(e.target.value)}
           />
-          <DescriptionInput placeholder="Add your description" />
+          <DescriptionInput
+            value={pinDescription}
+            onChange={(e) => setPinDescription(e.target.value)}
+            placeholder="Add your description"
+          />
           <Button
             style={{
               margin: "0 auto",

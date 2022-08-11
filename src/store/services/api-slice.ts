@@ -98,6 +98,7 @@ export const apiSlice = createApi({
       query: (id) => ({
         url: `api/boards/${id}`,
       }),
+      keepUnusedDataFor: 0,
       providesTags: ["boards"],
     }),
     deleteSingleBoard: builder.mutation<any, any>({
@@ -141,7 +142,7 @@ export const apiSlice = createApi({
       query: () => ({
         url: "/api/pins",
       }),
-      providesTags: ["pins"],
+      providesTags: ["pins", "user"],
       keepUnusedDataFor: 0,
     }),
     getAllPinsOfUser: builder.query<any, any>({
@@ -171,7 +172,7 @@ export const apiSlice = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["pins"],
+      invalidatesTags: ["pins", "boards"],
     }),
     updatePin: builder.mutation<any, any>({
       query: ({ id, data }) => ({

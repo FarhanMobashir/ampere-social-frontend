@@ -58,7 +58,6 @@ export const FollowersListing = () => {
         <EmptyState
           title="You have no followers yet"
           subtitle="Follow people to see their posts here"
-          btnText="Follow people"
         />
       )}
     </Container>
