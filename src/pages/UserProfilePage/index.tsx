@@ -203,7 +203,7 @@ export const UserProfilePage = () => {
                 setPinName(i.name);
                 setPinDescription(i.description);
               }}
-              avatar={i.createdBy.avatar.url}
+              avatar={i.createdBy.avatar ? i.createdBy.avatar.url : null}
             />
           ))}
       </BoardsListingContainer>

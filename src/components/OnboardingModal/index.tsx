@@ -159,42 +159,42 @@ const WelcomeComponent = (props: WelcomeModalProps) => {
   );
 };
 
-const GenderComponent = (props: ModalProps) => {
-  const [updateUser] = useUpdateMeMutation();
-  return (
-    <>
-      <H1 weight="bold" align="center">
-        How do you identify yourself?
-      </H1>
-      <Paragraph size="1.2rem" align="center" color="light">
-        We will use this information to personalize your experience.
-      </Paragraph>
-      <form action="">
-        {["Female", "Male", "Others"].map((item) => (
-          <label>
-            {item}
-            <input
-              type="radio"
-              name="gender"
-              value={item.toLowerCase()}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  updateUser({
-                    gender: e.target.value,
-                  });
-                }
-              }}
-            />
-          </label>
-        ))}
-      </form>
+// const GenderComponent = (props: ModalProps) => {
+//   const [updateUser] = useUpdateMeMutation();
+//   return (
+//     <>
+//       <H1 weight="bold" align="center">
+//         How do you identify yourself?
+//       </H1>
+//       <Paragraph size="1.2rem" align="center" color="light">
+//         We will use this information to personalize your experience.
+//       </Paragraph>
+//       <form action="">
+//         {["Female", "Male", "Others"].map((item) => (
+//           <label>
+//             {item}
+//             <input
+//               type="radio"
+//               name="gender"
+//               value={item.toLowerCase()}
+//               onChange={(e) => {
+//                 if (e.target.checked) {
+//                   updateUser({
+//                     gender: e.target.value,
+//                   });
+//                 }
+//               }}
+//             />
+//           </label>
+//         ))}
+//       </form>
 
-      <Button variants="primary" onClick={props.setStep}>
-        Next
-      </Button>
-    </>
-  );
-};
+//       <Button variants="primary" onClick={props.setStep}>
+//         Next
+//       </Button>
+//     </>
+//   );
+// };
 
 export const CategoryData = [
   {
@@ -294,8 +294,8 @@ const SelectCategory = (props: SelectCategoryProps) => {
                   selectedCategory.find(
                     (category) => category.name === item.name
                   )
-                    ? "grayscale(0.5)"
-                    : "grayscale(1)"
+                    ? "grayscale(0)"
+                    : "grayscale(0)"
                 }
               />
             </ImageContainer>
@@ -310,9 +310,12 @@ const SelectCategory = (props: SelectCategoryProps) => {
       <Button
         variants={selectedCategory.length >= 5 ? "primary" : "disabled"}
         onClick={() => {
-          updateUser({
-            interests: selectedCategory.map((item) => item.name),
-          });
+          let formData = new FormData();
+          formData.append(
+            "interests",
+            selectedCategory.map((item) => item.name).join(",")
+          );
+          updateUser(formData);
           if (!isError) {
             props.onClose();
           }
@@ -347,8 +350,7 @@ export const OnboardingModal = (props: OnBoardingModalProps) => {
           }}
         />
       )}
-      {step === 1 && <GenderComponent setStep={() => setStep(2)} />}
-      {step === 2 && <SelectCategory onClose={props.onClose} />}
+      {step === 1 && <SelectCategory onClose={props.onClose} />}
     </MainContainer>
   );
 };

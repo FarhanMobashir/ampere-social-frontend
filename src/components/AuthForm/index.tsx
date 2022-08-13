@@ -46,7 +46,8 @@ const FormContainer = styled.form`
 `;
 
 export const AuthForm = () => {
-  const baseUrl = "http://192.168.1.21:8080";
+  // const baseUrl = "http://192.168.1.21:8080";
+  const baseUrl = "https://ampere-social.herokuapp.com";
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [formMode, setFormMode] = useState<"login" | "signup">("login");
@@ -95,7 +96,12 @@ export const AuthForm = () => {
       }
       setIsLoading(false);
     }
-    if (formMode === "signup") {
+    if (
+      formMode === "signup" &&
+      validateEmail(email) &&
+      validatePassword(password) &&
+      validateUsername(username)
+    ) {
       setIsLoading(true);
       const response = await fetch(baseUrl + "/signup", {
         method: "POST",
@@ -143,8 +149,10 @@ export const AuthForm = () => {
   };
 
   const validateUsername = (username: string) => {
-    if (username.length < 3) {
-      setUsernameError("Username must be at least 3 characters");
+    if (username.length < 3 || username.length !== username.trim().length) {
+      setUsernameError(
+        "Username must be at least 3 characters and not contain spaces"
+      );
       return false;
     }
     setUsernameError("");
@@ -295,6 +303,9 @@ export const AuthForm = () => {
           </Button>
         </FormContainer>
       )}
+      <Button variants="secondary" onClick={() => console.log("clicked")}>
+        Login as guest
+      </Button>
     </LoginSignupContainer>
   );
 };

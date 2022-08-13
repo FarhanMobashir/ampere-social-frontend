@@ -33,8 +33,8 @@ const PinListingContainer = styled.div`
   flex-wrap: wrap;
   gap: 1rem;
   @media (min-width: 360px) {
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    /* align-items: center; */
     padding: 1rem;
   }
 `;
