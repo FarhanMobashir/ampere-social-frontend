@@ -4,9 +4,12 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 import {
   useCreateBoardMutation,
+  useCreateCommentMutation,
+  useDeleteCommentMutation,
   useFetchMeQuery,
   useFollowUserMutation,
   useGetAllBoardsQuery,
+  useGetAllCommentsOfPinQuery,
   useRemovePinMutation,
   useSavePinMutation,
   useUnfollowUserMutation,
@@ -24,9 +27,9 @@ import { Paragraph } from "../Paragraphs";
 
 const MainContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 2rem;
-  width: 80%;
+  width: 90%;
   box-shadow: 0px 0px 5px ${({ theme }) => theme.tertiaryColor};
   /* padding: 1rem; */
   border-radius: 10px;
@@ -41,9 +44,10 @@ const MainContainer = styled.div`
 
 const ImageContainer = styled.div``;
 
-const LeftContainer = styled.div`
+const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   padding: 1.5rem;
   gap: 0.5rem;
 `;
@@ -63,7 +67,6 @@ const CommentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  width: 60%;
   @media (max-width: 800px) {
     width: 100%;
   }
@@ -128,6 +131,14 @@ export const SinglePin = (props: SinglePinProps) => {
   const [follow, { isLoading: isLoadingFollowing }] = useFollowUserMutation();
   const [unfollow] = useUnfollowUserMutation();
 
+  const { data: AllComments } = useGetAllCommentsOfPinQuery(props.pin._id);
+
+  const [createComment, { isLoading: isAddingComment }] =
+    useCreateCommentMutation();
+  const [deleteComment] = useDeleteCommentMutation();
+
+  const [comment, setComment] = useState<any>(null);
+
   const followingArray = userData?.data?.following;
 
   useEffect(() => {
@@ -158,6 +169,12 @@ export const SinglePin = (props: SinglePinProps) => {
     }
   }, [pinRemoved]);
 
+  useEffect(() => {
+    if (!isAddingComment) {
+      setComment("");
+    }
+  }, [isAddingComment]);
+
   if (isLoadingBoards) return <div>Loading...</div>;
   return (
     <MainContainer>
@@ -172,11 +189,6 @@ export const SinglePin = (props: SinglePinProps) => {
                     setShowSelectBoard(false);
                   }}
                 >
-                  <Image
-                    width="40px"
-                    height="40px"
-                    src="https://picsum.photos/200"
-                  />
                   <Paragraph weight="bold">
                     {board.name.length > 15
                       ? `${board.name.substring(0, 15)}...`
@@ -206,6 +218,14 @@ export const SinglePin = (props: SinglePinProps) => {
               Create a new board
               <FaPlus size={20} />
             </ButtonWithIcon>
+            <Button
+              variants="tertiary"
+              onClick={() => {
+                setShowSelectBoard(false);
+              }}
+            >
+              Cancel
+            </Button>
           </BoardsListingCotainer>
         </Modal>
       )}
@@ -213,7 +233,7 @@ export const SinglePin = (props: SinglePinProps) => {
         <Image src={props.pin.image.url} width="300px" height="auto" />
       </ImageContainer>
 
-      <LeftContainer>
+      <RightContainer>
         <TopButtonContainer>
           <ButtonWithIcon
             variants="transparent"
@@ -252,39 +272,64 @@ export const SinglePin = (props: SinglePinProps) => {
         </H4>
         <CreatorCard
           variant="single-pin"
-          avatar={""}
+          avatar={
+            props.pin.createdBy.avatar ? props.pin.createdBy.avatar.url : null
+          }
           username={`@${props.pin.createdBy.username}`}
           subtitle={""}
           buttonText={
             userData?.data?._id === props.pin.createdBy._id
               ? "It is you"
+              : userData?.data?.following.includes(props.pin.createdBy._id)
+              ? "Unfollow"
               : "Follow"
           }
           buttonVariant="primary"
           onClick={() => {
-            if (!isFollowing(props.pin._id, followingArray)) {
-              follow({ id: props.pin._id });
-            } else {
-              unfollow({ id: props.pin._id });
+            if (!isFollowing(props.pin.createdBy._id, followingArray)) {
+              follow({ id: props.pin.createdBy._id });
+            }
+            if (userData?.data?._id === props.pin.createdBy._id) {
+              return;
+            }
+            if (isFollowing(props.pin.createdBy._id, followingArray)) {
+              unfollow({ id: props.pin.createdBy._id });
             }
           }}
+          link={`/home/user/${props.pin.createdBy._id}`}
         />
         <CommentContainer>
           <CommentButtonContainer>
             <ButtonWithIcon variants="tertiary">
-              8 Comments
+              {AllComments?.data?.length} Comments
               <FaArrowDown />
             </ButtonWithIcon>
           </CommentButtonContainer>
-          {[1].map((comment) => (
-            <CommentCard key={comment} />
+          {AllComments?.data?.map((comment: any) => (
+            <CommentCard
+              comment={comment}
+              onDelete={() => {
+                deleteComment(comment._id);
+              }}
+              key={comment._id}
+              pin={props.pin}
+            />
           ))}
-          <AddCommentCard />
-          <Button variants="secondary" size="small">
-            View All Comments
-          </Button>
+          <AddCommentCard
+            commentText={comment}
+            onChange={(e) => {
+              setComment(e.target.value);
+            }}
+            onSubmit={() => {
+              createComment({
+                text: comment,
+                pinId: props.pin._id,
+                createdBy: userData?.data?._id,
+              });
+            }}
+          />
         </CommentContainer>
-      </LeftContainer>
+      </RightContainer>
     </MainContainer>
   );
 };

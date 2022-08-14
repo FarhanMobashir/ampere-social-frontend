@@ -11,7 +11,6 @@ import { Modal } from "../../components/Modal";
 import { OnboardingModal } from "../../components/OnboardingModal";
 import { Paragraph } from "../../components/Paragraphs";
 import { PinCard } from "../../components/PinCard";
-import { useResponsive } from "../../context/ResposiveContext";
 import { setHasOnboarded } from "../../store/features/user-slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -33,16 +32,11 @@ const PinListingContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-`;
-
-const TopFilterContainer = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-const PinCardContainer = styled.div`
-  break-inside: avoid-column;
-  margin-bottom: 0.5rem;
+  @media (min-width: 360px) {
+    justify-content: flex-start;
+    /* align-items: center; */
+    padding: 1rem;
+  }
 `;
 
 const BoardsListingCotainer = styled.div`
@@ -92,14 +86,12 @@ export const Homepage = () => {
 
   const [savePin, { isSuccess: pinSaved }] = useSavePinMutation();
   const [removePin, { isSuccess: pinRemoved }] = useRemovePinMutation();
-  const { data: userData } = useFetchMeQuery();
   const { data: allBoards, isLoading: isLoadingBoards } =
     useGetAllBoardsQuery();
   const [createBoard] = useCreateBoardMutation();
 
   const { data } = useGetAllPinsQuery();
   const navigate = useNavigate();
-  const { isMobile } = useResponsive();
 
   useEffect(() => {
     if (!isLoadingBoards && allBoards) {
@@ -135,25 +127,23 @@ export const Homepage = () => {
         <Modal>
           <BoardsListingCotainer>
             <BoardsContainer>
-              {allBoards?.data?.map((board: any) => (
-                <BoardBox
-                  onClick={() => {
-                    setSelectedBoard(board);
-                    setShowSelectBoard(false);
-                  }}
-                >
-                  <Image
-                    width="40px"
-                    height="40px"
-                    src="https://picsum.photos/200"
-                  />
-                  <Paragraph weight="bold">
-                    {board.name.length > 15
-                      ? `${board.name.substring(0, 15)}...`
-                      : board.name}
-                  </Paragraph>
-                </BoardBox>
-              ))}
+              {allBoards?.data
+                ?.slice()
+                .reverse()
+                .map((board: any) => (
+                  <BoardBox
+                    onClick={() => {
+                      setSelectedBoard(board);
+                      setShowSelectBoard(false);
+                    }}
+                  >
+                    <Paragraph weight="bold">
+                      {board.name.length > 15
+                        ? `${board.name.substring(0, 15)}...`
+                        : board.name}
+                    </Paragraph>
+                  </BoardBox>
+                ))}
               {data?.data?.length === 0 && (
                 <Paragraph>You don't have any boards yet.</Paragraph>
               )}
@@ -176,47 +166,49 @@ export const Homepage = () => {
               Create a new board
               <FaPlus size={20} />
             </ButtonWithIcon>
+            <Button
+              variants="tertiary"
+              onClick={() => {
+                setShowSelectBoard(false);
+              }}
+            >
+              Cancel
+            </Button>
           </BoardsListingCotainer>
         </Modal>
       )}
-      <TopFilterContainer>
-        <Button variants="secondary">All</Button>
-        <Button variants="secondary">For You</Button>
-        <Button variants="secondary">Latest</Button>
-      </TopFilterContainer>
+
       <PinListingContainer>
         {data?.data.map((i: any) => {
           return (
-            <PinCardContainer key={i._id}>
-              <PinCard
-                name={i.name}
-                creatorName={`@${i.createdBy.username}`}
-                variant="normal"
-                image={i.image.url}
-                onClick={() => {
-                  navigate(`/home/pins/${i._id}`);
-                }}
-                onSave={() => {
-                  if (selectedBoard.pins.includes(i._id)) {
-                    removePin({ pinId: i._id, boardId: selectedBoard._id });
-                  } else {
-                    savePin({
-                      pinId: i._id,
-                      boardId: selectedBoard?._id,
-                    });
-                  }
-                }}
-                selectedBoard={
-                  selectedBoard ? selectedBoard.name : "Select board"
+            <PinCard
+              key={i._id}
+              name={i.name}
+              creatorName={`@${i.createdBy.username}`}
+              variant="normal"
+              image={i.image.url}
+              onClick={() => {
+                navigate(`/home/pins/${i._id}`);
+              }}
+              onSave={() => {
+                if (selectedBoard.pins.includes(i._id)) {
+                  removePin({ pinId: i._id, boardId: selectedBoard._id });
+                } else {
+                  savePin({
+                    pinId: i._id,
+                    boardId: selectedBoard?._id,
+                  });
                 }
-                onSelectBoard={() => {
-                  setShowSelectBoard(true);
-                }}
-                btnText={
-                  selectedBoard?.pins.includes(i._id) ? "Remove" : "Save"
-                }
-              />
-            </PinCardContainer>
+              }}
+              selectedBoard={
+                selectedBoard ? selectedBoard.name : "Select board"
+              }
+              onSelectBoard={() => {
+                setShowSelectBoard(true);
+              }}
+              btnText={selectedBoard?.pins.includes(i._id) ? "Remove" : "Save"}
+              avatar={i.createdBy.avatar ? i.createdBy.avatar.url : null}
+            />
           );
         })}
       </PinListingContainer>

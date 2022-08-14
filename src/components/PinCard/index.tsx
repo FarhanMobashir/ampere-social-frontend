@@ -82,6 +82,7 @@ interface PinCardProps {
   onSelectBoard?: () => void;
   selectedBoard?: any;
   btnText?: string;
+  avatar?: string | null;
 }
 
 export const PinCard = (props: PinCardProps) => {
@@ -156,7 +157,7 @@ export const PinCard = (props: PinCardProps) => {
         {props.variant === "normal" || props.variant === "more-ideas" ? (
           <CreatorCard
             variant="pin-card"
-            avatar={""}
+            avatar={props.avatar}
             username={props.creatorName || ""}
             subtitle={""}
             buttonText={""}

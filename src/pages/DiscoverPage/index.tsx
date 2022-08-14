@@ -28,11 +28,11 @@ export const DiscoverPeople = () => {
   return (
     <Container>
       <H1 sizeMobile="1.5rem">People You May Like</H1>
-      {data.data.map((i: any) => (
+      {data?.data?.map((i: any) => (
         <CreatorCard
           variant="single-pin"
           key={i}
-          avatar={i.avatar}
+          avatar={i.avatar ? i.avatar.url : null}
           username={`@${i.username}`}
           subtitle={i.bio}
           buttonText={

@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import { FaUpload } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Button } from "../../components/Buttons";
-import { CreatorCard } from "../../components/Creator";
 import { H1, H3, H5 } from "../../components/Headings";
 import { Image } from "../../components/Image";
 import { TextFieldWithLabel } from "../../components/Inputs";
 import { CategoryData } from "../../components/OnboardingModal";
 import { Paragraph } from "../../components/Paragraphs";
-import { useAppSelector } from "../../store/hooks";
 import {
   useFetchMeQuery,
   useUpdateMeMutation,
@@ -61,15 +59,11 @@ const InterestBox = styled.div`
   border-radius: 0.5rem;
 `;
 
-const ProfileImageContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-`;
+const ProfileImageContainer = styled.div``;
 
 const Avatar = styled.div`
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background-color: #fcd5db;
   display: flex;
@@ -104,18 +98,30 @@ const ButtonContainer = styled.div`
 
 const EditProfile = () => {
   const { data, isLoading } = useFetchMeQuery();
-  const [updateUser, { isError, data: updatedUserData, isSuccess }] =
-    useUpdateMeMutation();
+  const [
+    updateUser,
+    { isError, data: updatedUserData, isSuccess, isLoading: isUpdatingUser },
+  ] = useUpdateMeMutation();
 
   const [usernameInput, setUsernameInput] = useState("");
   const [bioInput, setBioInput] = useState("");
-
+  const [profileImage, setProfileImage] = useState<{
+    file: any;
+    preview: string | null;
+  }>({
+    file: null,
+    preview: null,
+  });
   useEffect(() => {
     if (isError) {
       toast("Error updating user", { type: "error" });
     }
     if (isSuccess) {
       toast("User updated successfully", { type: "success" });
+      setProfileImage({
+        file: null,
+        preview: null,
+      });
     }
     if (!isLoading) {
       setUsernameInput(data.data.username);
@@ -123,9 +129,20 @@ const EditProfile = () => {
     }
     if (updatedUserData) {
       setUsernameInput(updatedUserData.data.username);
-      setBioInput(updatedUserData.data.bio);
+      setBioInput(updatedUserData.data.bio ? updatedUserData.data.bio : "");
     }
+    // eslint-disable-next-line
   }, [isSuccess, isError, isLoading]);
+
+  function updateUserHandler() {
+    const formData = new FormData();
+    formData.append("username", usernameInput);
+    formData.append("bio", bioInput);
+    if (profileImage.file) {
+      formData.append("avatar", profileImage.file);
+    }
+    updateUser(formData);
+  }
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -141,35 +158,77 @@ const EditProfile = () => {
       </Paragraph>
       <UserProfilePhotoContainer>
         <ProfileImageContainer>
-          {data.data.avatar && (
+          {data.data.avatar && !profileImage.preview && (
             <Image
-              src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+              src={data.data.avatar.url}
               width="70px"
               height="70px"
               type="circle"
             />
           )}
-          {!data?.data.avatar && (
+          {data.data.avatar && profileImage.preview && (
             <>
-              <Avatar>{data?.data.username[0].toUpperCase()}</Avatar>
+              <Image
+                src={profileImage.preview ? profileImage.preview : ""}
+                width="100px"
+                height="100px"
+                type="circle"
+              />
+              <FaTrash
+                onClick={() => {
+                  setProfileImage({
+                    preview: null,
+                    file: null,
+                  });
+                }}
+              />
             </>
+          )}
+
+          {!data?.data.avatar && (
+            <div>
+              {profileImage.preview ? (
+                <div>
+                  <Image
+                    src={profileImage.preview}
+                    width="100px"
+                    height="100px"
+                    type="circle"
+                  />
+                  <FaTrash
+                    onClick={() => {
+                      setProfileImage({
+                        preview: null,
+                        file: null,
+                      });
+                    }}
+                  />
+                </div>
+              ) : (
+                <Avatar>{data?.data.username[0].toUpperCase()}</Avatar>
+              )}
+            </div>
           )}
         </ProfileImageContainer>
         <UploadImageContainer>
           <ButtonContainer>
             <Button variants="tertiary">Change</Button>
           </ButtonContainer>
-          <UploadImageInput type="file" />
+          <UploadImageInput
+            type="file"
+            onChange={(e: any) => {
+              console.log(e.target.files[0]);
+              setProfileImage({
+                file: e.target.files[0],
+                preview: URL.createObjectURL(e.target.files[0]),
+              });
+            }}
+          />
         </UploadImageContainer>
 
         <Button
-          variants="primary"
-          onClick={() => {
-            updateUser({
-              username: usernameInput,
-              bio: bioInput,
-            });
-          }}
+          variants={isUpdatingUser ? "disabled" : "primary"}
+          onClick={updateUserHandler}
         >
           Save
         </Button>
@@ -200,15 +259,21 @@ const EditProfile = () => {
                 }
                 onClick={() => {
                   if (data.data.interests.includes(interest.name)) {
-                    updateUser({
-                      interests: data.data.interests.filter(
-                        (i: string) => i !== interest.name
-                      ),
-                    });
+                    const newInterests: any = data.data.interests.filter(
+                      (i: string) => i !== interest.name
+                    );
+
+                    const formData = new FormData();
+                    formData.append("interests", newInterests);
+                    updateUser(formData);
                   } else {
-                    updateUser({
-                      interests: [...data.data.interests, interest.name],
-                    });
+                    const formData = new FormData();
+                    const interests: any = [
+                      ...data.data.interests,
+                      interest.name,
+                    ];
+                    formData.append("interests", interests);
+                    updateUser(formData);
                   }
                 }}
               >

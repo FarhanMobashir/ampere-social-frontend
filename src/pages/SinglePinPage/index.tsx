@@ -31,12 +31,6 @@ export const SinglePinPage = () => {
   return (
     <MainContainer>
       {!isLoading && data && <SinglePin pin={data?.data} />}
-      <H3>Similar Ideas</H3>
-      <PinListingContainer>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-          <PinCard variant="normal" key={i} />
-        ))}
-      </PinListingContainer>
     </MainContainer>
   );
 };

@@ -19,12 +19,12 @@ const Container = styled.div`
 
 export const FollowersListing = () => {
   const { isLoading, data } = useGetAllFollowersQuery();
-  const { data: userData } = useFetchMeQuery();
+  const { data: userData, isLoading: isLoadingUser } = useFetchMeQuery();
   const [follow, { isLoading: isLoadingFollowing }] = useFollowUserMutation();
   const [unfollow] = useUnfollowUserMutation();
   const followersArray = userData?.data?.followers;
 
-  if (isLoading) {
+  if (isLoading || isLoadingFollowing || isLoadingUser) {
     return <div>Loading...</div>;
   }
 
@@ -35,11 +35,10 @@ export const FollowersListing = () => {
         <CreatorCard
           variant="single-pin"
           key={i}
-          avatar="https://i.pravatar.cc/300"
           username={`@${i.username}`}
           subtitle={i.bio}
           buttonText={
-            isFollowing(i._id, followersArray) ? "Following" : "Follow"
+            isFollowing(i._id, followersArray) ? "Unfollow" : "Follow"
           }
           buttonVariant={
             isFollowing(i._id, followersArray) ? "primary" : "secondary"
@@ -52,13 +51,13 @@ export const FollowersListing = () => {
             }
           }}
           link={`/home/user/${i._id}`}
+          avatar={i.avatar ? i.avatar.url : null}
         />
       ))}
       {data.data.length === 0 && (
         <EmptyState
           title="You have no followers yet"
           subtitle="Follow people to see their posts here"
-          btnText="Follow people"
         />
       )}
     </Container>

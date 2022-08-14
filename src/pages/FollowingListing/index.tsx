@@ -34,11 +34,11 @@ export const FollowingListing = () => {
         <CreatorCard
           variant="single-pin"
           key={i}
-          avatar="https://i.pravatar.cc/300"
+          avatar={i.avatar ? i.avatar.url : null}
           username={`@${i.username}`}
           subtitle={i.bio}
           buttonText={
-            isFollowing(i._id, followingArray) ? "Following" : "Follow"
+            isFollowing(i._id, followingArray) ? "Unfollow" : "Follow"
           }
           buttonVariant={
             isFollowing(i._id, followingArray) ? "primary" : "secondary"
@@ -57,7 +57,6 @@ export const FollowingListing = () => {
         <EmptyState
           title="You are not following anyone yet"
           subtitle="Follow people to see their posts here"
-          btnText="Follow people"
         />
       )}
     </Container>

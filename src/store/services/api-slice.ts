@@ -1,24 +1,35 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 
-const local = "http://192.168.1.21:8080";
+// const local = "http://192.168.1.21:8080";
+const local = "https://ampere-social.herokuapp.com";
 
 export const apiSlice = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: local,
+    mode: "cors",
     prepareHeaders: (headers, { getState }) => {
       // fetch header form redux--- if not found fetch it from local storage
       const token = (getState() as RootState).user.token;
 
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
-      } else {
       }
+      headers.set("Access-Control-Allow-Origin", "*");
+
       return headers;
     },
   }),
-  tagTypes: ["user", "allUser", "following", "followers", "boards", "pins"],
+  tagTypes: [
+    "user",
+    "allUser",
+    "following",
+    "followers",
+    "boards",
+    "pins",
+    "comments",
+  ],
   endpoints: (builder) => ({
     fetchMe: builder.query<any, void>({
       query: () => {
@@ -46,7 +57,7 @@ export const apiSlice = createApi({
     }),
     getSingleUsers: builder.query<any, any>({
       query: (id) => ({
-        url: `/api/user/${id}`,
+        url: `/api/user/single/${id}`,
       }),
       keepUnusedDataFor: 0,
     }),
@@ -90,6 +101,7 @@ export const apiSlice = createApi({
       query: (id) => ({
         url: `api/boards/${id}`,
       }),
+      keepUnusedDataFor: 0,
       providesTags: ["boards"],
     }),
     deleteSingleBoard: builder.mutation<any, any>({
@@ -131,16 +143,16 @@ export const apiSlice = createApi({
     // pins
     getAllPins: builder.query<any, void>({
       query: () => ({
-        url: "/api/pins/all",
-      }),
-      providesTags: ["pins"],
-      keepUnusedDataFor: 0,
-    }),
-    getAllPinsOfUser: builder.query<any, void>({
-      query: () => ({
         url: "/api/pins",
       }),
-      // providesTags: ["pins"],
+      providesTags: ["pins", "user"],
+      keepUnusedDataFor: 0,
+    }),
+    getAllPinsOfUser: builder.query<any, any>({
+      query: (id) => ({
+        url: `/api/pins/${id}`,
+      }),
+      providesTags: ["pins"],
 
       keepUnusedDataFor: 0,
     }),
@@ -163,7 +175,7 @@ export const apiSlice = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["pins"],
+      invalidatesTags: ["pins", "boards"],
     }),
     updatePin: builder.mutation<any, any>({
       query: ({ id, data }) => ({
@@ -192,6 +204,29 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["pins", "boards"],
     }),
+    // comments
+    getAllCommentsOfPin: builder.query<any, void>({
+      query: (id) => ({
+        url: `/api/comments/${id}`,
+      }),
+      providesTags: ["comments"],
+      keepUnusedDataFor: 0,
+    }),
+    createComment: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `api/comments`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["comments"],
+    }),
+    deleteComment: builder.mutation<any, any>({
+      query: (id) => ({
+        url: `api/comments/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["comments"],
+    }),
   }),
 });
 
@@ -219,4 +254,7 @@ export const {
   useDeleteSinglePinMutation,
   useSavePinMutation,
   useRemovePinMutation,
+  useGetAllCommentsOfPinQuery,
+  useCreateCommentMutation,
+  useDeleteCommentMutation,
 } = apiSlice;

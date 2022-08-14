@@ -40,7 +40,7 @@ const Avatar = styled.div<AvatarProps>`
 
 interface CreatorCardProps {
   variant: "pin-card" | "single-pin" | "comment-card";
-  avatar: string;
+  avatar: any;
   username: string | null;
   subtitle: string;
   buttonText: string;
