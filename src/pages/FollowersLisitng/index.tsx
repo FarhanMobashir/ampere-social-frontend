@@ -35,7 +35,7 @@ export const FollowersListing = () => {
       {data.data.map((i: any) => (
         <CreatorCard
           variant="single-pin"
-          key={i}
+          key={i._id}
           username={`@${i.username}`}
           subtitle={i.bio}
           buttonText={

@@ -150,7 +150,6 @@ export const AuthForm = () => {
 
   const validateUsername = (username: string) => {
     const regexForUsername = /^[a-z0-9_.]+$/;
-    console.log(regexForUsername.test(username));
     if (username.length < 3 || regexForUsername.test(username) === false) {
       setUsernameError(
         "Username must be at least 3 characters and not contain spaces"
@@ -305,7 +304,34 @@ export const AuthForm = () => {
           </Button>
         </FormContainer>
       )}
-      <Button variants="secondary" onClick={() => console.log("clicked")}>
+      <Button
+        variants="secondary"
+        onClick={async () => {
+          setIsLoading(true);
+          const response = await fetch(baseUrl + "/signin", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: "g@g.com",
+              password: "123456",
+            }),
+          });
+          const data = await response.json();
+          if (data.error) {
+            setError(data.error);
+            toast(data.error);
+          }
+          if (data.token) {
+            dispatch(setToken(data.token));
+            dispatch(setUser(data.user));
+            dispatch(setMode(data.mode));
+            navigate("/home");
+          }
+          setIsLoading(false);
+        }}
+      >
         Login as guest
       </Button>
     </LoginSignupContainer>

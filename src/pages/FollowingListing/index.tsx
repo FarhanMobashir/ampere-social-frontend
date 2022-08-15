@@ -33,7 +33,7 @@ export const FollowingListing = () => {
       {data.data.map((i: any) => (
         <CreatorCard
           variant="single-pin"
-          key={i}
+          key={i._id}
           avatar={i.avatar ? i.avatar.url : null}
           username={`@${i.username}`}
           subtitle={i.bio}

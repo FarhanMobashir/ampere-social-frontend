@@ -224,7 +224,7 @@ export const SingleUserPage = () => {
           allBoardsOfUser?.data?.map((item: any) => (
             <BoardCard
               board={item}
-              key={item}
+              key={item._id}
               onClick={() => {
                 navigate(`/home/boards/${item._id}`);
               }}

@@ -264,6 +264,7 @@ const SelectCategory = (props: SelectCategoryProps) => {
       <CategoriesBox>
         {CategoryData.map((item) => (
           <CategoryBox
+            key={item.name}
             isActive={
               selectedCategory.find(
                 (category) => category.name === item.name

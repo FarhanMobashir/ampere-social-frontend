@@ -9,6 +9,7 @@ import { H1 } from "../../components/Headings";
 import { Paragraph } from "../../components/Paragraphs";
 import { Button } from "../../components/Buttons";
 import { AuthForm } from "../../components/AuthForm";
+import { CustomLink } from "../../components/CustomLink";
 
 const MainContainer = styled.div``;
 const HeaderContainer = styled.div`
@@ -84,9 +85,11 @@ export const Landingpage = () => {
             A place to share your thoughts and ideas using images. Hangout with
             other people and share your thoughts and ideas.
           </Paragraph>
-          <Button size="large" variants="primary">
-            Let's Explore
-          </Button>
+          <CustomLink to="">
+            <Button size="large" variants="primary">
+              Let's Explore
+            </Button>
+          </CustomLink>
         </HeroTextContainer>
         <Image
           src={heroImage}
