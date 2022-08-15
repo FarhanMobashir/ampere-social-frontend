@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { H1 } from "../Headings";
 import emptyImage from "../../assets/empty.svg";
 import { Image } from "../Image";
-import { Button, ButtonWithIcon } from "../Buttons";
-import { FaArrowLeft } from "react-icons/fa";
 import { Paragraph } from "../Paragraphs";
 
 const MainContainer = styled.div`

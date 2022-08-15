@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { CreatorCard } from "../../components/Creator";
 import { EmptyState } from "../../components/EmptyState";
 import { H1 } from "../../components/Headings";
+import { Loader } from "../../components/Loader";
 import {
   useFetchMeQuery,
   useFollowUserMutation,
@@ -25,7 +26,7 @@ export const FollowersListing = () => {
   const followersArray = userData?.data?.followers;
 
   if (isLoading || isLoadingFollowing || isLoadingUser) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (

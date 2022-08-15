@@ -1,15 +1,11 @@
 import { useState } from "react";
-import { FaPlus, FaPlusCircle } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import styled from "styled-components";
 
-import {
-  useCreateBoardMutation,
-  useSavePinMutation,
-} from "../../store/services/api-slice";
+import { useCreateBoardMutation } from "../../store/services/api-slice";
 
 import { Button, ButtonWithIcon } from "../Buttons";
-import { H1, H4, H5 } from "../Headings";
-import { Image } from "../Image";
+import { H1, H4 } from "../Headings";
 import { TextField } from "../Inputs";
 
 const MainContainer = styled.div`

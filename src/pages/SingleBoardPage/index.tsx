@@ -1,24 +1,13 @@
 import { useEffect, useState } from "react";
-import {
-  FaBirthdayCake,
-  FaBoxOpen,
-  FaBoxTissue,
-  FaEdit,
-  FaGrinStars,
-  FaParachuteBox,
-  FaPlus,
-  FaSmileBeam,
-  FaStarAndCrescent,
-  FaTrash,
-} from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Button, ButtonWithIcon } from "../../components/Buttons";
 import { EmptyState } from "../../components/EmptyState";
 import { H1, H2, H3, H6 } from "../../components/Headings";
-import { Image } from "../../components/Image";
 import { TextField, TextFieldWithLabel } from "../../components/Inputs";
+import { Loader } from "../../components/Loader";
 import { Modal } from "../../components/Modal";
 import { Paragraph } from "../../components/Paragraphs";
 import { PinCard } from "../../components/PinCard";
@@ -26,7 +15,6 @@ import { useAppSelector } from "../../store/hooks";
 import {
   useCreateBoardMutation,
   useDeleteSingleBoardMutation,
-  useFetchMeQuery,
   useGetAllBoardsQuery,
   useGetSingleBoardQuery,
   useRemovePinMutation,
@@ -179,6 +167,10 @@ export const SingleBoardPage = () => {
       });
     }
   }, [pinRemoved]);
+
+  if (isLoadingBoards) {
+    return <Loader />;
+  }
 
   return (
     <MainContainer>

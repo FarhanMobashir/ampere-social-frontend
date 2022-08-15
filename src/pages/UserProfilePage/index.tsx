@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -8,15 +7,12 @@ import { Button } from "../../components/Buttons";
 import { EmptyState } from "../../components/EmptyState";
 import { H5 } from "../../components/Headings";
 import { TextFieldWithLabel } from "../../components/Inputs";
+import { Loader } from "../../components/Loader";
 import { Modal } from "../../components/Modal";
 import { PinCard } from "../../components/PinCard";
 
 import { ProfileCard } from "../../components/ProfileCard";
-import {
-  setHasOnboarded,
-  setMode,
-  setToken,
-} from "../../store/features/user-slice";
+import { setHasOnboarded, setToken } from "../../store/features/user-slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   useDeleteSinglePinMutation,
@@ -85,7 +81,7 @@ export const UserProfilePage = () => {
   const navigate = useNavigate();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
   return (
     <Container>

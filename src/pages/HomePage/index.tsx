@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Button, ButtonWithIcon } from "../../components/Buttons";
-import { Image } from "../../components/Image";
 import { TextField } from "../../components/Inputs";
-import { MasonryGrid } from "../../components/MasonryGrid";
+import { Loader } from "../../components/Loader";
 import { Modal } from "../../components/Modal";
 import { OnboardingModal } from "../../components/OnboardingModal";
 import { Paragraph } from "../../components/Paragraphs";
@@ -15,7 +14,6 @@ import { setHasOnboarded } from "../../store/features/user-slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   useCreateBoardMutation,
-  useFetchMeQuery,
   useGetAllBoardsQuery,
   useGetAllPinsQuery,
   useRemovePinMutation,
@@ -34,7 +32,6 @@ const PinListingContainer = styled.div`
   gap: 1rem;
   @media (min-width: 360px) {
     justify-content: flex-start;
-    /* align-items: center; */
     padding: 1rem;
   }
 `;
@@ -63,11 +60,11 @@ const BoardBox = styled.div`
   align-items: center;
   gap: 1rem;
   padding: 0.5rem;
-  /* border-bottom: 2px dashed ${(props) => props.theme.textColorLight}; */
   border-radius: 0.5rem;
   cursor: pointer;
   &:hover {
-    background-color: ${(props) => props.theme.lightBgColor};
+    background-color: ${(props) => props.theme.bgColor};
+    border: 1px solid ${(props) => props.theme.textColor};
     transition: cubic-bezier(1, 0, 0, 1) 0.3s;
   }
 `;
@@ -88,9 +85,10 @@ export const Homepage = () => {
   const [removePin, { isSuccess: pinRemoved }] = useRemovePinMutation();
   const { data: allBoards, isLoading: isLoadingBoards } =
     useGetAllBoardsQuery();
-  const [createBoard] = useCreateBoardMutation();
+  const [createBoard, { isLoading: isCreatingBoard }] =
+    useCreateBoardMutation();
 
-  const { data } = useGetAllPinsQuery();
+  const { data: allPins, isLoading: isLoadingPin } = useGetAllPinsQuery();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -121,6 +119,10 @@ export const Homepage = () => {
     }
   }, [pinRemoved]);
 
+  if (isLoadingPin) {
+    return <Loader />;
+  }
+
   return (
     <MainContainer>
       {showSelectBoard && (
@@ -144,9 +146,10 @@ export const Homepage = () => {
                     </Paragraph>
                   </BoardBox>
                 ))}
-              {data?.data?.length === 0 && (
+              {allBoards?.data?.length === 0 && (
                 <Paragraph>You don't have any boards yet.</Paragraph>
               )}
+              {isCreatingBoard && <Loader />}
             </BoardsContainer>
             <TextFieldContainer>
               <TextField
@@ -160,6 +163,7 @@ export const Homepage = () => {
               onClick={() => {
                 if (boardName) {
                   createBoard({ name: boardName });
+                  setBoardName("");
                 }
               }}
             >
@@ -179,7 +183,7 @@ export const Homepage = () => {
       )}
 
       <PinListingContainer>
-        {data?.data.map((i: any) => {
+        {allPins?.data.map((i: any) => {
           return (
             <PinCard
               key={i._id}

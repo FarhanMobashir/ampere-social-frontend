@@ -46,7 +46,7 @@ const FormContainer = styled.form`
 `;
 
 export const AuthForm = () => {
-  // const baseUrl = "http://192.168.1.21:8080";
+  // const baseUrl = "http://localhost:8080";
   const baseUrl = "https://ampere-social.herokuapp.com";
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -149,7 +149,9 @@ export const AuthForm = () => {
   };
 
   const validateUsername = (username: string) => {
-    if (username.length < 3 || username.length !== username.trim().length) {
+    const regexForUsername = /^[a-z0-9_.]+$/;
+    console.log(regexForUsername.test(username));
+    if (username.length < 3 || regexForUsername.test(username) === false) {
       setUsernameError(
         "Username must be at least 3 characters and not contain spaces"
       );
@@ -169,7 +171,7 @@ export const AuthForm = () => {
       validatePassword(password);
       validateUsername(username);
     }
-  }, [email, password, username]);
+  }, [email, password, username, formMode]);
   return (
     <LoginSignupContainer>
       <TextContainer>

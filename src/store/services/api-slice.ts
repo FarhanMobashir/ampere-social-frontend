@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 
-// const local = "http://192.168.1.21:8080";
+// const local = "http://localhost:8080";
 const local = "https://ampere-social.herokuapp.com";
 
 export const apiSlice = createApi({
@@ -12,7 +12,6 @@ export const apiSlice = createApi({
     prepareHeaders: (headers, { getState }) => {
       // fetch header form redux--- if not found fetch it from local storage
       const token = (getState() as RootState).user.token;
-
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }

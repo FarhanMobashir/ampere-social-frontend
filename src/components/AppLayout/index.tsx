@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
-import { useResponsive } from "../../context/ResposiveContext";
 import { AppHeader } from "../AppHeader";
 
 const Main = styled.main`

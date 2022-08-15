@@ -7,18 +7,13 @@ import { BoardCard } from "../../components/BoardCard";
 import { Button, ButtonWithIcon } from "../../components/Buttons";
 import { EmptyState } from "../../components/EmptyState";
 import { H5 } from "../../components/Headings";
-import { Image } from "../../components/Image";
 import { TextField } from "../../components/Inputs";
+import { Loader } from "../../components/Loader";
 import { Modal } from "../../components/Modal";
 import { Paragraph } from "../../components/Paragraphs";
 import { PinCard } from "../../components/PinCard";
 import { ProfileCard } from "../../components/ProfileCard";
-import {
-  setHasOnboarded,
-  setMode,
-  setToken,
-} from "../../store/features/user-slice";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+
 import {
   useCreateBoardMutation,
   useGetAllBoardsOfUserQuery,
@@ -143,7 +138,7 @@ export const SingleUserPage = () => {
   }, [pinRemoved]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
   return (
     <Container>

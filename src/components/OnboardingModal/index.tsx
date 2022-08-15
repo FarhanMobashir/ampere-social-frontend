@@ -5,7 +5,6 @@ import { useUpdateMeMutation } from "../../store/services/api-slice";
 import { Button } from "../Buttons";
 import { H1, H3 } from "../Headings";
 import { Image } from "../Image";
-import { Modal } from "../Modal";
 import { Paragraph } from "../Paragraphs";
 import lottie from "lottie-web";
 import confetti from "../../assets/confetti.json";
@@ -94,6 +93,7 @@ const CategoryBox = styled.div<CategoryBoxProps>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   ${(props) => {
     if (props.isActive) {
       return `
@@ -338,7 +338,7 @@ export const OnboardingModal = (props: OnBoardingModalProps) => {
   return (
     <MainContainer>
       <StepContainer>
-        {[0, 1, 2].map((item) => (
+        {[0, 1].map((item) => (
           <Circle active={item === step} />
         ))}
       </StepContainer>
