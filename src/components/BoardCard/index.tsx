@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import { CustomLink } from "../CustomLink";
 import { H4, H6 } from "../Headings";
-import { Image } from "../Image";
 
 const MainContainer = styled.div`
   display: flex;

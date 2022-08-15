@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppLayout } from "./components/AppLayout";
 import { PrivateRoute } from "./components/PrivateRoute";
-import { SinglePin } from "./components/SinglePin";
 import { AllBoardsPage } from "./pages/AllBoardsPage";
 import { Homepage } from "./pages/HomePage";
 import { Landingpage } from "./pages/LandingPage";
@@ -20,12 +19,22 @@ import { SearchPage } from "./pages/SearchPage";
 import { SearchPageMobile } from "./components/SearchPageMobile";
 import { DiscoverPeople } from "./pages/DiscoverPage";
 import { SingleUserPage } from "./pages/SingleUserPage";
+import { EmptyState } from "./components/EmptyState";
 
 function App() {
   const isAuthenticated = useAppSelector((state) => state.user.token);
   return (
     <BrowserRouter>
       <Routes>
+        <Route
+          path="*"
+          element={
+            <EmptyState
+              title="404 Error : Page Not found"
+              subtitle="This is not where you should be"
+            />
+          }
+        />
         <Route
           path="/"
           element={isAuthenticated ? <Navigate to="/home" /> : <Landingpage />}

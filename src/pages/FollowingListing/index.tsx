@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { CreatorCard } from "../../components/Creator";
 import { EmptyState } from "../../components/EmptyState";
 import { H1 } from "../../components/Headings";
+import { Loader } from "../../components/Loader";
 import {
   useFetchMeQuery,
   useFollowUserMutation,
-  useGetAllFollowersQuery,
   useGetAllFollowingsQuery,
   useUnfollowUserMutation,
 } from "../../store/services/api-slice";
@@ -21,11 +21,11 @@ const Container = styled.div`
 export const FollowingListing = () => {
   const { isLoading, data } = useGetAllFollowingsQuery();
   const { data: userData, isLoading: loadingUser } = useFetchMeQuery();
-  const [follow, { isLoading: isLoadingFollowing }] = useFollowUserMutation();
+  const [follow] = useFollowUserMutation();
   const [unfollow] = useUnfollowUserMutation();
   const followingArray = userData?.data?.following;
 
-  if (isLoading || loadingUser) return <div>Loading...</div>;
+  if (isLoading || loadingUser) return <Loader />;
 
   return (
     <Container>

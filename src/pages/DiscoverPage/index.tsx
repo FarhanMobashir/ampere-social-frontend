@@ -1,6 +1,9 @@
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { CreatorCard } from "../../components/Creator";
 import { H1 } from "../../components/Headings";
+import { Loader } from "../../components/Loader";
 import {
   useFetchMeQuery,
   useFollowUserMutation,
@@ -19,12 +22,24 @@ const Container = styled.div`
 export const DiscoverPeople = () => {
   const { data = [], isLoading } = useGetAllUsersQuery();
   const { data: userData, isLoading: loadingUser } = useFetchMeQuery();
-  const [follow, { isLoading: isLoadingFollowing }] = useFollowUserMutation();
-  const [unfollow] = useUnfollowUserMutation();
+  const [follow, { isSuccess: isFollowed }] = useFollowUserMutation();
+  const [unfollow, { isSuccess: isUnfollowed }] = useUnfollowUserMutation();
 
   const followingArray = userData?.data?.following;
 
-  if (isLoading || loadingUser) return <div>Loading...</div>;
+  useEffect(() => {
+    if (isFollowed) {
+      toast("Followed successfully", { type: "success" });
+    }
+  }, [isFollowed]);
+
+  useEffect(() => {
+    if (isUnfollowed) {
+      toast("Unfollowed successfully", { type: "success" });
+    }
+  }, [isUnfollowed]);
+
+  if (isLoading || loadingUser) return <Loader />;
   return (
     <Container>
       <H1 sizeMobile="1.5rem">People You May Like</H1>

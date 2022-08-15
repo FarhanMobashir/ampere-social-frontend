@@ -19,9 +19,10 @@ import { AddCommentCard } from "../AddCommentCard";
 import { Button, ButtonWithIcon } from "../Buttons";
 import { CommentCard } from "../CommentCard";
 import { CreatorCard } from "../Creator";
-import { H1, H3, H4 } from "../Headings";
+import { H1, H4 } from "../Headings";
 import { Image } from "../Image";
 import { TextField } from "../Inputs";
+import { Loader } from "../Loader";
 import { Modal } from "../Modal";
 import { Paragraph } from "../Paragraphs";
 
@@ -103,11 +104,10 @@ const BoardBox = styled.div`
   align-items: center;
   gap: 1rem;
   padding: 0.5rem;
-  /* border-bottom: 2px dashed ${(props) => props.theme.textColorLight}; */
   border-radius: 0.5rem;
   cursor: pointer;
   &:hover {
-    background-color: ${(props) => props.theme.lightBgColor};
+    border: 1px solid ${(props) => props.theme.textColor};
     transition: cubic-bezier(1, 0, 0, 1) 0.3s;
   }
 `;
@@ -125,10 +125,11 @@ export const SinglePin = (props: SinglePinProps) => {
   const [savePin, { isSuccess: pinSaved }] = useSavePinMutation();
   const [removePin, { isSuccess: pinRemoved }] = useRemovePinMutation();
   const { data, isLoading: isLoadingBoards } = useGetAllBoardsQuery();
-  const [createBoard] = useCreateBoardMutation();
+  const [createBoard, { isLoading: isCreatingBoard }] =
+    useCreateBoardMutation();
 
-  const { data: userData, isLoading: loadingUser } = useFetchMeQuery();
-  const [follow, { isLoading: isLoadingFollowing }] = useFollowUserMutation();
+  const { data: userData } = useFetchMeQuery();
+  const [follow] = useFollowUserMutation();
   const [unfollow] = useUnfollowUserMutation();
 
   const { data: AllComments } = useGetAllCommentsOfPinQuery(props.pin._id);
@@ -175,30 +176,35 @@ export const SinglePin = (props: SinglePinProps) => {
     }
   }, [isAddingComment]);
 
-  if (isLoadingBoards) return <div>Loading...</div>;
+  if (isLoadingBoards) return <Loader />;
   return (
     <MainContainer>
       {showSelectBoard && (
         <Modal>
           <BoardsListingCotainer>
             <BoardsContainer>
-              {data?.data?.map((board: any) => (
-                <BoardBox
-                  onClick={() => {
-                    setSelectedBoard(board);
-                    setShowSelectBoard(false);
-                  }}
-                >
-                  <Paragraph weight="bold">
-                    {board.name.length > 15
-                      ? `${board.name.substring(0, 15)}...`
-                      : board.name}
-                  </Paragraph>
-                </BoardBox>
-              ))}
+              {!isCreatingBoard &&
+                data?.data
+                  ?.slice()
+                  .reverse()
+                  .map((board: any) => (
+                    <BoardBox
+                      onClick={() => {
+                        setSelectedBoard(board);
+                        setShowSelectBoard(false);
+                      }}
+                    >
+                      <Paragraph weight="bold">
+                        {board.name.length > 15
+                          ? `${board.name.substring(0, 15)}...`
+                          : board.name}
+                      </Paragraph>
+                    </BoardBox>
+                  ))}
               {data?.data?.length === 0 && (
                 <Paragraph>You don't have any boards yet.</Paragraph>
               )}
+              {isCreatingBoard && <Loader />}
             </BoardsContainer>
             <TextFieldContainer>
               <TextField
@@ -212,6 +218,7 @@ export const SinglePin = (props: SinglePinProps) => {
               onClick={() => {
                 if (boardName) {
                   createBoard({ name: boardName });
+                  setBoardName("");
                 }
               }}
             >
@@ -249,13 +256,18 @@ export const SinglePin = (props: SinglePinProps) => {
             variants="primary"
             size="regular"
             onClick={() => {
-              if (selectedBoard.pins.includes(props.pin._id)) {
-                removePin({ pinId: props.pin._id, boardId: selectedBoard._id });
-              } else {
-                savePin({
-                  pinId: props.pin._id,
-                  boardId: selectedBoard?._id,
-                });
+              if (selectedBoard) {
+                if (selectedBoard.pins.includes(props.pin._id)) {
+                  removePin({
+                    pinId: props.pin._id,
+                    boardId: selectedBoard._id,
+                  });
+                } else {
+                  savePin({
+                    pinId: props.pin._id,
+                    boardId: selectedBoard?._id,
+                  });
+                }
               }
             }}
           >

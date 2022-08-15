@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  FaArrowDown,
   FaChevronDown,
   FaEdit,
   FaEllipsisH,
@@ -12,8 +11,7 @@ import styled from "styled-components";
 import { useResponsive } from "../../context/ResposiveContext";
 import { Button, ButtonWithIcon, IconButton } from "../Buttons";
 import { CreatorCard } from "../Creator";
-import { CustomLink } from "../CustomLink";
-import { H4, H6 } from "../Headings";
+import { H4 } from "../Headings";
 import { Image } from "../Image";
 
 const PinContainer = styled.div`

@@ -1,4 +1,3 @@
-import { FaEnvelope } from "react-icons/fa";
 import styled from "styled-components";
 import { typeScale } from "../../utils";
 import { Paragraph } from "../Paragraphs";

@@ -9,10 +9,10 @@ import {
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Button, ButtonWithIcon } from "../../components/Buttons";
-import { CreatorCard } from "../../components/Creator";
 import { H1, H3 } from "../../components/Headings";
 import { Image } from "../../components/Image";
 import { TextField } from "../../components/Inputs";
+import { Loader } from "../../components/Loader";
 import { Paragraph } from "../../components/Paragraphs";
 import {
   useCreateBoardMutation,
@@ -144,7 +144,7 @@ const BoardBox = styled.div`
   border-radius: 0.5rem;
   cursor: pointer;
   &:hover {
-    background-color: ${(props) => props.theme.lightBgColor};
+    border: 1px solid ${(props) => props.theme.textColor};
     transition: cubic-bezier(1, 0, 0, 1) 0.3s;
   }
 `;
@@ -152,8 +152,9 @@ const BoardBox = styled.div`
 const TextFieldContainer = styled.div``;
 
 export const Create = () => {
-  const { data, isLoading: isLoadingBoards } = useGetAllBoardsQuery();
-  const [createBoard] = useCreateBoardMutation();
+  const { data } = useGetAllBoardsQuery();
+  const [createBoard, { isLoading: isCreatingBoard }] =
+    useCreateBoardMutation();
   const [createPin, { isLoading: isLoadingCreatePin, isSuccess: pinCreated }] =
     useCreatePinMutation();
 
@@ -272,23 +273,28 @@ export const Create = () => {
           {showSelectBoard && (
             <BoardsListingCotainer>
               <BoardsContainer>
-                {data?.data?.map((board: any) => (
-                  <BoardBox
-                    onClick={() => {
-                      setSelectedBoard(board);
-                      setShowSelectBoard(false);
-                    }}
-                  >
-                    <Paragraph weight="bold">
-                      {board.name.length > 15
-                        ? `${board.name.substring(0, 15)}...`
-                        : board.name}
-                    </Paragraph>
-                  </BoardBox>
-                ))}
+                {!isCreatingBoard &&
+                  data?.data
+                    ?.slice()
+                    .reverse()
+                    .map((board: any) => (
+                      <BoardBox
+                        onClick={() => {
+                          setSelectedBoard(board);
+                          setShowSelectBoard(false);
+                        }}
+                      >
+                        <Paragraph weight="bold">
+                          {board.name.length > 15
+                            ? `${board.name.substring(0, 15)}...`
+                            : board.name}
+                        </Paragraph>
+                      </BoardBox>
+                    ))}
                 {data?.data?.length === 0 && (
                   <Paragraph>You don't have any boards yet.</Paragraph>
                 )}
+                {isCreatingBoard && <Loader />}
               </BoardsContainer>
               <TextFieldContainer>
                 <TextField
@@ -302,6 +308,7 @@ export const Create = () => {
                 onClick={() => {
                   if (boardName) {
                     createBoard({ name: boardName });
+                    setBoardName("");
                   }
                 }}
               >
