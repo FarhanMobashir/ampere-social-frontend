@@ -1,46 +1,90 @@
-# Getting Started with Create React App
+## [Ampere-Social - A Social Media Application like Pinterest](https://ampere-doc.netlify.app/)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Table of contents
 
-## Available Scripts
+- [About Ampere-Social](#about)
+- [Technology and libraries used](#tech)
+- [Pre-requisites and project setup(in local)](#setup)
+- [Let us connect](#connect)
 
-In the project directory, you can run:
+<a name="about"></a>
 
-### `yarn start`
+### About Ampere-Docs
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**[Ampere-Docs](https://ampere-doc.netlify.app/)** - a social media application like pinterest
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<a name="features"></a>
 
-### `yarn test`
+### Features and demo
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **[Home](https://ampere-doc.netlify.app/)** - a regular landing page.
 
-### `yarn build`
+- **[Boards and Pins](https://ampere-doc.netlify.app/)** - Users can
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- create boards
+- create pins
+- add pins to their board
+- comment on other people pin
+- follow other creators
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<a name="tech"></a>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Technologies and libraries used
 
-### `yarn eject`
+- Reactjs
+- Typescript
+- Styled Components
+- React Router
+- Redux Toolkit
+- Redux Toolkit Query for Data fetching
+- Redux Persist for persisting data
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<a name="highlights"></a>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Highlights
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- **Responsiveness** - This app is completely responsive and can be accessed in all kind of devices.
+- Proper messages for **error/exception handling** across the application
+- Use of **loader** to show status of tasks
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<a name="setup"></a>
 
-## Learn More
+### Pre-requisites and project setup(in local)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Step 1
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Install [NodeJs](https://nodejs.org/en/)(if not already installed)
+
+#### Step 2
+
+Clone dev branch of this repo to local using:
+
+     git clone https://github.com/FarhanMobashir/ampere-social-frontend.git -b dev
+
+#### Step 3
+
+Go into the project folder
+
+     cd project-name
+
+#### Step 4
+
+Install all the npm packages
+
+     npm install
+
+#### Step 5
+
+Run the application using:
+
+     npm start
+
+The application runs on **localhost:3000**
+
+<a name="connect"></a>
+
+### Let us connect
+
+[<img src="https://user-images.githubusercontent.com/64582473/162154693-eaf76505-59e8-4b6d-8e03-5cac4cd29d5d.png" width="30" height="30">](https://www.linkedin.com/in/mobashirfarhan/) &nbsp;
+[<img src="https://user-images.githubusercontent.com/64582473/162155893-3e273e1a-4a29-47e2-8e39-06b45ab6f6eb.png" width="30" height="30">](https://twitter.com/MobashirFarhan) &nbsp;
+[<img src="https://user-images.githubusercontent.com/64582473/162157812-3e1d6b9b-7729-4137-99cb-8337d6396472.png" width="30" height="30">](https://github.com/FarhanMobashir)
