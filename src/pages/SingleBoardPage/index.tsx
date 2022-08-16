@@ -345,7 +345,7 @@ export const SingleBoardPage = () => {
             onRemove={() => {
               removePin({ pinId: i._id, boardId: id });
             }}
-            avatar={i.createdBy.avatar.url}
+            avatar={i.createdBy.avatar ? i.createdBy.avatar.url : null}
           />
         ))}
       </PinListingContainer>
