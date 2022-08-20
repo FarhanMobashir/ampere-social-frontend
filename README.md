@@ -1,4 +1,4 @@
-## [Ampere-Social - A Social Media Application like Pinterest](https://ampere-doc.netlify.app/)
+## [Ampere-Social - A Social Media Application like Pinterest](https://ampere-social.netlify.app/)
 
 ### Table of contents
 
@@ -11,15 +11,15 @@
 
 ### About Ampere-Social
 
-**[Ampere-Social](https://ampere-doc.netlify.app/)** - a social media application like pinterest
+**[Ampere-Social](https://ampere-social.netlify.app/)** - a social media application like pinterest
 
 <a name="features"></a>
 
 ### Features and demo
 
-- **[Home](https://ampere-doc.netlify.app/)** - a regular landing page.
+- **[Home](https://ampere-social.netlify.app/)** - a regular landing page.
 
-- **[Boards and Pins](https://ampere-doc.netlify.app/)** - Users can
+- **[Boards and Pins](https://ampere-social.netlify.app/)** - Users can
 
 - create boards
 - create pins
