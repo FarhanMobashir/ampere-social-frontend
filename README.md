@@ -9,9 +9,9 @@
 
 <a name="about"></a>
 
-### About Ampere-Docs
+### About Ampere-Social
 
-**[Ampere-Docs](https://ampere-doc.netlify.app/)** - a social media application like pinterest
+**[Ampere-Social](https://ampere-doc.netlify.app/)** - a social media application like pinterest
 
 <a name="features"></a>
 
