@@ -47,7 +47,7 @@ const FormContainer = styled.form`
 
 export const AuthForm = () => {
   // const baseUrl = "http://localhost:8080";
-  const baseUrl = process.env.REACT_APP_API_URL;
+  const baseUrl = "https://pinterest-backend-8yxs.onrender.com";
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [formMode, setFormMode] = useState<"login" | "signup">("login");
