@@ -47,7 +47,7 @@ const FormContainer = styled.form`
 
 export const AuthForm = () => {
   // const baseUrl = "http://localhost:8080";
-  const baseUrl = "https://ampere-social.herokuapp.com";
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [formMode, setFormMode] = useState<"login" | "signup">("login");
