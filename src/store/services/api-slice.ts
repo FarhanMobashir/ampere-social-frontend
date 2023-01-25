@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 
 // const local = "http://localhost:8080";
-const local = "https://ampere-social.herokuapp.com";
+const local = process.env.REACT_APP_API_URL;
 
 export const apiSlice = createApi({
   reducerPath: "userApi",

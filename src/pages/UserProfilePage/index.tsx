@@ -12,7 +12,11 @@ import { Modal } from "../../components/Modal";
 import { PinCard } from "../../components/PinCard";
 
 import { ProfileCard } from "../../components/ProfileCard";
-import { setHasOnboarded, setToken } from "../../store/features/user-slice";
+import {
+  setHasOnboarded,
+  setToken,
+  setUser,
+} from "../../store/features/user-slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   useDeleteSinglePinMutation,
@@ -207,6 +211,7 @@ export const UserProfilePage = () => {
         variants="primary"
         onClick={() => {
           dispatch(setToken(null));
+          dispatch(setUser(null));
           dispatch(setHasOnboarded(false));
         }}
       >

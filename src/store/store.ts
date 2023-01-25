@@ -12,6 +12,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { devToolsEnhancer } from "@reduxjs/toolkit/dist/devtoolsExtension";
 
 const persistConfig = {
   key: "root",
