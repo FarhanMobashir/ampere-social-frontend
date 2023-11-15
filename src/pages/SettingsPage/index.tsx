@@ -141,6 +141,7 @@ const EditProfile = () => {
     if (profileImage.file) {
       formData.append("avatar", profileImage.file);
     }
+    console.log(formData.get("avatar"));
     updateUser(formData);
   }
 
@@ -158,7 +159,7 @@ const EditProfile = () => {
       </Paragraph>
       <UserProfilePhotoContainer>
         <ProfileImageContainer>
-          {data.data.avatar && !profileImage.preview && (
+          {data.data.avatar.url && !profileImage.preview && (
             <Image
               src={data.data.avatar.url}
               width="70px"
@@ -166,6 +167,11 @@ const EditProfile = () => {
               type="circle"
             />
           )}
+
+          {!data.data.avatar.url && !profileImage.preview && (
+            <Avatar>{data?.data.username[0].toUpperCase()}</Avatar>
+          )}
+
           {data.data.avatar && profileImage.preview && (
             <>
               <Image

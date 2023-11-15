@@ -57,6 +57,7 @@ const Avatar = styled.div`
   font-weight: bold;
   grid-column: 1 /3;
   grid-row: 1 /3;
+  text-transform: uppercase;
 `;
 
 const LogoContainer = styled.div`
@@ -94,7 +95,7 @@ export const AppHeader = () => {
         </CustomLink>
 
         <CustomLink to="/home/user">
-          {data && data.data.avatar ? (
+          {data && data.data.avatar.url ? (
             <Image
               src={data.data.avatar.url}
               width="40px"
@@ -152,7 +153,7 @@ export const AppHeader = () => {
           </IconButton>
         </CustomLink>
         <CustomLink to="/home/user">
-          {data && data.data.avatar ? (
+          {data && data.data.avatar.url ? (
             <Image
               src={data.data.avatar.url}
               width="70px"
